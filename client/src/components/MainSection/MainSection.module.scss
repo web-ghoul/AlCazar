@@ -1,0 +1,26 @@
+@import "../../../public/styles/variable.scss";
+.main_box {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../../../public/images/main.webp");
+    height: calc(100vh - 80px);
+    position: relative;
+    .main_contain {
+        height: 100%;
+        h2 {
+            font-family: $ubuntu_font;
+        }
+        h2,
+        h6 {
+            color: #fff;
+            z-index: 2;
+            position: relative;
+            width: 60%;
+        }
+        button {
+            width: -moz-fit-content;
+            width: fit-content;
+        }
+    }
+}

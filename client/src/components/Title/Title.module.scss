@@ -1,0 +1,7 @@
+.title{
+    &:after{
+        content: "";
+        position: absolute;
+        width: 60%;
+    }
+}
