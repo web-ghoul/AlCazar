@@ -1,21 +1,21 @@
 import { IconButton } from "@mui/material";
 import React from "react";
-import logo from "../../../public/images/logo.png";
-import logoWithText from "../../../public/images/logo_with_text.webp";
+import logo from "../../images/logo.png";
+import logoWithText from "../../images/logo_with_text.webp";
 import Image from "next/image";
 import styles from "./Logo.module.scss";
 import Link from "next/link";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Logo = ({ text }) => {
   return (
     <Link href={`${process.env.NEXT_PUBLIC_HOME_PAGE}`}>
       <IconButton className={`flex jcc aic ${styles.logo}`}>
-        <Image
-          width={100}
-          height={100}
-          loading="lazy"
+        <LazyLoadImage
           alt={"logo"}
-          src={text ? logoWithText : logo}
+          height={100}
+          src={text ? logoWithText.src : logo.src}
+          width={100}
         />
       </IconButton>
     </Link>

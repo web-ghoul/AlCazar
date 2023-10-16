@@ -1,0 +1,7 @@
+@import "../../styles/variable.scss";
+.search_and_sort {
+    grid-template-columns: 1fr auto;
+    .search_icon {
+        color: $main;
+    }
+}

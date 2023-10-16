@@ -1,7 +1,15 @@
-.title{
-    &:after{
+@import "./../../styles/variable.scss";
+.title {
+    position: relative;
+    width: -moz-fit-content;
+    width: fit-content;
+    color: $main;
+    &.line:after {
         content: "";
         position: absolute;
         width: 60%;
+        bottom: 0;
+        height: 4px;
+        background-color: $main;
     }
 }

@@ -1,0 +1,35 @@
+@import "../../styles/variable.scss";
+.about {
+    position: relative;
+    &:before {
+        content: "";
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 80%;
+        background-color: $main;
+        position: absolute;
+    }
+    .about_contain {
+        grid-template-columns: repeat(2, 1fr);
+        .about_content {
+            .about_text {
+                color: $white;
+                position: relative;
+                z-index: 10;
+            }
+        }
+        .about_image {
+            background-image: url("../../images/about.webp");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            box-shadow: $box_shadow;
+        }
+    }
+
+}

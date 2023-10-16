@@ -1,0 +1,21 @@
+@import "../../styles/variable.scss";
+.category {
+    box-shadow: $box_shadow;
+    background-color: $white;
+    transition: $transition;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 200px;
+    width: 200px;
+    position: relative;
+    &:hover{
+        transform: translateY(-5px);
+        cursor: pointer;
+    }
+    .category_title {
+        color: $white;
+        position: relative;
+        z-index: 10;
+    }
+}

@@ -7,9 +7,10 @@ export const PrimaryButton = styled(Button)(({ theme }) => ({
   borderWidth: "2px",
   borderColor: theme.palette.primary.main,
   borderStyle: "solid",
-  padding: "8px 15px",
+  padding: "8px 12px",
   borderRadius:"4px",
-  fontSize:"18px",
+  fontSize:"16px",
+  textTransform:"uppercase",
   "&:hover": {
     backgroundColor: theme.palette.white,
     color: theme.palette.primary.main,

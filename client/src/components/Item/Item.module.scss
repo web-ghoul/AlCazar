@@ -1,0 +1,13 @@
+@import "../../styles/variable.scss";
+.item{
+    border-radius: 6px;
+    background-color: $white;
+    box-shadow: $box_shadow;
+    .item_image{
+        background-image: url("../../images/bed0.webp");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 200px;
+    }
+}

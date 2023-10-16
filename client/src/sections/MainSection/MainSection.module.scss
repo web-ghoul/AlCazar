@@ -1,0 +1,32 @@
+@import "../../styles/variable.scss";
+.main_box {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../../images/main.webp");
+    height: calc(100vh - 80px);
+    position: relative;
+    &.box_2 {
+        background-image: url("../../images/main0.webp");
+    }
+    &.box_3 {
+        background-image: url("../../images/main1.webp");
+    }
+    .main_contain {
+        height: 100%;
+        h2 {
+            font-family: $ubuntu_font !important;
+        }
+        h2,
+        h6 {
+            color: #fff;
+            z-index: 2;
+            position: relative;
+            width: 60%;
+        }
+        button {
+            width: -moz-fit-content;
+            width: fit-content;
+        }
+    }
+}

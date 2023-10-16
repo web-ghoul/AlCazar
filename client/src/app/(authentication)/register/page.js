@@ -6,9 +6,5 @@ export const metadata = {
 };
 
 export default function RegisterPage() {
-  return (
-    <main>
-      <Authentication type={"register"} />
-    </main>
-  );
+  return <Authentication type={"register"} />;
 }

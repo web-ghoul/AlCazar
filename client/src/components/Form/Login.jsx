@@ -1,19 +1,41 @@
 import { PrimaryButton } from "@/MUIComponents/PrimaryButton";
-import { PrimaryTextField } from "@/MUIComponents/PrimaryTetField";
+import { PrimaryTextField } from "@/MUIComponents/PrimaryTextField";
 import React from "react";
 import Or from "./Or/Or";
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, InputAdornment, Typography } from "@mui/material";
 import Link from "next/link";
 import SocialMediaAuth from "./SocialMediaAuth/SocialMediaAuth";
+import {
+  EmailRounded,
+  LockRounded,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
+import LoadButton from "../LoadButton/LoadButton";
 
-const Login = ({ formik }) => {
+const Login = ({ loading,formik }) => {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   return (
     <>
       <PrimaryTextField
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <EmailRounded
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              />
+            </InputAdornment>
+          ),
+        }}
+        variant="standard"
         fullWidth
         id="email"
         name="email"
-        label="Email"
+        placeholder="Email"
         value={formik.values.email}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
@@ -21,11 +43,33 @@ const Login = ({ formik }) => {
         helperText={formik.touched.email && formik.errors.email}
       />
       <PrimaryTextField
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <LockRounded
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              />
+            </InputAdornment>
+          ),
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+        type={showPassword ? "text" : "password"}
+        variant="standard"
         fullWidth
         id="password"
         name="password"
-        label="Password"
-        type="password"
+        placeholder="Password"
         value={formik.values.password}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
@@ -45,14 +89,16 @@ const Login = ({ formik }) => {
             Forgot your password ?
           </Typography>
         </Link>
-        <PrimaryButton
-          color="primary"
-          variant="contained"
-          fullWidth
-          type="submit"
-        >
-          Login
-        </PrimaryButton>
+        <LoadButton loading={loading}>
+          <PrimaryButton
+            color="primary"
+            variant="contained"
+            fullWidth
+            type="submit"
+          >
+            Login
+          </PrimaryButton>
+        </LoadButton>
         <Link href={`${process.env.NEXT_PUBLIC_REGISTER_PAGE}`}>
           <Typography
             variant="h6"

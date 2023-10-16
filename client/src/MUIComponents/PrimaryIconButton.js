@@ -5,7 +5,7 @@ export const PrimaryIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.white,
   borderWidth: "2px",
-  borderColor: theme.palette.white,
+  borderColor: theme.palette.primary.main,
   borderStyle: "solid",
   padding: "5px",
   borderRadius:"2px",

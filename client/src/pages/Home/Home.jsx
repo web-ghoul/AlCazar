@@ -1,11 +1,15 @@
 "use client";
 import React from "react";
-import MainSection from "@/components/MainSection/MainSection";
+import MainSection from "@/sections/MainSection/MainSection";
+import BestCategoriesSection from "@/sections/BestCategoriesSection/BestCategoriesSection";
+import AboutSection from "@/sections/AboutSection/AboutSection";
 
 const Home = () => {
   return (
     <>
       <MainSection/>
+      <BestCategoriesSection/>
+      <AboutSection/>
     </>
   );
 };
