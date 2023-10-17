@@ -91,7 +91,6 @@ const Login = ({ loading,formik }) => {
         </Link>
         <LoadButton loading={loading}>
           <PrimaryButton
-            color="primary"
             variant="contained"
             fullWidth
             type="submit"

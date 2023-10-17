@@ -19,12 +19,16 @@ const ItemSchema = new Schema(
     },
     images: {
       type: Array,
+      of: String,
       required: [true, "Images is Required"],
     },
-    password: {
-      type: String,
-      required: [true, "Password is Required"],
-      min: [8, "Must Password will be 8 Characters at least"],
+    dimension: {
+      type: Map,
+      of: Number,
+    },
+    count: {
+      type: Number,
+      required: [true, "Count is Required"],
     },
   },
   { timestamps: true }

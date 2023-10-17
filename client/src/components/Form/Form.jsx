@@ -10,10 +10,12 @@ import * as yup from "yup";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import AddNewItemForm from "./AddNewItemForm";
 
 const Form = ({ type }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
   const loginFormik = useFormik({
     initialValues: {
       email: "",
@@ -45,7 +47,7 @@ const Form = ({ type }) => {
         })
         .catch((err) => {
           try {
-            toast.error(err.response.data.message);
+            toast.error(err.response.data.error);
           } catch (error) {
             toast.error(error.message);
           }
@@ -99,7 +101,7 @@ const Form = ({ type }) => {
         })
         .catch((err) => {
           try {
-            toast.success(err.response.data.message);
+            toast.error(err.response.data.error);
           } catch (error) {
             toast.error(error.message);
           }
@@ -143,6 +145,52 @@ const Form = ({ type }) => {
     },
   });
 
+  const addNewItemFormik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+      images: "",
+      price: "",
+      width: "",
+      length: "",
+      height: "",
+      count: "",
+    },
+    validationSchema: yup.object({
+      title: yup.string("title your email").required("title is required"),
+      description: yup.string("description your email").required("description is required"),
+      images: yup.string("Enter your images").required("images is required"),
+      price: yup.string("Enter your price").required("price is required"),
+      width: yup.string("Enter your width").required("width is required"),
+      length: yup.string("Enter your length").required("length is required"),
+      height: yup.string("Enter your height").required("height is required"),
+      count: yup.string("Enter your count").required("count is required"),
+    }),
+    onSubmit:  async (values, { resetForm }) => {
+      setLoading(true);
+      await axios
+        .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewItem`, { ...values })
+        .then((res) => {
+          toast.success(res.data.message);
+          try {
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+          router.push(`${process.env.NEXT_PUBLIC_HOME_PAGE}`);
+        })
+        .catch((err) => {
+          try {
+            toast.error(err.response.data.error);
+          } catch (error) {
+            toast.error(error.message);
+          }
+        });
+      setLoading(false);
+    },
+  });
+
   return (
     <form
       onSubmit={
@@ -152,9 +200,11 @@ const Form = ({ type }) => {
           ? registerFormik.handleSubmit
           : type === "reset_password"
           ? resetPasswordFormik.handleSubmit
-          : type === "forgot_password" && forgotPasswordFormik.handleSubmit
+          : type === "forgot_password"
+          ? forgotPasswordFormik.handleSubmit
+          : type === "add_new_item" && addNewItemFormik.handleSubmit
       }
-      className={`form grid jcs aic g20`}
+      className={`form grid jcs aic g30`}
     >
       {type === "login" ? (
         <Login loading={loading} formik={loginFormik} />
@@ -162,9 +212,11 @@ const Form = ({ type }) => {
         <Register loading={loading} formik={registerFormik} />
       ) : type === "reset_password" ? (
         <ResetPassword loading={loading} formik={resetPasswordFormik} />
+      ) : type === "forgot_password" ? (
+        <ForgotPassword loading={loading} formik={forgotPasswordFormik} />
       ) : (
-        type === "forgot_password" && (
-          <ForgotPassword loading={loading} formik={forgotPasswordFormik} />
+        type === "add_new_item" && (
+          <AddNewItemForm loading={loading} formik={addNewItemFormik} />
         )
       )}
     </form>

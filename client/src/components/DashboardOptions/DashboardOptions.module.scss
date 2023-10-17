@@ -1,0 +1,20 @@
+@import "../../styles/variable.scss";
+
+.dashboard_options {
+    grid-template-columns: auto 1fr;
+    .tabs {
+        background-color: $main;
+        width: max-content;
+        & button {
+            color: $white;
+            display: grid !important;
+            align-items: center;
+            justify-content: flex-start;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            & h5{
+                text-align: left;
+            }
+        }
+    }
+}

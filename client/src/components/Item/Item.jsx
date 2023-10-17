@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
 import styles from "./Item.module.scss";
 import { PrimaryIconButton } from "@/MUIComponents/PrimaryIconButton";
@@ -7,19 +7,14 @@ import { ShoppingCartRounded } from "@mui/icons-material";
 
 const Item = () => {
   return (
-    <Box
-      className={`grid jcs aic g20 ${styles.item}`}
-    >
+    <Paper className={`grid jcs aic g20 ${styles.item}`}>
       <Box className={`${styles.item_image}`}></Box>
       <Box className={`grid jcs aic g20 pad20`}>
         <Typography variant="h5" className="tas">
           Zigzag
         </Typography>
         <Box className={`flex flex_wrap jcsb aic`}>
-          <Typography
-            variant="h6"
-            className={`${styles.item_price}`}
-          >
+          <Typography variant="h6" className={`${styles.item_price}`}>
             200 L.E.
           </Typography>
           <PrimaryIconButton>
@@ -28,7 +23,7 @@ const Item = () => {
         </Box>
         <SecondaryButton>View More</SecondaryButton>
       </Box>
-    </Box>
+    </Paper>
   );
 };
 export default Item;
