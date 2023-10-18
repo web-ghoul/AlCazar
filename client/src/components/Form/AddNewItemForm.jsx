@@ -1,10 +1,10 @@
-import { PrimaryButton } from "@/MUIComponents/PrimaryButton";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LoadButton from "../LoadButton/LoadButton";
+import { PrimaryButton } from "@/MUIComponents/PrimaryButton";
 import { PrimaryTextField } from "@/MUIComponents/PrimaryTextField";
 import { Box, InputAdornment } from "@mui/material";
 import {
-    CountertopsRounded,
+  CountertopsRounded,
   DescriptionRounded,
   HeightRounded,
   LocalOfferRounded,
@@ -12,8 +12,13 @@ import {
   TitleRounded,
   WidthFullRounded,
 } from "@mui/icons-material";
+import FileUpload from "../FileUpload/FileUpload";
 
 const AddNewItemForm = ({ loading, formik }) => {
+  const [images, setImages] = useState();
+  useEffect(() => {
+    formik.values.images = images;
+  }, [images]);
   return (
     <>
       <PrimaryTextField
@@ -91,7 +96,7 @@ const AddNewItemForm = ({ loading, formik }) => {
             </InputAdornment>
           ),
         }}
-        type={"text"}
+        type={"number"}
         variant="standard"
         fullWidth
         id="count"
@@ -103,6 +108,7 @@ const AddNewItemForm = ({ loading, formik }) => {
         error={formik.touched.count && Boolean(formik.errors.count)}
         helperText={formik.touched.count && formik.errors.count}
       />
+      <FileUpload maxImages={10} setImages={setImages} />
       <Box className={`flex jcsb aifs g20`}>
         <PrimaryTextField
           InputProps={{

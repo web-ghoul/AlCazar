@@ -6,6 +6,8 @@ import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "react-hot-toast";
+import { Provider } from "react-redux";
+import { store } from "@/store/store";
 
 export default function RootLayout({ children }) {
   return (
@@ -24,12 +26,14 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <main>
-          <ThemeProvider theme={theme}>
-            <Header />
-            {children}
-            <Toaster />
-            <Footer />
-          </ThemeProvider>
+          <Provider store={store}>
+            <ThemeProvider theme={theme}>
+              <Header />
+              {children}
+              <Toaster />
+              <Footer />
+            </ThemeProvider>
+          </Provider>
         </main>
       </body>
     </html>

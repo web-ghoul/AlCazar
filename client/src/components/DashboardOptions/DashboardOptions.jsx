@@ -16,6 +16,7 @@ import styles from "./DashboardOptions.module.scss";
 import "./global.scss";
 import { FaUserEdit, FaUserPlus } from "react-icons/fa";
 import { MdAdminPanelSettings } from "react-icons/md";
+import AddNewCategory from "../AddNewCategory/AddNewCategory";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -127,17 +128,15 @@ const DashboardOptions = () => {
           {...a11yProps(6)}
         />
       </Tabs>
-      <TabPanel value={value} index={0}>
-        <AddNewItem />
-      </TabPanel>
+      <TabPanel value={value} index={0}></TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <AddNewItem />
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Item Four
+        <AddNewCategory />
       </TabPanel>
       <TabPanel value={value} index={4}>
         Item Five

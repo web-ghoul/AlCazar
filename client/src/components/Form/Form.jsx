@@ -11,6 +11,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import AddNewItemForm from "./AddNewItemForm";
+import AddNewCategoryForm from "./AddNewCategoryForm";
 
 const Form = ({ type }) => {
   const router = useRouter();
@@ -149,42 +150,92 @@ const Form = ({ type }) => {
     initialValues: {
       title: "",
       description: "",
-      images: "",
       price: "",
+      images: [],
+      category: "",
+      count: "",
       width: "",
       length: "",
       height: "",
-      count: "",
     },
     validationSchema: yup.object({
-      title: yup.string("title your email").required("title is required"),
-      description: yup.string("description your email").required("description is required"),
-      images: yup.string("Enter your images").required("images is required"),
-      price: yup.string("Enter your price").required("price is required"),
-      width: yup.string("Enter your width").required("width is required"),
-      length: yup.string("Enter your length").required("length is required"),
-      height: yup.string("Enter your height").required("height is required"),
-      count: yup.string("Enter your count").required("count is required"),
+      title: yup.string("Enter your title").required("Title is required"),
+      description: yup
+        .string("Enter your description")
+        .required("Description is required"),
+      price: yup.number("Enter your price").required("Price is required"),
+      images: yup.array(yup.mixed()).required("Image is required"),
+      category: yup
+        .string("Enter your category")
+        .required("Category is required"),
+      count: yup.number("Enter your count").required("Count is required"),
+      width: yup.number("Enter your width").required("Width is required"),
+      length: yup.number("Enter your length").required("Length is required"),
+      height: yup.number("Enter your height").required("Height is required"),
     }),
-    onSubmit:  async (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       setLoading(true);
+      const formData = new FormData();
+      values.images.map((image) => {
+        formData.append("images", image);
+      });
+      formData.append("data", JSON.stringify(values));
       await axios
-        .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewItem`, { ...values })
+        .post(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewItem`,
+          formData
+        )
         .then((res) => {
-          toast.success(res.data.message);
           try {
             toast.success(res.data.message);
           } catch (error) {
             toast.error(error.message);
           }
           resetForm();
-          router.push(`${process.env.NEXT_PUBLIC_HOME_PAGE}`);
         })
         .catch((err) => {
           try {
             toast.error(err.response.data.error);
           } catch (error) {
+            toast.error(err.message);
+          }
+        });
+      setLoading(false);
+    },
+  });
+
+  const addNewCategoryFormik = useFormik({
+    initialValues: {
+      title: "",
+      image: "",
+    },
+    validationSchema: yup.object({
+      title: yup.string("Enter your title").required(),
+      image: yup.mixed().required("Image is required"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("image", values.image);
+      formData.append("data", JSON.stringify(values));
+      await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewCategory`,
+          formData
+        )
+        .then((res) => {
+          try {
+            toast.success(res.data.message);
+          } catch (error) {
             toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          try {
+            toast.error(err.response.data.error);
+          } catch (error) {
+            toast.error(err.message);
           }
         });
       setLoading(false);
@@ -202,7 +253,9 @@ const Form = ({ type }) => {
           ? resetPasswordFormik.handleSubmit
           : type === "forgot_password"
           ? forgotPasswordFormik.handleSubmit
-          : type === "add_new_item" && addNewItemFormik.handleSubmit
+          : type === "add_new_item"
+          ? addNewItemFormik.handleSubmit
+          : type === "add_new_category" && addNewCategoryFormik.handleSubmit
       }
       className={`form grid jcs aic g30`}
     >
@@ -214,9 +267,11 @@ const Form = ({ type }) => {
         <ResetPassword loading={loading} formik={resetPasswordFormik} />
       ) : type === "forgot_password" ? (
         <ForgotPassword loading={loading} formik={forgotPasswordFormik} />
+      ) : type === "add_new_item" ? (
+        <AddNewItemForm loading={loading} formik={addNewItemFormik} />
       ) : (
-        type === "add_new_item" && (
-          <AddNewItemForm loading={loading} formik={addNewItemFormik} />
+        type === "add_new_category" && (
+          <AddNewCategoryForm loading={loading} formik={addNewCategoryFormik} />
         )
       )}
     </form>

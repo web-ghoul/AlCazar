@@ -6,11 +6,15 @@ const ItemSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "title is Required"],
+      required: [true, "Title is Required"],
+    },
+    description: {
+      type: String,
+      required: [true, "Description is Required"],
     },
     price: {
       type: Number,
-      required: [true, "price is Required"],
+      required: [true, "Price is Required"],
     },
     category: {
       type: String,
@@ -22,13 +26,21 @@ const ItemSchema = new Schema(
       of: String,
       required: [true, "Images is Required"],
     },
-    dimension: {
-      type: Map,
-      of: Number,
-    },
     count: {
       type: Number,
       required: [true, "Count is Required"],
+    },
+    width: {
+      type: Number,
+      required: [true, "Width is Required"],
+    },
+    length: {
+      type: Number,
+      required: [true, "Length is Required"],
+    },
+    height: {
+      type: Number,
+      required: [true, "Height is Required"],
     },
   },
   { timestamps: true }

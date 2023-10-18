@@ -1,13 +1,14 @@
+//Packages
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
+const helmet = require("helmet");
+const cors = require("cors");
+const xss = require("xss-clean")
+const bodyParser = require("body-parser")
 
 //DB Connection
 const DBConnect = require("./DB/connection");
-
-//Packages
-const helmet = require("helmet");
-const cors = require("cors");
 
 //Routers
 const publicRouter = require("./routes/public");
@@ -19,7 +20,11 @@ require("dotenv").config();
 
 app.use(helmet());
 app.use(cors());
+app.use(xss())
 app.use(express.json());
+app.use(bodyParser.json())
+
+//Routers
 app.use("/api", publicRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);

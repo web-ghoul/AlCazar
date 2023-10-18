@@ -32,7 +32,7 @@ const SearchAndSort = () => {
         }}
         variant="standard"
       >
-        <option key="{option.value}" value="{option.value}">
+        {/* <option key="{option.value}" value="{option.value}">
           Sort By
         </option>
         <option key="{option.value}" value="{option.value}">
@@ -43,7 +43,7 @@ const SearchAndSort = () => {
         </option>
         <option key="{option.value}" value="{option.value}">
           2000 - 10000
-        </option>
+        </option> */}
       </PrimaryTextField>
     </Box>
   );

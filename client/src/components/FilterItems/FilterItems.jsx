@@ -3,7 +3,7 @@ import React from "react";
 import Title from "../Title/Title";
 import { PrimaryTextField } from "@/MUIComponents/PrimaryTextField";
 
-const FilterItems = () => {
+const FilterItems = (categories, prices) => {
   return (
     <Box className={`flex jcs aic g30`}>
       <Title title={"Filter By"} fw={600} h="h6" line={false} />
@@ -18,7 +18,7 @@ const FilterItems = () => {
           }}
           variant="standard"
         >
-          <option key="{option.value}" value="{option.value}">
+          {/* <option key="" value="">
             Category
           </option>
           <option key="{option.value}" value="{option.value}">
@@ -26,7 +26,7 @@ const FilterItems = () => {
           </option>
           <option key="{option.value}" value="{option.value}">
             Sofas
-          </option>
+          </option> */}
         </PrimaryTextField>
         <PrimaryTextField
           id="Price"
@@ -38,7 +38,7 @@ const FilterItems = () => {
           }}
           variant="standard"
         >
-          <option key="{option.value}" value="{option.value}">
+          {/* <option key="{option.value}" value="{option.value}">
             price
           </option>
           <option key="{option.value}" value="{option.value}">
@@ -49,7 +49,7 @@ const FilterItems = () => {
           </option>
           <option key="{option.value}" value="{option.value}">
             2000 - 10000
-          </option>
+          </option> */}
         </PrimaryTextField>
       </Box>
     </Box>

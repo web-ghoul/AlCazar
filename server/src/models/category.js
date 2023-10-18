@@ -6,8 +6,12 @@ const CategorySchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "title is Required"],
+      required: [true, "Title is Required"],
     },
+    image:{
+      type:String,
+      required: [true, "Image is Required"],
+    }
   },
   { timestamps: true }
 );

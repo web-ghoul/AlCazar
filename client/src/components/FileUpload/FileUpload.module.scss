@@ -1,0 +1,22 @@
+@import "../../styles/variable.scss";
+.file_input{
+    border: 2px dashed $main;
+    color: $main;
+    transition: $transition;
+    &:hover{
+        cursor: pointer;
+        color: $white;
+        background-color: $main;
+    }
+}
+.chosen_images {
+    .chosen_image {
+        width:120px;
+        .chosen_image_src {
+            width: 120px;
+        }
+        .chosen_image_name{
+            word-break: break-all;
+        }
+    }
+}

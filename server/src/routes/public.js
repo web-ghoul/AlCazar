@@ -6,27 +6,15 @@ const {
   registerValidate,
   loginValidate,
 } = require("../middleware/authValidate");
-const { getItems } = require("../controllers/shop");
-const upload = require("../middleware/multer");
-const cloudinary = require("../utils/cloudinary");
-
-const image = "../../client/src/images/about.webp";
+const { getItems, getCategories } = require("../controllers/shop");
 
 router.route("/").get((req, res) => {
   res.send("Hello Server");
 });
 
-router.route("/uploadImage").post(upload.single("image"), (req, res) => {
-  cloudinary.uploader.upload(req.file.path, (err, res) => {
-    if (err) {
-      console.log(err);
-    }else{
-      console.log(res)
-    }
-  });
-});
+router.route("/shop/items").get(getItems);
 
-router.route("/shop").get(getItems);
+router.route("/shop/categories").get(getCategories);
 
 router.route("/login").post(loginValidate, emailValidate, login);
 

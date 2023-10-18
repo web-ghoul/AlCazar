@@ -17,8 +17,8 @@ const Shop = () => {
           fw={700}
           h={"h4"}
         />
-        <SearchAndSort/>
-        <FilterItems />
+        {/* <SearchAndSort/> */}
+        {/* <FilterItems /> */}
         <ItemsSection />
       </PrimaryContainer>
     </PrimaryBox>

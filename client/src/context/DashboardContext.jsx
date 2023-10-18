@@ -1,14 +1,11 @@
-import React, { createContext } from 'react'
+import React, { createContext } from "react";
 
-export const DashboardContext = createContext()
+export const DashboardContext = createContext();
 
-const DashboardProvider = ({children}) => {
-    
+const DashboardProvider = ({ children }) => {
   return (
-    <DashboardContext.Provider value={{}}>
-        {children}
-    </DashboardContext.Provider>
-  )
-}
+    <DashboardContext.Provider value={{}}>{children}</DashboardContext.Provider>
+  );
+};
 
-export default DashboardProvider
+export default DashboardProvider;
