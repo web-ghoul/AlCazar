@@ -103,6 +103,7 @@ const Register = ({ loading, formik }) => {
         variant="standard"
         fullWidth
         id="email"
+        type="email"
         name="email"
         placeholder="Email"
         value={formik.values.email}

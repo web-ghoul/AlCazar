@@ -27,6 +27,7 @@ const AddNewCategoryForm = ({ loading, formik }) => {
         variant="standard"
         fullWidth
         id="title"
+        type="text"
         name="title"
         placeholder="Title"
         value={formik.values.title}

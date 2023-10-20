@@ -11,7 +11,7 @@ const AddNewItem = () => {
       <Title
         title={"Add New Item"}
         icon={<AddToPhotosRounded />}
-        fw={600}
+        fw={700}
         h={"h4"}
         align={"center"}
       />

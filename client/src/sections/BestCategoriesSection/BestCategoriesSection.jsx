@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Title from "@/components/Title/Title";
-import { Box } from "@mui/material";
-import styles from "./BestCategoriesSection.module.scss";
-import Category from "@/components/Category/Category";
-import catImg from "../../images/bedrooms_cat.webp";
 import { PrimaryContainer } from "@/MUIComponents/PrimaryContainer";
 import { PrimaryBox } from "@/MUIComponents/PrimaryBox";
+import CategoriesSection from "../CategoriesSection/CategoriesSection";
 
-const BestCategoriesSection = () => {
+const BestCategoriesSection = ({editable}) => {
+
   return (
     <PrimaryBox>
       <PrimaryContainer className={`grid jcs aic g30`}>
@@ -18,13 +16,7 @@ const BestCategoriesSection = () => {
           align={"left"}
           fw={700}
         />
-        <Box className={`flex flex_wrap jcsb aic g20 `}>
-          <Category image={catImg} category={"Dinning Rooms"} />
-          <Category image={catImg} category={"Dinning Rooms"} />
-          <Category image={catImg} category={"Dinning Rooms"} />
-          <Category image={catImg} category={"Dinning Rooms"} />
-          <Category image={catImg} category={"Dinning Rooms"} />
-        </Box>
+        <CategoriesSection editable={editable}/>
       </PrimaryContainer>
     </PrimaryBox>
   );

@@ -1,3 +1,5 @@
-.form{
-    
+.form {
+    .name_and_email_inputs {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

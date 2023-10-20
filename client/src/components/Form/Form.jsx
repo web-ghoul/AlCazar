@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Form.scss";
 import Login from "./Login";
 import Register from "./Register";
@@ -12,10 +12,25 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import AddNewItemForm from "./AddNewItemForm";
 import AddNewCategoryForm from "./AddNewCategoryForm";
+import DeleteItem from "./DeleteItem";
+import { DashboardContext } from "@/context/DashboardContext";
+import DeleteCategory from "./DeleteCategory";
+import { useDispatch } from "react-redux";
+import { getItems } from "@/store/itemsSlice";
+import { getCategories } from "@/store/categoriesSlice";
 
 const Form = ({ type }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const {
+    itemId,
+    categoryId,
+    handleCloseDeleteItemModal,
+    handleCloseUpdateItemModal,
+    handleCloseDeleteCategoryModal,
+    handleCloseUpdateCategoryModal,
+  } = useContext(DashboardContext);
 
   const loginFormik = useFormik({
     initialValues: {
@@ -242,6 +257,58 @@ const Form = ({ type }) => {
     },
   });
 
+  const handleDeleteItem = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await axios
+      .delete(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteItem/${itemId}`
+      )
+      .then((res) => {
+        try {
+          toast.success(res.data.message);
+          handleCloseDeleteItemModal();
+          dispatch(getItems());
+        } catch (error) {
+          toast.error(error.message);
+        }
+      })
+      .catch((err) => {
+        try {
+          toast.error(err.response.data.error);
+        } catch (error) {
+          toast.error(error.message);
+        }
+      });
+    setLoading(false);
+  };
+
+  const handleDeleteCategory = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await axios
+      .delete(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteCategory/${categoryId}`
+      )
+      .then((res) => {
+        try {
+          toast.success(res.data.message);
+          handleCloseDeleteCategoryModal();
+          dispatch(getCategories());
+        } catch (error) {
+          toast.error(error.message);
+        }
+      })
+      .catch((err) => {
+        try {
+          toast.error(err.response.data.error);
+        } catch (error) {
+          toast.error(error.message);
+        }
+      });
+    setLoading(false);
+  };
+
   return (
     <form
       onSubmit={
@@ -255,7 +322,11 @@ const Form = ({ type }) => {
           ? forgotPasswordFormik.handleSubmit
           : type === "add_new_item"
           ? addNewItemFormik.handleSubmit
-          : type === "add_new_category" && addNewCategoryFormik.handleSubmit
+          : type === "add_new_category"
+          ? addNewCategoryFormik.handleSubmit
+          : type === "delete_item"
+          ? handleDeleteItem
+          : type === "delete_category" && handleDeleteCategory
       }
       className={`form grid jcs aic g30`}
     >
@@ -269,10 +340,12 @@ const Form = ({ type }) => {
         <ForgotPassword loading={loading} formik={forgotPasswordFormik} />
       ) : type === "add_new_item" ? (
         <AddNewItemForm loading={loading} formik={addNewItemFormik} />
+      ) : type === "add_new_category" ? (
+        <AddNewCategoryForm loading={loading} formik={addNewCategoryFormik} />
+      ) : type === "delete_item" ? (
+        <DeleteItem loading={loading} />
       ) : (
-        type === "add_new_category" && (
-          <AddNewCategoryForm loading={loading} formik={addNewCategoryFormik} />
-        )
+        type === "delete_category" && <DeleteCategory loading={loading} />
       )}
     </form>
   );

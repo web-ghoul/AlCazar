@@ -1,0 +1,7 @@
+@import "../styles/variable.scss";
+.modal {
+    background-color: $white;
+    border-radius: 6px;
+    box-shadow: $box_shadow;
+    width: max-content;
+}

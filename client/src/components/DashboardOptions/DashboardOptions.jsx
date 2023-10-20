@@ -17,6 +17,10 @@ import "./global.scss";
 import { FaUserEdit, FaUserPlus } from "react-icons/fa";
 import { MdAdminPanelSettings } from "react-icons/md";
 import AddNewCategory from "../AddNewCategory/AddNewCategory";
+import BestCategoriesSection from "@/sections/BestCategoriesSection/BestCategoriesSection";
+import Shop from "@/pages/Shop/Shop";
+import Title from "../Title/Title";
+import CategoriesSection from "@/sections/CategoriesSection/CategoriesSection";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -128,12 +132,25 @@ const DashboardOptions = () => {
           {...a11yProps(6)}
         />
       </Tabs>
-      <TabPanel value={value} index={0}></TabPanel>
+      <TabPanel value={value} index={0}>
+        <Box className={`grid jcs aic g30`} sx={{ width: "100%" }}>
+          <Shop editable={true} />
+        </Box>
+      </TabPanel>
       <TabPanel value={value} index={1}>
         <AddNewItem />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        <Box className={`grid jcs aic g30`}>
+          <Title
+            title={"Our Categories"}
+            h={"h4"}
+            line={true}
+            align={"left"}
+            fw={700}
+          />
+          <CategoriesSection editable={true} />
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={3}>
         <AddNewCategory />

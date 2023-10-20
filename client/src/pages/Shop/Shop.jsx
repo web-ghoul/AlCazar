@@ -6,22 +6,20 @@ import ItemsSection from "@/sections/ItemsSection/ItemsSection";
 import Title from "@/components/Title/Title";
 import SearchAndSort from "@/components/SearchAndSort/SearchAndSort";
 
-const Shop = () => {
+const Shop = ({ editable }) => {
   return (
-    <PrimaryBox>
-      <PrimaryContainer className={`grid jcs g30 aic`}>
-        <Title
-          title={"Our Collection"}
-          align={"left"}
-          line={true}
-          fw={700}
-          h={"h4"}
-        />
-        {/* <SearchAndSort/> */}
-        {/* <FilterItems /> */}
-        <ItemsSection />
-      </PrimaryContainer>
-    </PrimaryBox>
+    <>
+      <Title
+        title={"Our Collection"}
+        align={"left"}
+        line={true}
+        fw={700}
+        h={"h4"}
+      />
+      {/* <SearchAndSort/> */}
+      {/* <FilterItems /> */}
+      <ItemsSection editable={editable} />
+    </>
   );
 };
 

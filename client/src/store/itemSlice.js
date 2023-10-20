@@ -2,28 +2,29 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const getItems = createAsyncThunk("items/getItems", async () => {
+export const getItem = createAsyncThunk("item/getItem", async (_, args) => {
+  console.log(args);
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/shop/items`
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/shop/items${args.item_id}`
   );
-  return res.data.items;
+  return res.data.item;
 });
 
 const initialState = {
-  items: [],
+  item: null,
   isLoading: true,
 };
 
-export const itemsSlice = createSlice({
-  name: "items",
+export const itemSlice = createSlice({
+  name: "item",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getItems.fulfilled, (state, action) => {
-      state.items = action.payload;
+    builder.addCase(getItem.fulfilled, (state, action) => {
+      state.item = action.payload;
       state.isLoading = false;
     });
-    builder.addCase(getItems.rejected, (_, action) => {
+    builder.addCase(getItem.rejected, (_, action) => {
       if (action.payload) {
         toast.error(action.payload.errorMessage);
       } else {
@@ -33,4 +34,4 @@ export const itemsSlice = createSlice({
   },
 });
 
-export default itemsSlice.reducer;
+export default itemSlice.reducer;

@@ -35,6 +35,7 @@ const Login = ({ loading,formik }) => {
         fullWidth
         id="email"
         name="email"
+        type="email"
         placeholder="Email"
         value={formik.values.email}
         onChange={formik.handleChange}

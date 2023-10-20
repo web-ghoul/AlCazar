@@ -8,6 +8,9 @@ import Footer from "@/components/Footer/Footer";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
+import DashboardProvider from "@/context/DashboardContext";
+import DeleteItemModel from "@/models/deleteItemModel";
+import DeleteCategoryModel from "@/models/DeleteCategoryModal";
 
 export default function RootLayout({ children }) {
   return (
@@ -28,10 +31,14 @@ export default function RootLayout({ children }) {
         <main>
           <Provider store={store}>
             <ThemeProvider theme={theme}>
-              <Header />
-              {children}
-              <Toaster />
-              <Footer />
+              <DashboardProvider>
+                <Header />
+                {children}
+                <DeleteItemModel />
+                <DeleteCategoryModel />
+                <Toaster />
+                <Footer />
+              </DashboardProvider>
             </ThemeProvider>
           </Provider>
         </main>

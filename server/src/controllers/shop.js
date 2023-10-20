@@ -2,6 +2,50 @@ const Item = require("../models/item");
 const Category = require("../models/category");
 const uploadImage = require("../utils/uploadImage");
 
+const getItem = async (req, res, next) => {
+  try {
+    const { itemId } = req.params;
+    const item = await Item.findOne({ _id: itemId });
+    if (item) {
+      res.status(200).json({ item });
+    } else {
+      res.status(404).json({ error: "Item isn't Found" });
+    }
+  } catch (err) {
+    res.status(405).json({ error: err.message });
+  }
+};
+
+const deleteItem = async (req, res, next) => {
+  try {
+    const { itemId } = req.params;
+    const item = await Item.findOne({ _id: itemId });
+    if (item) {
+      await Item.findOneAndDelete({ _id: itemId });
+      res.status(200).json({ message: "Item is Deleted Successfully!!" });
+    } else {
+      res.status(404).json({ error: "Item isn't Exist" });
+    }
+  } catch (err) {
+    res.status(405).json({ error: err.message });
+  }
+};
+
+const updateItem = async (req, res, next) => {
+  try {
+    const { itemId } = req.params;
+    const item = await Item.findOne({ _id: itemId });
+    if (item) {
+      await Item.findOneAndUpdate({ _id: itemId }, req.body);
+      res.status(200).json({ message: "Item is Updated Successfully!!" });
+    } else {
+      res.status(404).json({ error: "Item isn't Exist" });
+    }
+  } catch (err) {
+    res.status(405).json({ error: err.message });
+  }
+};
+
 const getItems = async (req, res, next) => {
   try {
     const items = await Item.find({});
@@ -11,10 +55,41 @@ const getItems = async (req, res, next) => {
   }
 };
 
+const getCategoryItems = async (req, res, next) => {
+  try {
+    const { categoryId } = req.params;
+    const category = await Category.findOne({ _id: categoryId });
+    if (category) {
+      const Items = await Item.find({ category: category.title });
+      res.status(200).json({ Items });
+    } else {
+      res.status(404).json({ error: "Category isn't Found" });
+    }
+  } catch (err) {
+    res.status(405).json({ error: err.message });
+  }
+};
+
 const getCategories = async (req, res, next) => {
   try {
     const categories = await Category.find({});
     res.status(200).json({ categories });
+  } catch (err) {
+    console.log(err.message)
+    res.status(405).json({ error: err.message });
+  }
+};
+
+const deleteCategory = async (req, res, next) => {
+  try {
+    const { categoryId } = req.params;
+    const category = await Category.findOne({ _id: categoryId });
+    if (category) {
+      await Category.findOneAndDelete({ _id: categoryId });
+      res.status(200).json({ message: "Category is Deleted Successfully!!" });
+    } else {
+      res.status(404).json({ error: "Category isn't Exist" });
+    }
   } catch (err) {
     res.status(405).json({ error: err.message });
   }
@@ -70,4 +145,14 @@ const addNewCategory = async (req, res, next) => {
   }
 };
 
-module.exports = { getItems, getCategories, addNewItem, addNewCategory };
+module.exports = {
+  getItems,
+  getItem,
+  getCategories,
+  getCategoryItems,
+  deleteItem,
+  addNewItem,
+  updateItem,
+  deleteCategory,
+  addNewCategory,
+};

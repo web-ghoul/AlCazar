@@ -11,7 +11,7 @@ const AddNewCategory = () => {
       <Title
         title={"Add New Category"}
         icon={<PostAddRounded />}
-        fw={600}
+        fw={700}
         h={"h4"}
         align={"center"}
       />

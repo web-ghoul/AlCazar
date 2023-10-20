@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import styles from "./Title.module.scss";
 
-const Title = ({ icon, color, h, title, align, fw, line }) => {
+const Title = ({ icon, color, h, title, textTransform, align, fw, line }) => {
   return (
     <Box
       className={`flex aic g10 ${styles.title} ${line && styles.line} ${
@@ -14,7 +14,14 @@ const Title = ({ icon, color, h, title, align, fw, line }) => {
       }`}
     >
       {icon}
-      <Typography variant={h} sx={{ fontWeight: fw, color: color && color }}>
+      <Typography
+        variant={h}
+        sx={{
+          fontWeight: fw,
+          textTransform: textTransform,
+          color: color && color,
+        }}
+      >
         {title}
       </Typography>
     </Box>

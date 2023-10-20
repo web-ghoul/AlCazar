@@ -4,6 +4,7 @@ import { PrimaryButton } from "@/MUIComponents/PrimaryButton";
 import { PrimaryTextField } from "@/MUIComponents/PrimaryTextField";
 import { Box, InputAdornment } from "@mui/material";
 import {
+  CategoryRounded,
   CountertopsRounded,
   DescriptionRounded,
   HeightRounded,
@@ -13,12 +14,19 @@ import {
   WidthFullRounded,
 } from "@mui/icons-material";
 import FileUpload from "../FileUpload/FileUpload";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategories } from "@/store/categoriesSlice";
 
 const AddNewItemForm = ({ loading, formik }) => {
   const [images, setImages] = useState();
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.categories);
   useEffect(() => {
     formik.values.images = images;
   }, [images]);
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
   return (
     <>
       <PrimaryTextField
@@ -108,6 +116,39 @@ const AddNewItemForm = ({ loading, formik }) => {
         error={formik.touched.count && Boolean(formik.errors.count)}
         helperText={formik.touched.count && formik.errors.count}
       />
+      <PrimaryTextField
+        id="category"
+        name="category"
+        select
+        fullWidth
+        defaultValue=""
+        SelectProps={{
+          native: true,
+        }}
+        variant="standard"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <CategoryRounded
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              />
+            </InputAdornment>
+          ),
+        }}
+        value={formik.values.category}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.category && Boolean(formik.errors.category)}
+        helperText={formik.touched.category && formik.errors.category}
+      >
+        <option value="">Select Category</option>
+        {categories &&
+          categories.map((category, i) => (
+            <option key={i} value={category.title}>
+              {category.title}
+            </option>
+          ))}
+      </PrimaryTextField>
       <FileUpload maxImages={10} setImages={setImages} />
       <Box className={`flex jcsb aifs g20`}>
         <PrimaryTextField

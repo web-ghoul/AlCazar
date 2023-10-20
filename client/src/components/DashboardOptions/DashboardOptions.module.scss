@@ -5,14 +5,16 @@
     .tabs {
         background-color: $main;
         width: max-content;
+        box-shadow: $box_shadow;
         & button {
             color: $white;
             display: grid !important;
             align-items: center;
             justify-content: flex-start;
             grid-template-columns: auto 1fr;
+            border-radius: 4px;
             gap: 10px;
-            & h5{
+            & h5 {
                 text-align: left;
             }
         }
