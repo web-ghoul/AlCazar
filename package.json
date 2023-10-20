@@ -1,0 +1,21 @@
+{
+  "name": "alcazar",
+  "version": "1.0.0",
+  "description": "Rebuild AlCazar Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/web-ghoul/AlCazar.git#main"
+  },
+  "keywords": [
+    "AlCazar",
+    "Furniture",
+    "Al Cazar"
+  ],
+  "author": "webGhoul",
+  "license": "ISC"
+}
