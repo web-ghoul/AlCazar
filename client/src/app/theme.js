@@ -7,6 +7,7 @@ export const theme = createTheme({
       },
       black: "#333",
       dark: "#000",
+      gray: "#777",
       white: "#ffffff",
       youtube: "#ff0000",
       linkedin: "#0a66c2",

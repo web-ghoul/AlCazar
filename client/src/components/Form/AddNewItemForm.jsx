@@ -117,15 +117,6 @@ const AddNewItemForm = ({ loading, formik }) => {
         helperText={formik.touched.count && formik.errors.count}
       />
       <PrimaryTextField
-        id="category"
-        name="category"
-        select
-        fullWidth
-        defaultValue=""
-        SelectProps={{
-          native: true,
-        }}
-        variant="standard"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -135,13 +126,21 @@ const AddNewItemForm = ({ loading, formik }) => {
             </InputAdornment>
           ),
         }}
+        id="category"
+        name="category"
+        select
+        fullWidth
+        SelectProps={{
+          native: true,
+        }}
+        label="Select Category"
+        variant="standard"
         value={formik.values.category}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         error={formik.touched.category && Boolean(formik.errors.category)}
         helperText={formik.touched.category && formik.errors.category}
       >
-        <option value="">Select Category</option>
         {categories &&
           categories.map((category, i) => (
             <option key={i} value={category.title}>
@@ -149,6 +148,7 @@ const AddNewItemForm = ({ loading, formik }) => {
             </option>
           ))}
       </PrimaryTextField>
+      
       <FileUpload maxImages={10} setImages={setImages} />
       <Box className={`flex jcsb aifs g20`}>
         <PrimaryTextField

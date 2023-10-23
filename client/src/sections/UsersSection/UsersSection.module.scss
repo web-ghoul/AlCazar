@@ -1,0 +1,6 @@
+.users_section {
+    width: 100%;
+    .users_box {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}

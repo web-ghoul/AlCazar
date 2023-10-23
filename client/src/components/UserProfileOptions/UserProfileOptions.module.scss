@@ -1,0 +1,22 @@
+@import "../../styles/variable.scss";
+
+.user_profile_options {
+    grid-template-columns: auto 1fr;
+    .tabs {
+        background-color: $white;
+        width: max-content;
+        box-shadow: $box_shadow;
+        & button {
+            color: $main;
+            display: grid !important;
+            align-items: center;
+            justify-content: flex-start;
+            grid-template-columns: auto 1fr;
+            border-radius: 4px;
+            gap: 10px;
+            & h5 {
+                text-align: left;
+            }
+        }
+    }
+}

@@ -14,13 +14,13 @@ import {
 } from "@mui/icons-material";
 import styles from "./DashboardOptions.module.scss";
 import "./global.scss";
-import { FaUserEdit, FaUserPlus } from "react-icons/fa";
+import { FaUserEdit } from "react-icons/fa";
 import { MdAdminPanelSettings } from "react-icons/md";
 import AddNewCategory from "../AddNewCategory/AddNewCategory";
-import BestCategoriesSection from "@/sections/BestCategoriesSection/BestCategoriesSection";
 import Shop from "@/pages/Shop/Shop";
 import Title from "../Title/Title";
 import CategoriesSection from "@/sections/CategoriesSection/CategoriesSection";
+import UsersSection from "@/sections/UsersSection/UsersSection";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -114,22 +114,13 @@ const DashboardOptions = () => {
           {...a11yProps(4)}
         />
         <Tab
-          icon={<FaUserPlus />}
-          label={
-            <Typography variant="h6" sx={{ fontWeight: 600 }} className={`tas`}>
-              Add New User
-            </Typography>
-          }
-          {...a11yProps(5)}
-        />
-        <Tab
           icon={<MdAdminPanelSettings />}
           label={
             <Typography variant="h6" sx={{ fontWeight: 600 }} className={`tas`}>
               Add New Admin
             </Typography>
           }
-          {...a11yProps(6)}
+          {...a11yProps(5)}
         />
       </Tabs>
       <TabPanel value={value} index={0}>
@@ -156,12 +147,9 @@ const DashboardOptions = () => {
         <AddNewCategory />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Item Five
+        <UsersSection />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel>
-      <TabPanel value={value} index={6}>
         Item Seven
       </TabPanel>
     </Box>

@@ -38,7 +38,6 @@ const FileUpload = ({ setImages, maxImages }) => {
     );
   });
   useEffect(() => {
-    console.log(acceptedFiles);
     setImages(acceptedFiles);
   }, [acceptedFiles]);
   return (

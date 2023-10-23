@@ -20,7 +20,7 @@
             }
         }
         .about_image {
-            background-image: url("../../images/about.webp");
+            background-image: url("../../images/aboutOverviewImg.webp");
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -32,4 +32,15 @@
         }
     }
 
+}
+
+.about_box {
+    grid-template-columns: repeat(2, 1fr);
+    .about_box_image {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100%;
+        width: 100%;
+    }
 }

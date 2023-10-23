@@ -1,8 +1,6 @@
 @import "./../../styles/variable.scss";
 .title {
     position: relative;
-    width: -moz-fit-content;
-    width: fit-content;
     color: $main;
     &.line:after {
         content: "";

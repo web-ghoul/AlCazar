@@ -1,10 +1,11 @@
 import { PrimaryTextField } from "@/MUIComponents/PrimaryTextField";
 import {
   EmailRounded,
+  AssignmentIndRounded,
   SubjectRounded,
-  VerifiedUserRounded,
+  MessageRounded,
 } from "@mui/icons-material";
-import { InputAdornment } from "@mui/material";
+import { Box, InputAdornment } from "@mui/material";
 import React from "react";
 import LoadButton from "../LoadButton/LoadButton";
 import { PrimaryButton } from "@/MUIComponents/PrimaryButton";
@@ -17,7 +18,7 @@ const ContactForm = ({ loading, formik }) => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <VerifiedUserRounded
+                <AssignmentIndRounded
                   sx={{ color: (theme) => theme.palette.primary.main }}
                 />
               </InputAdornment>
@@ -84,7 +85,7 @@ const ContactForm = ({ loading, formik }) => {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SubjectRounded
+              <MessageRounded
                 sx={{ color: (theme) => theme.palette.primary.main }}
               />
             </InputAdornment>

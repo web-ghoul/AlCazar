@@ -1,16 +1,13 @@
 "use client";
-import Header from "@/components/Header/Header";
 import "../styles/webGhoul.scss";
 import "../styles/variable.scss";
+import Main from "./Main";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
-import Footer from "@/components/Footer/Footer";
-import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
 import DashboardProvider from "@/context/DashboardContext";
-import DeleteItemModel from "@/models/deleteItemModel";
-import DeleteCategoryModel from "@/models/DeleteCategoryModal";
+import ProfileProvider from "@/context/ProfileContext";
 
 export default function RootLayout({ children }) {
   return (
@@ -28,20 +25,17 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <main>
-          <Provider store={store}>
-            <ThemeProvider theme={theme}>
-              <DashboardProvider>
-                <Header />
-                {children}
-                <DeleteItemModel />
-                <DeleteCategoryModel />
-                <Toaster />
-                <Footer />
-              </DashboardProvider>
-            </ThemeProvider>
-          </Provider>
-        </main>
+        <ThemeProvider theme={theme}>
+          <DashboardProvider>
+            <ProfileProvider>
+              <Provider store={store}>
+                <Main>
+                  {children}
+                </Main>
+              </Provider>
+            </ProfileProvider>
+          </DashboardProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

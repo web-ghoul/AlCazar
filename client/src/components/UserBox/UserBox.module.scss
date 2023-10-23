@@ -1,0 +1,14 @@
+@import "../../styles/variable.scss";
+.user_box {
+    box-shadow: $box_shadow;
+    max-width: 250px;
+    .avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 4px solid $main;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}

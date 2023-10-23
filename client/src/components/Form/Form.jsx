@@ -15,13 +15,17 @@ import AddNewCategoryForm from "./AddNewCategoryForm";
 import DeleteItem from "./DeleteItem";
 import { DashboardContext } from "@/context/DashboardContext";
 import DeleteCategory from "./DeleteCategory";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getItems } from "@/store/itemsSlice";
 import { getCategories } from "@/store/categoriesSlice";
+import ContactForm from "./ContactForm";
+import { logging, logout } from "@/store/authSlice";
+import Cookies from "js-cookie";
 
 const Form = ({ type }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { token, userId } = useSelector((state) => state.auth)
   const dispatch = useDispatch();
   const {
     itemId,
@@ -52,8 +56,12 @@ const Form = ({ type }) => {
       await axios
         .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/login`, { ...values })
         .then((res) => {
-          toast.success(res.data.message);
           try {
+            const token = res.data.token
+            const userId = res.data.user._id
+            Cookies.set("AlCazar_token", token, { expires: 30 })
+            Cookies.set("AlCazar_userId", userId, { expires: 30 })
+            dispatch(logging({ token, userId }))
             toast.success(res.data.message);
           } catch (error) {
             toast.error(error.message);
@@ -62,6 +70,7 @@ const Form = ({ type }) => {
           router.push(`${process.env.NEXT_PUBLIC_HOME_PAGE}`);
         })
         .catch((err) => {
+          console.log(err)
           try {
             toast.error(err.response.data.error);
           } catch (error) {
@@ -198,7 +207,12 @@ const Form = ({ type }) => {
       await axios
         .post(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewItem`,
-          formData
+          formData,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          }
         )
         .then((res) => {
           try {
@@ -209,10 +223,17 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
+          let msg;
           try {
-            toast.error(err.response.data.error);
+            msg = err.response.data.error
+            toast.error(msg);
           } catch (error) {
-            toast.error(err.message);
+            msg = error.message
+            toast.error(msg);
+          }
+          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+            dispatch(logout())
+            router.push(`/login`)
           }
         });
       setLoading(false);
@@ -236,7 +257,12 @@ const Form = ({ type }) => {
       await axios
         .post(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewCategory`,
-          formData
+          formData,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          }
         )
         .then((res) => {
           try {
@@ -247,12 +273,61 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
+          let msg;
           try {
-            toast.error(err.response.data.error);
+            msg = err.response.data.error
+            toast.error(msg);
           } catch (error) {
-            toast.error(err.message);
+            msg = error.message
+            toast.error(msg);
+          }
+          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+            dispatch(logout())
+            router.push(`/login`)
           }
         });
+      setLoading(false);
+    },
+  });
+
+  const contactFormik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+    validationSchema: yup.object({
+      name: yup.string("Enter your name").required("Name is required"),
+      email: yup
+        .string("Enter your email")
+        .email("Email isn't Valid")
+        .required("Email is required"),
+      subject: yup.string("Enter your subject"),
+      message: yup.string("Enter your message").required("Message is required"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      // await axios
+      //   .post(
+      //     `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewCategory`,
+      //     formData
+      //   )
+      //   .then((res) => {
+      //     try {
+      //       toast.success(res.data.message);
+      //     } catch (error) {
+      //       toast.error(error.message);
+      //     }
+      //     resetForm();
+      //   })
+      //   .catch((err) => {
+      //     try {
+      //       toast.error(err.response.data.error);
+      //     } catch (error) {
+      //       toast.error(err.message);
+      //     }
+      //   });
       setLoading(false);
     },
   });
@@ -262,7 +337,12 @@ const Form = ({ type }) => {
     setLoading(true);
     await axios
       .delete(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteItem/${itemId}`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteItem/${itemId}`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
       )
       .then((res) => {
         try {
@@ -274,10 +354,18 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
+        handleCloseDeleteItemModal();
+        let msg;
         try {
-          toast.error(err.response.data.error);
+          msg = err.response.data.error
+          toast.error(msg);
         } catch (error) {
-          toast.error(error.message);
+          msg = error.message
+          toast.error(msg);
+        }
+        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+          dispatch(logout())
+          router.push(`/login`)
         }
       });
     setLoading(false);
@@ -288,7 +376,12 @@ const Form = ({ type }) => {
     setLoading(true);
     await axios
       .delete(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteCategory/${categoryId}`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteCategory/${categoryId}`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
       )
       .then((res) => {
         try {
@@ -300,10 +393,18 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
+        handleCloseDeleteCategoryModal();
+        let msg;
         try {
-          toast.error(err.response.data.error);
+          msg = err.response.data.error
+          toast.error(msg);
         } catch (error) {
-          toast.error(error.message);
+          msg = error.message
+          toast.error(msg);
+        }
+        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+          dispatch(logout())
+          router.push(`/login`)
         }
       });
     setLoading(false);
@@ -315,18 +416,20 @@ const Form = ({ type }) => {
         type === "login"
           ? loginFormik.handleSubmit
           : type === "register"
-          ? registerFormik.handleSubmit
-          : type === "reset_password"
-          ? resetPasswordFormik.handleSubmit
-          : type === "forgot_password"
-          ? forgotPasswordFormik.handleSubmit
-          : type === "add_new_item"
-          ? addNewItemFormik.handleSubmit
-          : type === "add_new_category"
-          ? addNewCategoryFormik.handleSubmit
-          : type === "delete_item"
-          ? handleDeleteItem
-          : type === "delete_category" && handleDeleteCategory
+            ? registerFormik.handleSubmit
+            : type === "reset_password"
+              ? resetPasswordFormik.handleSubmit
+              : type === "forgot_password"
+                ? forgotPasswordFormik.handleSubmit
+                : type === "contact"
+                  ? contactFormik.handleSubmit
+                  : type === "add_new_item"
+                    ? addNewItemFormik.handleSubmit
+                    : type === "add_new_category"
+                      ? addNewCategoryFormik.handleSubmit
+                      : type === "delete_item"
+                        ? handleDeleteItem
+                        : type === "delete_category" && handleDeleteCategory
       }
       className={`form grid jcs aic g30`}
     >
@@ -342,6 +445,8 @@ const Form = ({ type }) => {
         <AddNewItemForm loading={loading} formik={addNewItemFormik} />
       ) : type === "add_new_category" ? (
         <AddNewCategoryForm loading={loading} formik={addNewCategoryFormik} />
+      ) : type === "contact" ? (
+        <ContactForm loading={loading} formik={contactFormik} />
       ) : type === "delete_item" ? (
         <DeleteItem loading={loading} />
       ) : (

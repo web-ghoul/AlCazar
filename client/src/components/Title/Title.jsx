@@ -5,13 +5,13 @@ import styles from "./Title.module.scss";
 const Title = ({ icon, color, h, title, textTransform, align, fw, line }) => {
   return (
     <Box
-      className={`flex aic g10 ${styles.title} ${line && styles.line} ${
-        align === "center"
-          ? "center_rel_x tac jcc"
-          : align === "left"
+      className={`flex aic g10 ${styles.title} ${line && styles.line} ${align === "center"
+        ? "center_rel_x tac jcc"
+        : align === "left"
           ? "tas jcfs"
           : "tae jcfe"
-      }`}
+        }`}
+      sx={{ width: align === "right" ? "100%" : "fit-content" }}
     >
       {icon}
       <Typography
