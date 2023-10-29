@@ -2,9 +2,42 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const getItems = createAsyncThunk("items/getItems", async () => {
+export const getItems = createAsyncThunk("items/getItems", async (args) => {
+  let queries = ""
+  if (args && args.search) {
+    if (queries.length > 0) {
+      queries += "&"
+    } else {
+      queries += "?"
+    }
+    queries += "search=" + args.search
+  }
+  if (args && args.sort) {
+    if (queries.length > 0) {
+      queries += "&"
+    } else {
+      queries += "?"
+    }
+    queries += "sort=" + args.sort
+  }
+  if (args && args.category) {
+    if (queries.length > 0) {
+      queries += "&"
+    } else {
+      queries += "?"
+    }
+    queries += "category=" + args.category
+  }
+  if (args && args.dimension) {
+    if (queries.length > 0) {
+      queries += "&"
+    } else {
+      queries += "?"
+    }
+    queries += "dimension=" + args.dimension
+  }
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/shop/items`
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/shop/items${queries}`
   );
   return res.data.items;
 });
@@ -17,7 +50,6 @@ const initialState = {
 export const itemsSlice = createSlice({
   name: "items",
   initialState,
-  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getItems.fulfilled, (state, action) => {
       state.items = action.payload;

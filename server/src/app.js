@@ -1,7 +1,8 @@
 //Packages
+require("dotenv").config();
 const express = require("express");
-const app = express();
 const port = process.env.PORT || 3000;
+const app = express();
 const helmet = require("helmet");
 const cors = require("cors");
 const xss = require("xss-clean");
@@ -21,15 +22,13 @@ const publicRouter = require("./routes/public");
 const adminRouter = require("./routes/admin");
 const userRouter = require("./routes/user");
 
-//Dotenv
-require("dotenv").config();
 
 app.use(helmet());
 app.use(
   cors({
     origin: "http://localhost:4500",
-    methods:"GET,POST,PUT,PATCH,DELETE",
-    credentials:true
+    methods: "GET,POST,PUT,PATCH,DELETE",
+    credentials: true
   })
 );
 app.use(xss());
@@ -45,12 +44,12 @@ app.use(passport.session())
 
 
 //Routers
-app.get("/",(req, res) => {
+app.get("/", (req, res) => {
   res.send("Hello Server");
 });
-app.use("/auth",googleAuthRouter)
-app.use("/api/facebook",facebookAuthRouter)
-app.use("/api",pinterestAuthRouter)
+app.use("/auth", googleAuthRouter)
+app.use("/api/facebook", facebookAuthRouter)
+app.use("/api", pinterestAuthRouter)
 app.use("/api", publicRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);

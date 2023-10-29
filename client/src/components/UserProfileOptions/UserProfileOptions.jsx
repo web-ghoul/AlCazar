@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -52,12 +52,11 @@ function a11yProps(index) {
 }
 
 const UserProfileOptions = () => {
-    const {option} = useContext(ProfileContext)
-    const [value, setValue] = React.useState(0);
+    const { option, setOption } = useContext(ProfileContext)
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.user)
     const handleChange = (_, newValue) => {
-        setValue(newValue);
+        setOption(newValue);
     };
     useEffect(() => {
         try {
@@ -76,7 +75,7 @@ const UserProfileOptions = () => {
                 <Tabs
                     orientation="vertical"
                     variant="scrollable"
-                    value={value}
+                    value={option}
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
                     className={`${styles.tabs} pad20`}
@@ -128,19 +127,19 @@ const UserProfileOptions = () => {
                     />
                 </Tabs>
             </Box>
-            <TabPanel value={value} index={0}>
-                <UserInfo/>
+            <TabPanel value={option} index={0}>
+                <UserInfo />
             </TabPanel>
-            <TabPanel value={value} index={1}>
+            <TabPanel value={option} index={1}>
                 Addresses
             </TabPanel>
-            <TabPanel value={value} index={2}>
+            <TabPanel value={option} index={2}>
                 Wallets
             </TabPanel>
-            <TabPanel value={value} index={3}>
+            <TabPanel value={option} index={3}>
                 Subscriptions
             </TabPanel>
-            <TabPanel value={value} index={4}>
+            <TabPanel value={option} index={4}>
                 Accounts
             </TabPanel>
         </Box>

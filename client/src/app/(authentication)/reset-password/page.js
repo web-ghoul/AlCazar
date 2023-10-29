@@ -1,4 +1,4 @@
-import Authentication from "@/pages/Authentication/Authentication";
+import AuthenticationSection from "@/sections/AuthenticationSection/AuthenticationSection";
 
 export const metadata = {
   title: "AlCazar - Reset Password",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function ResetPasswordPage() {
-  return <Authentication type={"reset_password"} />;
+  return <AuthenticationSection type={"reset_password"} />;
 }

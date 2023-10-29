@@ -9,26 +9,45 @@ const {
   addNewItem,
   addNewCategory,
   deleteItem,
-  updateItem,
+  editItem,
   deleteCategory,
-  getUsers
+  getUsers,
+  deleteUser,
+  editCategory,
+  editUser,
+  makeUserAdmin
 } = require("../controllers/dashboard");
 const { authorization, isAdmin } = require("../middleware/authorized");
+const { userValidate } = require("../middleware/userValidate");
 
-router.route("/users").get(authorization, isAdmin, getUsers)
 
+//Items
 router
   .route("/addNewItem")
   .post(authorization, isAdmin, upload.array("images"), itemValidate, addNewItem);
 
+router.route("/deleteItem/:itemId").delete(authorization, isAdmin, deleteItem);
+
+router.route("/editItem/:itemId").patch(authorization, isAdmin, upload.array("images"), itemValidate, editItem);
+
+
+//Categories
 router
   .route("/addNewCategory")
-  .post(authorization, isAdmin, upload.single("image"), categoryValidate, addNewCategory);
-
-router.route("/deleteItem/:itemId").delete(authorization, isAdmin, deleteItem);
+  .post(authorization, isAdmin, upload.array("image"), categoryValidate, addNewCategory);
 
 router.route("/deleteCategory/:categoryId").delete(authorization, isAdmin, deleteCategory);
 
-router.route("/updateItem/:itemId").patch(authorization, isAdmin, updateItem);
+router.route("/editCategory/:categoryId").patch(authorization, isAdmin, upload.array("image"), categoryValidate, editCategory);
+
+//Users
+router.route("/users").get(authorization, isAdmin, getUsers)
+
+router.route("/deleteUser/:userId").delete(authorization, isAdmin, deleteUser)
+
+router.route("/editUser/:userId").patch(authorization, isAdmin, upload.array("image"), userValidate, editUser)
+
+//Admins
+router.route("/addNewAdmin").patch(authorization, isAdmin, makeUserAdmin)
 
 module.exports = router;

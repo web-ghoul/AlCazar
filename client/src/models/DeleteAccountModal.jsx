@@ -1,23 +1,23 @@
 import React, { useContext } from "react";
 import Form from "@/components/Form/Form";
-import { DashboardContext } from "@/context/DashboardContext";
 import { Box, Modal } from "@mui/material";
 import styles from "./modal.module.scss";
+import { ProfileContext } from "@/context/ProfileContext";
 
 const DeleteAccountModal = () => {
   const {
-    openDeleteCategoryModal,
-    handleCloseDeleteCategoryModal,
-  } = useContext(DashboardContext);
+    openDeleteAccountModal,
+    handleCloseDeleteAccountModal,
+  } = useContext(ProfileContext);
   return (
     <Modal
-      open={openDeleteCategoryModal}
-      onClose={handleCloseDeleteCategoryModal}
+      open={openDeleteAccountModal}
+      onClose={handleCloseDeleteAccountModal}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box className={`flex jcc aic ${styles.modal} center_abs_x_y pad20`}>
-        <Form type={"delete_category"} />
+        <Form type={"delete_account"} />
       </Box>
     </Modal>
   );

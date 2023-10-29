@@ -6,12 +6,17 @@ import AboutValuesAndDesignSection from "@/sections/AboutSection/AboutValuesAndD
 import AboutVisionAndMissionSection from "@/sections/AboutSection/AboutVisionAndMissionSection/AboutVisionAndMissionSection";
 import { Box } from "@mui/material";
 
-export default function Home() {
+export const metadata = {
+  title: "AlCazar - About",
+  description: "Web Application for sell Class A furniture",
+};
+
+export default function AboutPage() {
   return (
     <PrimaryBox>
       <PrimaryContainer className={`grid jcs aic g50`}>
         <Title title={"About Us"} align={"center"} line={true} fw={700} h={"h3"} />
-        <Box className={`grid jcs aic g30`}>
+        <Box className={`grid jcs aic g50`}>
           <AboutOverviewSection />
           <AboutVisionAndMissionSection />
           <AboutValuesAndDesignSection />

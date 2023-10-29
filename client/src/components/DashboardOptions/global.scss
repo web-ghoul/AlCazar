@@ -1,5 +1,9 @@
 @import "../../styles/variable.scss";
-button.Mui-selected{
+button.Mui-selected {
     background-color: $white;
     color: $main !important;
+}
+
+.full_width {
+    width: 100%;
 }

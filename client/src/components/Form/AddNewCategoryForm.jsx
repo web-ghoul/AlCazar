@@ -8,8 +8,8 @@ import FileUpload from "../FileUpload/FileUpload";
 const AddNewCategoryForm = ({ loading, formik }) => {
   const [images, setImages] = useState([]);
   useEffect(() => {
-    if (images.length > 0) {
-      formik.values.image = images[0];
+    if (images.length === 1) {
+      formik.values.image = images;
     }
   }, [images]);
   return (
@@ -36,7 +36,7 @@ const AddNewCategoryForm = ({ loading, formik }) => {
         error={formik.touched.title && Boolean(formik.errors.title)}
         helperText={formik.touched.title && formik.errors.title}
       />
-      <FileUpload setImages={setImages} maxImages={1} formik={formik} />
+      <FileUpload setImages={setImages} maxImages={1} />
       <Box className={`grid jcs aic g10`}>
         <LoadButton loading={loading}>
           <PrimaryButton fullWidth type="submit">

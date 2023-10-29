@@ -1,11 +1,11 @@
-@import "../../styles/variable.scss";
+@import "../../../styles/variable.scss";
 .contact_text_contain{
     grid-template-columns: repeat(2,1fr);
     .contact_image{
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-        background-image: url("../../images/contact.webp");
+        background-image: url("../../../images/contact.webp");
         height: 100%;
         width: 100%;
         box-shadow: $box_shadow;

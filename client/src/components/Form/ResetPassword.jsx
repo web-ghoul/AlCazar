@@ -2,9 +2,9 @@ import React from "react";
 import { PrimaryTextField } from "@/MUIComponents/PrimaryTextField";
 import { PrimaryButton } from "@/MUIComponents/PrimaryButton";
 import { LockRounded } from "@mui/icons-material";
-import { InputAdornment } from "@mui/material";
+import { IconButton, InputAdornment } from "@mui/material";
 import LoadButton from "../LoadButton/LoadButton";
-const ResetPassword = ({loading, formik }) => {
+const ResetPassword = ({ loading, formik }) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 

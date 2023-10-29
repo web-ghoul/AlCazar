@@ -12,15 +12,25 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import AddNewItemForm from "./AddNewItemForm";
 import AddNewCategoryForm from "./AddNewCategoryForm";
-import DeleteItem from "./DeleteItem";
+import DeleteItemForm from "./DeleteItemForm";
 import { DashboardContext } from "@/context/DashboardContext";
-import DeleteCategory from "./DeleteCategory";
+import DeleteCategoryForm from "./DeleteCategoryForm";
 import { useDispatch, useSelector } from "react-redux";
 import { getItems } from "@/store/itemsSlice";
 import { getCategories } from "@/store/categoriesSlice";
 import ContactForm from "./ContactForm";
 import { logging, logout } from "@/store/authSlice";
 import Cookies from "js-cookie";
+import DeleteUserForm from "./DeleteUserForm";
+import DeleteAccountForm from "./DeleteAccountForm";
+import EditItemForm from "./EditItemForm";
+import EditCategoryForm from "./EditCategoryForm";
+import EditUserForm from "./EditUserForm";
+import EditProfileForm from "./EditProfileForm";
+import { ProfileContext } from "@/context/ProfileContext";
+import { getUsers } from "@/store/usersSlice";
+import AddNewAdminForm from "./AddNewAdminForm";
+import FilterAndSearchAndSort from "../FilterAndSearchAndSort/FilterAndSearchAndSort";
 
 const Form = ({ type }) => {
   const router = useRouter();
@@ -30,11 +40,20 @@ const Form = ({ type }) => {
   const {
     itemId,
     categoryId,
+    user_id,
     handleCloseDeleteItemModal,
-    handleCloseUpdateItemModal,
+    handleCloseDeleteUserModal,
     handleCloseDeleteCategoryModal,
-    handleCloseUpdateCategoryModal,
+    handleCloseEditItemModal,
+    editableItemData,
+    handleCloseEditCategoryModal,
+    editableCategoryData,
+    handleCloseEditUserModal,
+    editableUserData,
+    handleCloseAddNewAdminModal
   } = useContext(DashboardContext);
+
+  const { handleCloseDeleteAccountModal } = useContext(ProfileContext)
 
   const loginFormik = useFormik({
     initialValues: {
@@ -173,7 +192,6 @@ const Form = ({ type }) => {
   const addNewItemFormik = useFormik({
     initialValues: {
       title: "",
-      description: "",
       price: "",
       images: [],
       category: "",
@@ -184,9 +202,6 @@ const Form = ({ type }) => {
     },
     validationSchema: yup.object({
       title: yup.string("Enter your title").required("Title is required"),
-      description: yup
-        .string("Enter your description")
-        .required("Description is required"),
       price: yup.number("Enter your price").required("Price is required"),
       images: yup.array(yup.mixed()).required("Image is required"),
       category: yup
@@ -240,6 +255,78 @@ const Form = ({ type }) => {
     },
   });
 
+  const editItemFormik = useFormik({
+    initialValues: {
+      title: editableItemData && editableItemData.title,
+      price: editableItemData && editableItemData.price,
+      images: [],
+      category: editableItemData && editableItemData.category,
+      count: editableItemData && editableItemData.count,
+      width: editableItemData && editableItemData.width,
+      length: editableItemData && editableItemData.length,
+      height: editableItemData && editableItemData.height,
+    },
+    validationSchema: yup.object({
+      title: yup.string("Enter your title").required("Title is required"),
+      price: yup.number("Enter your price").required("Price is required"),
+      images: yup.array(yup.mixed()),
+      category: yup
+        .string("Enter your category")
+        .required("Category is required"),
+      count: yup.number("Enter your count").required("Count is required"),
+      width: yup.number("Enter your width").required("Width is required"),
+      length: yup.number("Enter your length").required("Length is required"),
+      height: yup.number("Enter your height").required("Height is required"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      const formData = new FormData();
+      if (values.images.length > 0) {
+        values.images.map((image) => {
+          formData.append("images", image);
+        });
+      } else {
+        values.images = editableItemData.images
+      }
+      formData.append("data", JSON.stringify(values));
+      await axios
+        .patch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/editItem/${itemId}`,
+          formData,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          }
+        )
+        .then((res) => {
+          try {
+            handleCloseEditItemModal()
+            dispatch(getItems())
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          let msg;
+          try {
+            msg = err.response.data.error
+            toast.error(msg);
+          } catch (error) {
+            msg = error.message
+            toast.error(msg);
+          }
+          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+            dispatch(logout())
+            router.push(`/login`)
+          }
+        });
+      setLoading(false);
+    },
+  });
+
   const addNewCategoryFormik = useFormik({
     initialValues: {
       title: "",
@@ -247,12 +334,14 @@ const Form = ({ type }) => {
     },
     validationSchema: yup.object({
       title: yup.string("Enter your title").required(),
-      image: yup.mixed().required("Image is required"),
+      image: yup.array(yup.mixed()).required("Image is required"),
     }),
     onSubmit: async (values, { resetForm }) => {
       setLoading(true);
       const formData = new FormData();
-      formData.append("image", values.image);
+      values.image.map((img) => {
+        formData.append("image", img);
+      });
       formData.append("data", JSON.stringify(values));
       await axios
         .post(
@@ -266,6 +355,178 @@ const Form = ({ type }) => {
         )
         .then((res) => {
           try {
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          let msg;
+          try {
+            msg = err.response.data.error
+            toast.error(msg);
+          } catch (error) {
+            msg = error.message
+            toast.error(msg);
+          }
+          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+            dispatch(logout())
+            router.push(`/login`)
+          }
+        });
+      setLoading(false);
+    },
+  });
+
+  const editCategoryFormik = useFormik({
+    initialValues: {
+      title: editableCategoryData && editableCategoryData.title,
+      image: ""
+    },
+    validationSchema: yup.object({
+      title: yup.string("Enter your title").required(),
+      image: yup.array(yup.mixed()),
+    }),
+    onSubmit: async (values) => {
+      setLoading(true);
+      const formData = new FormData();
+      if (values.image) {
+        values.image.map((img) => {
+          formData.append("image", img);
+        });
+      } else {
+        values.image = [editableCategoryData.image]
+      }
+      formData.append("data", JSON.stringify(values));
+      await axios
+        .patch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/editCategory/${categoryId}`,
+          formData,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          }
+        )
+        .then((res) => {
+          try {
+            handleCloseEditCategoryModal()
+            dispatch(getCategories())
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+        })
+        .catch((err) => {
+          let msg;
+          try {
+            msg = err.response.data.error
+            toast.error(msg);
+          } catch (error) {
+            msg = error.message
+            toast.error(msg);
+          }
+          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+            dispatch(logout())
+            router.push(`/login`)
+          }
+        });
+      setLoading(false);
+    },
+  });
+
+  const editUserFormik = useFormik({
+    initialValues: {
+      firstName: editableUserData && editableUserData.firstName,
+      lastName: editableUserData && editableUserData.lastName,
+      phone: editableUserData && editableUserData.phone,
+      email: editableUserData && editableUserData.email,
+      avatar: ""
+    },
+    validationSchema: yup.object({
+      firstName: yup
+        .string("Enter your first name")
+        .required("First Name is required"),
+      lastName: yup
+        .string("Enter your last name")
+        .required("Last Name is required"),
+      phone: yup.string("Enter your phone").required("Phone is required"),
+      email: yup
+        .string("Enter your email")
+        .email("Enter a valid email")
+        .required("Email is required"),
+      avatar: yup.array(yup.mixed())
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      const formData = new FormData();
+      if (values.avatar) {
+        values.avatar.map((img) => {
+          formData.append("image", img);
+        });
+      } else {
+        values.avatar = [editableUserData.avatar]
+      }
+      formData.append("data", JSON.stringify(values));
+      await axios
+        .patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/editUser/${user_id}`, formData,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          })
+        .then((res) => {
+          try {
+            handleCloseEditUserModal()
+            dispatch(getUsers({ token }))
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          let msg;
+          try {
+            msg = err.response.data.error
+            toast.error(msg);
+          } catch (error) {
+            msg = error.message
+            toast.error(msg);
+          }
+          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+            dispatch(logout())
+            router.push(`/login`)
+          }
+        });
+      setLoading(false);
+    },
+  });
+
+  const addNewAdminFormik = useFormik({
+    initialValues: {
+      email: ""
+    },
+    validationSchema: yup.object({
+      email: yup
+        .string("Enter your email")
+        .email("Enter a valid email")
+        .required("Email is required"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      await axios
+        .patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewAdmin`, values,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          })
+        .then((res) => {
+          try {
+            handleCloseAddNewAdminModal()
+            dispatch(getUsers({ token }))
             toast.success(res.data.message);
           } catch (error) {
             toast.error(error.message);
@@ -410,6 +671,85 @@ const Form = ({ type }) => {
     setLoading(false);
   };
 
+  const handleDeleteUser = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await axios
+      .delete(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteUser/${user_id}`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      )
+      .then((res) => {
+        try {
+          toast.success(res.data.message);
+          handleCloseDeleteUserModal();
+          dispatch(getUsers({ token }));
+        } catch (error) {
+          toast.error(error.message);
+        }
+      })
+      .catch((err) => {
+        handleCloseDeleteUserModal();
+        let msg;
+        try {
+          msg = err.response.data.error
+          toast.error(msg);
+        } catch (error) {
+          msg = error.message
+          toast.error(msg);
+        }
+        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+          dispatch(logout())
+          router.push(`/login`)
+        }
+      });
+    setLoading(false);
+  };
+
+  const handleDeleteAccount = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await axios
+      .delete(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/user/deleteAccount`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      )
+      .then((res) => {
+        try {
+          toast.success(res.data.message);
+          handleCloseDeleteAccountModal();
+          dispatch(logout());
+          router.push(`/login`)
+        } catch (error) {
+          toast.error(error.message);
+        }
+      })
+      .catch((err) => {
+        handleCloseDeleteAccountModal();
+        let msg;
+        try {
+          msg = err.response.data.error
+          toast.error(msg);
+        } catch (error) {
+          msg = error.message
+          toast.error(msg);
+        }
+        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+          dispatch(logout())
+          router.push(`/login`)
+        }
+      });
+    setLoading(false);
+  };
+
   return (
     <form
       onSubmit={
@@ -426,12 +766,12 @@ const Form = ({ type }) => {
                   : type === "add_new_item"
                     ? addNewItemFormik.handleSubmit
                     : type === "add_new_category"
-                      ? addNewCategoryFormik.handleSubmit
-                      : type === "delete_item"
-                        ? handleDeleteItem
-                        : type === "delete_category" && handleDeleteCategory
+                      ? addNewCategoryFormik.handleSubmit : type === "edit_item" ? editItemFormik.handleSubmit : type === "edit_category" ? editCategoryFormik.handleSubmit
+                        : type === "edit_item" ? editItemFormik.handleSubmit : type === "edit_user" ? editUserFormik.handleSubmit : type === "delete_item"
+                          ? handleDeleteItem
+                          : type === "add_new_admin" ? addNewAdminFormik.handleSubmit : type === "delete_category" ? handleDeleteCategory : type === "delete_user" ? handleDeleteUser : type === "delete_account" && handleDeleteAccount
       }
-      className={`form grid jcs aic g30`}
+      className={`form grid jcs aic g30 ${type === "edit_user" && "edit_user_form"}`}
     >
       {type === "login" ? (
         <Login loading={loading} formik={loginFormik} />
@@ -448,9 +788,9 @@ const Form = ({ type }) => {
       ) : type === "contact" ? (
         <ContactForm loading={loading} formik={contactFormik} />
       ) : type === "delete_item" ? (
-        <DeleteItem loading={loading} />
+        <DeleteItemForm loading={loading} />
       ) : (
-        type === "delete_category" && <DeleteCategory loading={loading} />
+        type === "delete_category" ? (<DeleteCategoryForm loading={loading} />) : type === "delete_user" ? (<DeleteUserForm loading={loading} />) : type === "delete_account" ? (<DeleteAccountForm loading={loading} />) : type === "edit_item" ? <EditItemForm loading={loading} formik={editItemFormik} /> : type === "edit_category" ? <EditCategoryForm loading={loading} formik={editCategoryFormik} /> : type === "edit_user" ? <EditUserForm loading={loading} formik={editUserFormik} /> : type === "edit_profile" ? <EditProfileForm loading={loading} /> : type === "add_new_admin" && <AddNewAdminForm loading={loading} formik={addNewAdminFormik} />
       )}
     </form>
   );

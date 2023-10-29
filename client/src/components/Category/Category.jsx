@@ -1,15 +1,16 @@
 import { Box, Paper, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import styles from "./Category.module.scss";
-import { DeleteRounded } from "@mui/icons-material";
+import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { DeleteIconButton } from "@/MUIComponents/DeleteIconButton";
 import { DashboardContext } from "@/context/DashboardContext";
 import { SecondaryButton } from "@/MUIComponents/SecondaryButton";
+import { SecondaryIconButton } from "@/MUIComponents/SecondaryIconButton";
 
 const Category = ({ data, editable }) => {
   const {
     handleOpenDeleteCategoryModal,
-    handleOpenUpdateCategoryModal,
+    handleOpenEditCategoryModal,
   } = useContext(DashboardContext);
   return editable ? (
     <Paper className={`${styles.editable_category} grid jcs aic`}>
@@ -22,11 +23,15 @@ const Category = ({ data, editable }) => {
           {data.title}
         </Typography>
         <Box className={"flex jcsb aic g30"}>
-          <SecondaryButton
-            onClick={() => handleOpenUpdateCategoryModal(data._id)}
+          <SecondaryIconButton
+            onClick={() => handleOpenEditCategoryModal(data)}
+            className={"flex jcc aic g10"}
           >
-            Update
-          </SecondaryButton>
+            <EditRounded />
+            <Typography variant="h6" >
+              Edit
+            </Typography>
+          </SecondaryIconButton>
           <DeleteIconButton
             onClick={() => handleOpenDeleteCategoryModal(data._id)}
           >

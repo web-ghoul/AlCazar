@@ -1,4 +1,4 @@
-import Authentication from "@/pages/Authentication/Authentication";
+import AuthenticationSection from "@/sections/AuthenticationSection/AuthenticationSection";
 
 export const metadata = {
   title: "AlCazar - Login",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function LoginPage() {
-  return <Authentication type={"login"} />;
+  return <AuthenticationSection type={"login"} />;
 }

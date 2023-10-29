@@ -1,4 +1,4 @@
-import Authentication from "@/pages/Authentication/Authentication";
+import AuthenticationSection from "@/sections/AuthenticationSection/AuthenticationSection";
 
 export const metadata = {
   title: "AlCazar - Forgot Password",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function ForgotPasswordPage() {
-  return <Authentication type={"forgot_password"} />;
+  return <AuthenticationSection type={"forgot_password"} />;
 }

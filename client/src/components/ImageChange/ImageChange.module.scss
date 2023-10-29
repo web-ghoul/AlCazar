@@ -1,0 +1,16 @@
+.image_change {
+    position: relative;
+    width: auto;
+    height: 200px;
+    .overlay {
+        opacity: 0;
+    }
+    &:hover .overlay {
+        opacity: 1;
+        cursor: pointer;
+    }
+    img {
+        width: auto;
+        height: 100%;
+    }
+}

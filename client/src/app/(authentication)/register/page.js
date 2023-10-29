@@ -1,4 +1,4 @@
-import Authentication from "@/pages/Authentication/Authentication";
+import AuthenticationSection from "@/sections/AuthenticationSection/AuthenticationSection";
 
 export const metadata = {
   title: "AlCazar - Register",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function RegisterPage() {
-  return <Authentication type={"register"} />;
+  return <AuthenticationSection type={"register"} />;
 }

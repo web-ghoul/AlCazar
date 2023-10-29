@@ -16,7 +16,7 @@ const FileUpload = ({ setImages, maxImages }) => {
   } = useDropzone({
     maxFiles: maxImages,
     accept: {
-      'image/png': ['.png','.jpg','.jfif','.webp','.gif','.jpeg'],
+      'image/png': ['.png', '.jpg', '.jfif', '.webp', '.gif', '.jpeg'],
     }
   });
   const acceptedFileItems = acceptedFiles.map((file) => {
@@ -60,8 +60,8 @@ const FileUpload = ({ setImages, maxImages }) => {
             {isDragActive
               ? "Drop the images here ..."
               : fileRejections && fileRejections.length > 0
-              ? `Too Many Images , try again with at most ${maxImages} image`
-              : `Drag at most ${maxImages} drop some images here, or click to select images`}
+                ? `Too Many Images , try again with at most ${maxImages} image`
+                : `Drag at most ${maxImages} drop some images here, or click to select images`}
           </Typography>
         </Box>
       </Box>

@@ -1,4 +1,8 @@
 .form {
+    &.edit_user_form {
+        min-width: 40vw;
+    }
+    width: 100%;
     .name_and_email_inputs {
         grid-template-columns: repeat(2, 1fr);
     }

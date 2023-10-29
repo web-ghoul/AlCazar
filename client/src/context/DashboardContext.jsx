@@ -5,65 +5,119 @@ export const DashboardContext = createContext();
 const DashboardProvider = ({ children }) => {
   const [itemId, setItemId] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
+  const [user_id, setUserId] = useState(null);
   const [openDeleteItemModal, setOpenDeleteItemModal] = useState(false);
   const [openDeleteCategoryModal, setOpenDeleteCategoryModal] = useState(false);
-  const [openUpdateItemModal, setOpenUpdateItemModal] = useState(false);
-  const [openUpdateCategoryModal, setOpenUpdateCategoryModal] = useState(false);
+  const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
+  const [openEditItemModal, setOpenEditItemModal] = useState(false);
+  const [openEditCategoryModal, setOpenEditCategoryModal] = useState(false);
+  const [openEditUserModal, setOpenEditUserModal] = useState(false);
+  const [openAddNewAdminModal, setOpenAddNewAdminModal] = useState(null)
+  const [editableItemData, setEditableItemData] = useState(null)
+  const [editableCategoryData, setEditableCategoryData] = useState(null)
+  const [editableUserData, setEditableUserData] = useState(null)
 
   //Delete
-  const handleCloseDeleteItemModal = (id) => {
+
+  //Item
+  const handleCloseDeleteItemModal = () => {
     setOpenDeleteItemModal(false);
-    setItemId(id);
   };
   const handleOpenDeleteItemModal = (id) => {
     setOpenDeleteItemModal(true);
     setItemId(id);
   };
 
-  const handleCloseDeleteCategoryModal = (id) => {
+  //Category
+  const handleCloseDeleteCategoryModal = () => {
     setOpenDeleteCategoryModal(false);
-    setCategoryId(id);
   };
   const handleOpenDeleteCategoryModal = (id) => {
     setOpenDeleteCategoryModal(true);
     setCategoryId(id);
   };
 
-  //Update
-  const handleCloseUpdateItemModal = (id) => {
-    setOpenUpdateItemModal(false);
-    setItemId(id);
+  //User
+  const handleCloseDeleteUserModal = () => {
+    setOpenDeleteUserModal(false);
   };
-  const handleOpenUpdateItemModal = (id) => {
-    setOpenUpdateItemModal(true);
-    setItemId(id);
+  const handleOpenDeleteUserModal = (id) => {
+    setOpenDeleteUserModal(true);
+    setUserId(id);
   };
 
-  const handleCloseUpdateCategoryModal = (id) => {
-    setOpenUpdateCategoryModal(false);
-    setCategoryId(id);
+  //Edit
+
+  //Item
+  const handleCloseEditItemModal = () => {
+    setOpenEditItemModal(false);
   };
-  const handleOpenUpdateCategoryModal = (id) => {
-    setOpenUpdateCategoryModal(true);
-    setCategoryId(id);
+  const handleOpenEditItemModal = (data) => {
+    setOpenEditItemModal(true);
+    setItemId(data._id);
+    setEditableItemData(data)
+  };
+
+  //Category
+  const handleCloseEditCategoryModal = () => {
+    setOpenEditCategoryModal(false);
+  };
+  const handleOpenEditCategoryModal = (data) => {
+    setOpenEditCategoryModal(true);
+    setCategoryId(data._id);
+    setEditableCategoryData(data)
+  };
+
+  //User
+  const handleCloseEditUserModal = () => {
+    setOpenEditUserModal(false);
+  };
+  const handleOpenEditUserModal = (data) => {
+    setOpenEditUserModal(true);
+    setUserId(data._id);
+    setEditableUserData(data)
+  };
+
+  //Admin
+  const handleCloseAddNewAdminModal = () => {
+    setOpenAddNewAdminModal(false);
+  };
+  const handleOpenAddNewAdminModal = (data) => {
+    setOpenAddNewAdminModal(true);
   };
   return (
     <DashboardContext.Provider
       value={{
         itemId,
         categoryId,
+        user_id,
+        editableCategoryData,
+        editableUserData,
+        editableItemData,
+        setEditableCategoryData,
+        setEditableItemData,
+        setEditableUserData,
         openDeleteItemModal,
         handleCloseDeleteItemModal,
         handleOpenDeleteItemModal,
         openDeleteCategoryModal,
         handleCloseDeleteCategoryModal,
         handleOpenDeleteCategoryModal,
-        openUpdateItemModal,
-        handleCloseUpdateItemModal,
-        handleOpenUpdateItemModal,
-        openUpdateCategoryModal,
-        handleCloseUpdateCategoryModal,
-        handleOpenUpdateCategoryModal
+        openDeleteUserModal,
+        handleCloseDeleteUserModal,
+        handleOpenDeleteUserModal,
+        openEditItemModal,
+        handleCloseEditItemModal,
+        handleOpenEditItemModal,
+        openEditCategoryModal,
+        handleCloseEditCategoryModal,
+        handleOpenEditCategoryModal,
+        openEditUserModal,
+        handleCloseEditUserModal,
+        handleOpenEditUserModal,
+        handleCloseAddNewAdminModal,
+        handleOpenAddNewAdminModal,
+        openAddNewAdminModal
       }}
     >
       {children}

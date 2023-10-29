@@ -9,10 +9,6 @@ const ItemSchema = new Schema(
       type: String,
       required: [true, "Title is Required"],
     },
-    description: {
-      type: String,
-      required: [true, "Description is Required"],
-    },
     price: {
       type: Number,
       required: [true, "Price is Required"],
@@ -42,7 +38,7 @@ const ItemSchema = new Schema(
     height: {
       type: Number,
       required: [true, "Height is Required"],
-    },
+    }
   },
   { timestamps: true }
 );

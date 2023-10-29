@@ -5,22 +5,27 @@ import ItemBox from "@/components/ItemBox/ItemBox";
 import { Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getItems } from "@/store/itemsSlice";
+import { getCategories } from "@/store/categoriesSlice";
+import { getDimensions } from "@/store/dimensionsSlice";
+import Title from "@/components/Title/Title";
+import LoadingItemsSection from "./LoadingItemsSection";
 
 const ItemsSection = ({ editable }) => {
   const { isLoading, items } = useSelector((state) => state.items);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getItems());
+    dispatch(getCategories());
+    dispatch(getDimensions());
   }, [dispatch]);
   return (
     <Box className={`grid jcs aic g20 ${styles.items_contain}`}>
-      {!isLoading && items
+      {isLoading ? "<LoadingItemsSection editable={editable} />" : items && items.length > 0
         ? items.map((data, i) => (
-            <ItemBox editable={editable} key={i} data={data} />
-          ))
-        : new Array(10)
-            .fill(0)
-            .map((_, i) => <ItemBox editable={editable} num={i} key={i} />)}
+          <ItemBox editable={editable} key={i} data={data} />
+        ))
+        : (<Title title={"Not Items Yet..."} h={"h4"}
+          color={"#ddd"} fw={600} />)}
     </Box>
   );
 };

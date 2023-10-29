@@ -20,7 +20,6 @@ const initialState = {
 export const categoriesSlice = createSlice({
   name: "categories",
   initialState,
-  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getCategories.fulfilled, (state, action) => {
       state.categories = action.payload;

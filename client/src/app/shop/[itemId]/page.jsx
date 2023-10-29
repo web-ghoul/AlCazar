@@ -1,4 +1,4 @@
-import Item from "@/pages/Item/Item";
+import ItemSection from "@/sections/ItemsSection/ItemSection/ItemSection";
 
 export const metadata = {
   title: "AlCazar - Item",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function ItemPage() {
-  return <Item />;
+  return <ItemSection />
 }

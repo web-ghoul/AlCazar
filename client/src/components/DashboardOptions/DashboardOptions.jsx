@@ -5,7 +5,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import AddNewItem from "../AddNewItem/AddNewItem";
+import AddNewItem from "./AddNewItem/AddNewItem";
 import {
   AddToPhotosRounded,
   CategoryRounded,
@@ -16,11 +16,13 @@ import styles from "./DashboardOptions.module.scss";
 import "./global.scss";
 import { FaUserEdit } from "react-icons/fa";
 import { MdAdminPanelSettings } from "react-icons/md";
-import AddNewCategory from "../AddNewCategory/AddNewCategory";
-import Shop from "@/pages/Shop/Shop";
+import AddNewCategory from "./AddNewCategory/AddNewCategory";
+import ItemsSection from "@/sections/ItemsSection/ItemsSection";
 import Title from "../Title/Title";
 import CategoriesSection from "@/sections/CategoriesSection/CategoriesSection";
 import UsersSection from "@/sections/UsersSection/UsersSection";
+import AddNewAdmin from "./AddNewAdmin/AddNewAdmin";
+import FilterAndSearchAndSort from "../FilterAndSearchAndSort/FilterAndSearchAndSort";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -125,7 +127,14 @@ const DashboardOptions = () => {
       </Tabs>
       <TabPanel value={value} index={0}>
         <Box className={`grid jcs aic g30`} sx={{ width: "100%" }}>
-          <Shop editable={true} />
+          <Title
+            title={"Items"}
+            align={"center"}
+            fw={600}
+            h={"h4"}
+          />
+          <FilterAndSearchAndSort />
+          <ItemsSection editable={true} />
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -134,11 +143,10 @@ const DashboardOptions = () => {
       <TabPanel value={value} index={2}>
         <Box className={`grid jcs aic g30`}>
           <Title
-            title={"Our Categories"}
+            title={"Categories"}
             h={"h4"}
-            line={true}
-            align={"left"}
-            fw={700}
+            align={"center"}
+            fw={600}
           />
           <CategoriesSection editable={true} />
         </Box>
@@ -150,7 +158,7 @@ const DashboardOptions = () => {
         <UsersSection />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        Item Seven
+        <AddNewAdmin />
       </TabPanel>
     </Box>
   );

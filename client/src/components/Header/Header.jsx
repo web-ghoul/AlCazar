@@ -21,20 +21,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
 import { ProfileContext } from "@/context/ProfileContext";
+import { CartContext } from "@/context/CartContext";
 
 const Header = () => {
+  const { handleToggleCart } = useContext(CartContext)
   const { setOption } = useContext(ProfileContext)
   const { token, userId } = useSelector((state) => state.auth)
+  const { profile, isLoading } = useSelector((state) => state.profile)
   const dispatch = useDispatch()
   const router = useRouter()
   const [activeList, setActiveList] = useState(false)
-  if (document) {
-    document.addEventListener('click', (e) => {
-      if (!e.target.classList.contains("activate")) {
-        setActiveList(false)
-      }
-    })
-  }
+  // if (window) {
+  //   window.addEventListener('click', (e) => {
+  //     if (!e.target.classList.contains("activate")) {
+  //       setActiveList(false)
+  //     }
+  //   })
+  // }
 
   const handleLogOut = () => {
     dispatch(logout())
@@ -43,8 +46,9 @@ const Header = () => {
 
   const handleGoToProfile = (i) => {
     setOption(i)
-    router.push(`/profile/${userId}`)
+    router.push(`/profile`)
   }
+
   return (
     <AppBar className={`flex jcc aic ${styles.header}`}>
       <PrimaryContainer className={`flex jcsb aic g30 ${styles.header_contain}`}>
@@ -60,11 +64,15 @@ const Header = () => {
               <ListItemButton>Shop</ListItemButton>
             </Link>
           </ListItem>
-          <ListItem>
-            <Link href={`${process.env.NEXT_PUBLIC_DASHBOARD_PAGE}`}>
-              <ListItemButton>Dashboard</ListItemButton>
-            </Link>
-          </ListItem>
+          {
+            !isLoading && profile && profile.isAdmin && (
+              <ListItem>
+                <Link href={`${process.env.NEXT_PUBLIC_DASHBOARD_PAGE}`}>
+                  <ListItemButton>Dashboard</ListItemButton>
+                </Link>
+              </ListItem>
+            )
+          }
           <ListItem>
             <Link href={`${process.env.NEXT_PUBLIC_ABOUT_PAGE}`}>
               <ListItemButton>About</ListItemButton>
@@ -79,7 +87,7 @@ const Header = () => {
         <Box className={`flex jcsb aic g10`}>
           {
             (token && userId) ? (<>
-              <PrimaryIconButton>
+              <PrimaryIconButton onClick={handleToggleCart}>
                 <Badge>
                   <ShoppingCartRounded />
                 </Badge>
@@ -99,7 +107,7 @@ const Header = () => {
         </Box>
         <List className={`grid jcs aic ${styles.options_list} ${activeList && styles.active}`}>
           <ListItem>
-            <SecondaryIconButton onClick={() => handleGoToProfile(4)} sx={{ width: "100%" }} className={`flex jcc aic g5`}>
+            <SecondaryIconButton onClick={() => handleGoToProfile(0)} sx={{ width: "100%" }} className={`flex jcc aic g5`}>
               <AccountBoxRounded />
               <Typography variant="h6">My Account</Typography>
             </SecondaryIconButton>

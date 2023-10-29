@@ -44,7 +44,6 @@ const initialState = {
 export const userSlice = createSlice({
     name: "user",
     initialState,
-    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getUser.fulfilled, (state, action) => {
             state.user = action.payload;

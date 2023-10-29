@@ -1,0 +1,9 @@
+.cart_item {
+    overflow: hidden;
+    .cart_item_image {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        height: 150px;
+    }
+}

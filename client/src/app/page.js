@@ -1,4 +1,6 @@
-import Home from "@/pages/Home/Home";
+import AboutSection from "@/sections/AboutSection/AboutSection";
+import BestCategoriesSection from "@/sections/CategoriesSection/BestCategoriesSection/BestCategoriesSection";
+import MainSection from "@/sections/MainSection/MainSection";
 
 export const metadata = {
   title: "AlCazar",
@@ -6,5 +8,11 @@ export const metadata = {
 };
 
 export default function HomePage() {
-  return <Home />;
+  return (
+    <>
+      <MainSection />
+      <BestCategoriesSection />
+      <AboutSection />
+    </>
+  )
 }

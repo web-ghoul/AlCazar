@@ -1,8 +1,8 @@
 @import "../../styles/variable.scss";
-.editable_category{
-    width: 250px;
+.editable_category {
     border-radius: 4px;
     box-shadow: $box_shadow;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     .category_image {
         background-position: center;
         background-repeat: no-repeat;
@@ -10,7 +10,7 @@
         width: 100%;
         height: 150px;
     }
-    .category_title{
+    .category_title {
         color: $main;
     }
 }

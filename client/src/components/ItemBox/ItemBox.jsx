@@ -8,17 +8,22 @@ import defaultImg from "../../images/chair1.webp";
 import { DeleteIconButton } from "@/MUIComponents/DeleteIconButton";
 import { PrimaryIconButton } from "@/MUIComponents/PrimaryIconButton";
 import { DashboardContext } from "@/context/DashboardContext";
+import { PrimaryButton } from "@/MUIComponents/PrimaryButton";
+import { CartContext } from "@/context/CartContext";
 
 const ItemBox = ({ data, num, editable }) => {
   const router = useRouter();
+  const { handleOpenDeleteItemModal, handleOpenEditItemModal } = useContext(
+    DashboardContext
+  );
+  const { addItemToCart, handleToggleCart } = useContext(CartContext)
   const handleViewMore = () => {
     router.push(`shop/${data._id}`);
   };
-  const { handleOpenDeleteItemModal } = useContext(
-    DashboardContext
-  );
 
-  const handleUpdateItem = () => {};
+  const handleEditItem = () => {
+    handleOpenEditItemModal(data)
+  };
   return (
     <Paper className={`grid jcs aic g20 ${styles.item}`}>
       <Box
@@ -42,14 +47,23 @@ const ItemBox = ({ data, num, editable }) => {
               <DeleteRounded />
             </DeleteIconButton>
           ) : (
-            <PrimaryIconButton>
+            <PrimaryIconButton onClick={() => { addItemToCart(data); handleToggleCart() }}>
               <ShoppingCartRounded />
             </PrimaryIconButton>
           )}
         </Box>
-        <SecondaryButton onClick={editable ? handleUpdateItem : handleViewMore}>
-          {editable ? "Update" : "View More"}
-        </SecondaryButton>
+        <Box className={`flex flex_wrap jcsb aic g10`}>
+          {
+            editable && (
+              <PrimaryButton onClick={handleEditItem}>
+                Edit
+              </PrimaryButton>
+            )
+          }
+          <SecondaryButton onClick={handleViewMore}>
+            View More
+          </SecondaryButton>
+        </Box>
       </Box>
     </Paper>
   );
