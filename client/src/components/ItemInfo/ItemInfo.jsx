@@ -17,7 +17,7 @@ const ItemInfo = ({ data }) => {
                 </Box>
                 <Box className={`flex jcs aic flex_wrap g5`}>
                     <Title line={true} align={"left"} fw={700} h={"h5"} title={"Remaining Quantity :"} />
-                    <Typography variant='h5'>{data.count}</Typography>
+                    <Typography variant='h5'>{data.quantity}</Typography>
                 </Box>
                 <Box className={`flex jcs aic flex_wrap g5`}>
                     <Title line={true} align={"left"} fw={700} h={"h5"} title={"Dimensions (L x W x H) :"} />
@@ -28,7 +28,7 @@ const ItemInfo = ({ data }) => {
                     <Typography variant='h5'>{data.category}</Typography>
                 </Box>
             </Box>
-            <PrimaryIconButton onClick={() => { addItemToCart(data); handleToggleCart() }} className={`flex jcc aic g10`}>
+            <PrimaryIconButton onClick={() => { addItemToCart({ data, number: 1 }); handleToggleCart() }} className={`flex jcc aic g10`}>
                 <ShoppingCartRounded />
                 <Typography variant='h6'>Add to Chart</Typography>
             </PrimaryIconButton>

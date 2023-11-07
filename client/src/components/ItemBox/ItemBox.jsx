@@ -47,7 +47,7 @@ const ItemBox = ({ data, num, editable }) => {
               <DeleteRounded />
             </DeleteIconButton>
           ) : (
-            <PrimaryIconButton onClick={() => { addItemToCart(data); handleToggleCart() }}>
+            <PrimaryIconButton onClick={() => { addItemToCart({ data, number: 1 }); handleToggleCart() }}>
               <ShoppingCartRounded />
             </PrimaryIconButton>
           )}

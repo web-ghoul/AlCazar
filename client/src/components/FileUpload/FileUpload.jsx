@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, List, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -19,7 +19,8 @@ const FileUpload = ({ setImages, maxImages }) => {
       'image/png': ['.png', '.jpg', '.jfif', '.webp', '.gif', '.jpeg'],
     }
   });
-  const acceptedFileItems = acceptedFiles.map((file) => {
+
+  let acceptedFileItems = acceptedFiles.map((file) => {
     return (
       <li key={file.path} className={` grid jcc aic g5 ${styles.chosen_image}`}>
         <LazyLoadImage
@@ -37,9 +38,11 @@ const FileUpload = ({ setImages, maxImages }) => {
       </li>
     );
   });
+
   useEffect(() => {
     setImages(acceptedFiles);
   }, [acceptedFiles]);
+
   return (
     <Box {...getRootProps()} className={`grid jcs aic g20`}>
       <Box className={`grid jcs aic g5`}>

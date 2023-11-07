@@ -8,4 +8,7 @@ export const DeleteIconButton = styled(PrimaryIconButton)(({ theme }) => ({
   "&:hover svg": {
     color: theme.palette.youtube,
   },
+  "&:hover h6": {
+    color: theme.palette.youtube,
+  },
 }));

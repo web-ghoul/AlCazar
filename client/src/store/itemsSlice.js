@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import toast from "react-hot-toast";
 
 export const getItems = createAsyncThunk("items/getItems", async (args) => {
   let queries = ""
@@ -57,9 +56,9 @@ export const itemsSlice = createSlice({
     });
     builder.addCase(getItems.rejected, (_, action) => {
       if (action.payload) {
-        toast.error(action.payload.errorMessage);
+        console.log(action.payload.errorMessage);
       } else {
-        toast.error(action.error.message);
+        console.log(action.error.message);
       }
     });
   },

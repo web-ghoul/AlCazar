@@ -15,7 +15,7 @@ const CategoriesSection = ({ editable }) => {
   }, [dispatch])
   return (
     <Box className={`flex flex_wrap jcsb aic g20 `}>
-      {isLoading ? "<LoadingCategoriesSection editable={editable} />" : categories && categories.length > 0 ? (
+      {isLoading ? <LoadingCategoriesSection editable={editable} /> : categories && categories.length > 0 ? (
         categories.map((category, i) => {
           return (
             <Category key={i} editable={editable} data={category} />

@@ -22,6 +22,7 @@ import { logout } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
 import { ProfileContext } from "@/context/ProfileContext";
 import { CartContext } from "@/context/CartContext";
+import { resetProfile } from "@/store/profileSlice";
 
 const Header = () => {
   const { handleToggleCart } = useContext(CartContext)
@@ -31,16 +32,17 @@ const Header = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const [activeList, setActiveList] = useState(false)
-  // if (window) {
-  //   window.addEventListener('click', (e) => {
-  //     if (!e.target.classList.contains("activate")) {
-  //       setActiveList(false)
-  //     }
-  //   })
-  // }
+  if (window) {
+    window.addEventListener('click', (e) => {
+      if (!e.target.classList.contains("activate")) {
+        setActiveList(false)
+      }
+    })
+  }
 
   const handleLogOut = () => {
     dispatch(logout())
+    dispatch(resetProfile())
     router.push("/login")
   }
 
@@ -48,7 +50,6 @@ const Header = () => {
     setOption(i)
     router.push(`/profile`)
   }
-
   return (
     <AppBar className={`flex jcc aic ${styles.header}`}>
       <PrimaryContainer className={`flex jcsb aic g30 ${styles.header_contain}`}>

@@ -13,5 +13,8 @@ export const PrimaryIconButton = styled(IconButton)(({ theme }) => ({
   "&:hover": {
     backgroundColor: theme.palette.white,
     color: theme.palette.primary.main,
+    "& svg": {
+      color: theme.palette.primary.main
+    }
   },
 }));

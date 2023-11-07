@@ -7,4 +7,7 @@
     max-height: 90vh;
     overflow-y: scroll;
     max-width: 90vw;
+    &.view_item {
+        width: min-content;
+    }
 }

@@ -16,9 +16,9 @@ const LoadingCategory = ({ editable }) => {
             </Box>
         </Paper>
     ) : (
-        <Skeleton
-            className={`${styles.category}`}
-        />
+        <Paper className={`${styles.loading_category} grid jcs aic`}>
+            <Skeleton variant="rectangular" />
+        </Paper>
     );
 };
 

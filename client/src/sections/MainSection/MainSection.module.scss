@@ -6,6 +6,7 @@
     background-image: url("../../images/main.webp");
     height: calc(100vh - 80px);
     position: relative;
+    z-index: 1;
     &.box_2 {
         background-image: url("../../images/main0.webp");
     }

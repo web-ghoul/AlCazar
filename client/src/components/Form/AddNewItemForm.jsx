@@ -6,7 +6,6 @@ import { Box, InputAdornment } from "@mui/material";
 import {
   CategoryRounded,
   CountertopsRounded,
-  DescriptionRounded,
   HeightRounded,
   LocalOfferRounded,
   StraightenRounded,

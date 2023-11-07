@@ -1,3 +1,13 @@
 .drawer {
     width: 350px !important;
+    position: relative;
+    .close_icon {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        border-color: #fff;
+        & svg {
+            font-size: 20px;
+        }
+    }
 }

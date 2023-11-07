@@ -6,6 +6,8 @@ import profileReducer from "./profileSlice";
 import userReducer from "./userSlice";
 import usersReducer from "./usersSlice";
 import categoriesReducer from "./categoriesSlice";
+import citiesReducer from "./citiesSlice";
+import countriesReducer from "./countriesSlice";
 import dimensionsReducer from "./dimensionsSlice";
 
 export const store = configureStore({
@@ -17,6 +19,8 @@ export const store = configureStore({
     user: userReducer,
     users: usersReducer,
     categories: categoriesReducer,
+    cities: citiesReducer,
+    countries: countriesReducer,
     dimensions: dimensionsReducer,
   },
 });

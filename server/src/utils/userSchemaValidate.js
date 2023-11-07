@@ -17,10 +17,6 @@ const userSchemaValidate = joi.object({
     phone: joi.string().required().messages({
         "string.base": "Phone should be a string.",
         "any.required": "Phone is required.",
-    }),
-    addresses: joi.array().messages({
-        "string.base": "Addresses should be a string.",
-        "any.required": "Addresses is required.",
     })
 });
 

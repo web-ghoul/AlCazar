@@ -9,6 +9,7 @@ import ProfileProvider from "@/context/ProfileContext";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
 import CartProvider from "@/context/CartContext";
+import ItemProvider from "@/context/ItemContext";
 
 export default function RootLayout({ children }) {
   return (
@@ -30,11 +31,13 @@ export default function RootLayout({ children }) {
           <DashboardProvider>
             <ProfileProvider>
               <CartProvider>
-                <Provider store={store}>
-                  <Main>
-                    {children}
-                  </Main>
-                </Provider>
+                <ItemProvider>
+                  <Provider store={store}>
+                    <Main>
+                      {children}
+                    </Main>
+                  </Provider>
+                </ItemProvider>
               </CartProvider>
             </ProfileProvider>
           </DashboardProvider>

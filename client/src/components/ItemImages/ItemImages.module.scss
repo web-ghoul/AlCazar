@@ -1,10 +1,25 @@
 @import "../../styles/variable.scss";
 .item_images {
-    .main_image {
-        width: 100%;
-        height: auto;
+    .cur_image {
+        position: relative;
+        overflow: hidden;
         transition: $transition;
+        .main_image {
+            width: 100%;
+            height: auto;
+            transition: $transition;
+        }
+        .overlay {
+            opacity: 0;
+        }
+        &:hover {
+            cursor: pointer;
+            .overlay {
+                opacity: 1;
+            }
+        }
     }
+
     .mini_images {
         .mini_image {
             width: 100px;

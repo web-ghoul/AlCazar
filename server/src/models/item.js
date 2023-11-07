@@ -23,7 +23,7 @@ const ItemSchema = new Schema(
       of: String,
       required: [true, "Images is Required"],
     },
-    count: {
+    quantity: {
       type: Number,
       required: [true, "Count is Required"],
     },

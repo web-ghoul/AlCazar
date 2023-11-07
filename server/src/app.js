@@ -26,11 +26,12 @@ const userRouter = require("./routes/user");
 app.use(helmet());
 app.use(
   cors({
-    origin: "http://localhost:4500",
+    origin: ["http://localhost:4500"],
     methods: "GET,POST,PUT,PATCH,DELETE",
     credentials: true
   })
 );
+
 app.use(xss());
 app.use(express.json());
 app.use(bodyParser.json());
@@ -60,3 +61,5 @@ DBConnect.then((res) => {
 }).catch((err) => {
   console.log(err);
 });
+
+

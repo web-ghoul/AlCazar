@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -21,6 +21,9 @@ import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { ProfileContext } from "@/context/ProfileContext";
 import UserInfo from "../UserInfo/UserInfo";
+import { useParams } from "next/navigation";
+import { getProfile } from "@/store/profileSlice";
+import UserAddresses from "../UserAddresses/UserAddresses";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -52,26 +55,30 @@ function a11yProps(index) {
 }
 
 const UserProfileOptions = () => {
+    const { id } = useParams()
     const { option, setOption } = useContext(ProfileContext)
     const dispatch = useDispatch()
-    const { user } = useSelector((state) => state.user)
+    const { profile, profileAddresses } = useSelector((state) => state.profile)
+    const { user, userAddresses } = useSelector((state) => state.user)
     const handleChange = (_, newValue) => {
         setOption(newValue);
     };
     useEffect(() => {
         try {
             const token = Cookies.get("AlCazar_token")
-            const userId = Cookies.get("AlCazar_userId")
-            dispatch(getUser({ token, userId }))
+            if (id) {
+                dispatch(getUser({ token, userId: id }))
+            } else {
+                dispatch(getProfile())
+            }
         } catch (error) {
             toast.error(error.message)
         }
-    }, [dispatch])
-
+    }, [dispatch, id])
     return (
         <Box className={`grid jcs aifs g50 ${styles.user_profile_options}`}>
             <Box className={`grid jcfs aifs g50`}>
-                <UserBox editable={false} data={user} />
+                <UserBox data={id ? user : profile} editable={false} />
                 <Tabs
                     orientation="vertical"
                     variant="scrollable"
@@ -128,13 +135,13 @@ const UserProfileOptions = () => {
                 </Tabs>
             </Box>
             <TabPanel value={option} index={0}>
-                <UserInfo />
+                <UserInfo data={id ? user : profile} />
             </TabPanel>
             <TabPanel value={option} index={1}>
                 Addresses
             </TabPanel>
             <TabPanel value={option} index={2}>
-                Wallets
+                <UserAddresses editable={id ? true : false} addresses={id ? userAddresses : profileAddresses} />
             </TabPanel>
             <TabPanel value={option} index={3}>
                 Subscriptions

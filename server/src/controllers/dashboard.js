@@ -2,6 +2,7 @@ const uploadImage = require("../utils/uploadImage");
 const Item = require("../models/item");
 const Category = require("../models/category");
 const User = require("../models/user");
+const Address = require("../models/address");
 
 
 //Categories
@@ -164,6 +165,25 @@ const editItem = async (req, res, next) => {
 
 //Users
 
+const getUser = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const user = await User.findOne({ _id: id })
+        if (user) {
+            const addresses = await Address.find({ userId: id })
+            if (user.isAdmin) {
+                res.status(401).json({ error: "it's not Allowed" });
+            } else {
+                res.status(200).json({ user, addresses });
+            }
+        } else {
+            res.status(404).json({ error: "User isn't Exist" });
+        }
+    } catch (error) {
+        res.status(405).json({ error: err.message });
+    }
+}
+
 const getUsers = async (req, res, next) => {
     try {
         const users = await User.find({ isAdmin: false })
@@ -220,6 +240,55 @@ const editUser = async (req, res, next) => {
     }
 }
 
+const addNewAddress = async (req, res, next) => {
+    try {
+        const user = await User.findOne({ _id: req.userId })
+        if (user) {
+            const address = await Address.findOne({ userId: req.body.userId, address: req.body.address })
+            if (address) {
+                res.status(400).json({ error: "Address is already Exist" })
+            } else {
+                const newAddress = new Address(req.body)
+                await newAddress.save()
+                res.status(200).json({ message: "Address is Added Successfully!!" });
+            }
+        } else {
+            res.status(404).json({ error: "User is not Exist" });
+        }
+    } catch (err) {
+        res.status(405).json({ error: err.message });
+    }
+}
+
+const deleteAddress = async (req, res, next) => {
+    try {
+        const { userId, addressId } = req.params
+        const user = await User.findOne({ _id: userId })
+        if (user) {
+            await Address.findByIdAndDelete(addressId)
+            res.status(200).json({ message: "Address is Added Successfully!!" });
+        } else {
+            res.status(404).json({ error: "User is not Exist" });
+        }
+    } catch (err) {
+        res.status(405).json({ error: err.message });
+    }
+}
+
+const editAddress = async (req, res, next) => {
+    try {
+        const { userId, addressId } = req.params
+        const user = await User.findOne({ _id: userId })
+        if (user) {
+            await Address.findByIdAndUpdate(addressId, req.body)
+            res.status(200).json({ message: "Address is Updated Successfully!!" });
+        } else {
+            res.status(404).json({ error: "User is not Exist" });
+        }
+    } catch (err) {
+        res.status(405).json({ error: err.message });
+    }
+}
 
 //Admins
 
@@ -249,8 +318,12 @@ module.exports = {
     deleteCategory,
     addNewCategory,
     deleteUser,
+    getUser,
     getUsers,
     editCategory,
     editUser,
-    makeUserAdmin
+    makeUserAdmin,
+    addNewAddress,
+    deleteAddress,
+    editAddress
 };

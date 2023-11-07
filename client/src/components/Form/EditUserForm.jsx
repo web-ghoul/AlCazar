@@ -16,7 +16,6 @@ const EditUserForm = ({ loading, formik }) => {
   const { editableUserData } = useContext(DashboardContext)
   const [image, setImage] = useState(editableUserData && editableUserData.avatar)
   useEffect(() => {
-    console.log(image)
     formik.values.avatar = [image]
   }, [image])
   return (

@@ -1,69 +1,50 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
-import toast from "react-hot-toast";
 
-export const getProfile = createAsyncThunk("profile/getProfile", async (args) => {
-    let profile = null
-    try {
-        const userId = Cookies.get("AlCazar_userId")
-        const token = Cookies.get("AlCazar_token")
-        await axios.get(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/user/${userId}`,
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+export const getProfile = createAsyncThunk("profile/getProfile", async () => {
+    const token = Cookies.get("AlCazar_token")
+    const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/user`,
+        {
+            headers: {
+                "Authorization": `Bearer ${token}`
             }
-        ).then((res) => {
-            try {
-                profile = res.data.user
-            } catch (error) {
-                toast.error(error.message)
-            }
-        }).catch((err) => {
-            let msg;
-            try {
-                msg = err.response.data.error
-                toast.error(msg);
-            } catch (error) {
-                msg = error.message
-                toast.error(msg);
-            }
-            if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-                Cookies.remove("AlCazar_token")
-                Cookies.remove("AlCazar_userId")
-                window.location.href = "/login"
-            }
-        })
-    } catch (error) {
-        toast.error(error.message)
-    }
-    return profile;
+        }
+    )
+    return res.data;
 });
 
 const initialState = {
     profile: null,
+    profileAddresses: [],
     isLoading: true,
 };
 
 export const profileSlice = createSlice({
     name: "profile",
     initialState,
+    reducers: {
+        resetProfile: (state) => {
+            state.profile = null
+            state.profileAddresses = []
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(getProfile.fulfilled, (state, action) => {
-            state.profile = action.payload;
+            state.profile = action.payload.user;
+            state.profileAddresses = action.payload.addresses;
             state.isLoading = false;
         });
         builder.addCase(getProfile.rejected, (state, action) => {
             state.isLoading = true;
             if (action.payload) {
-                toast.error(action.payload.errorMessage);
+                console.log(action.payload.errorMessage);
             } else {
-                toast.error(action.error.message);
+                console.log(action.error.message);
             }
         });
     },
 });
-
+export const { resetProfile } = profileSlice.actions
 export default profileSlice.reducer;

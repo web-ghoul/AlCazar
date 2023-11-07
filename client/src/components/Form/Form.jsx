@@ -8,7 +8,7 @@ import ForgotPassword from "./ForgotPassword";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import AddNewItemForm from "./AddNewItemForm";
 import AddNewCategoryForm from "./AddNewCategoryForm";
@@ -30,12 +30,19 @@ import EditProfileForm from "./EditProfileForm";
 import { ProfileContext } from "@/context/ProfileContext";
 import { getUsers } from "@/store/usersSlice";
 import AddNewAdminForm from "./AddNewAdminForm";
-import FilterAndSearchAndSort from "../FilterAndSearchAndSort/FilterAndSearchAndSort";
+import { getUser } from "@/store/userSlice";
+import { getProfile } from "@/store/profileSlice";
+import EditAccountForm from "./EditAccountForm";
+import AddNewAddressForm from "./AddNewAddressForm";
+import DeleteAddressForm from "./DeleteAddressForm";
+import EditAddressForm from "./EditAddressForm";
 
 const Form = ({ type }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { token, userId } = useSelector((state) => state.auth)
+  const { token } = useSelector((state) => state.auth)
+  const { id } = useParams()
+  const pathname = usePathname()
   const dispatch = useDispatch();
   const {
     itemId,
@@ -50,10 +57,10 @@ const Form = ({ type }) => {
     editableCategoryData,
     handleCloseEditUserModal,
     editableUserData,
-    handleCloseAddNewAdminModal
+    handleCloseAddNewAdminModal,
+    setDashboardOption,
   } = useContext(DashboardContext);
-
-  const { handleCloseDeleteAccountModal } = useContext(ProfileContext)
+  const { handleCloseDeleteAccountModal, handleCloseEditAccountModal, editableAccountData, handleCloseDeleteAddressModal, handleCloseAddNewAddressModal, handleCloseEditAddressModal, addressId, editableAddressData } = useContext(ProfileContext)
 
   const loginFormik = useFormik({
     initialValues: {
@@ -81,6 +88,7 @@ const Form = ({ type }) => {
             Cookies.set("AlCazar_token", token, { expires: 30 })
             Cookies.set("AlCazar_userId", userId, { expires: 30 })
             dispatch(logging({ token, userId }))
+            dispatch(getProfile())
             toast.success(res.data.message);
           } catch (error) {
             toast.error(error.message);
@@ -232,6 +240,7 @@ const Form = ({ type }) => {
         .then((res) => {
           try {
             toast.success(res.data.message);
+            setDashboardOption(0)
           } catch (error) {
             toast.error(error.message);
           }
@@ -356,6 +365,7 @@ const Form = ({ type }) => {
         .then((res) => {
           try {
             toast.success(res.data.message);
+            setDashboardOption(2)
           } catch (error) {
             toast.error(error.message);
           }
@@ -480,6 +490,75 @@ const Form = ({ type }) => {
           try {
             handleCloseEditUserModal()
             dispatch(getUsers({ token }))
+            dispatch(getUser({ token, userId: id }))
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          let msg;
+          try {
+            msg = err.response.data.error
+            toast.error(msg);
+          } catch (error) {
+            msg = error.message
+            toast.error(msg);
+          }
+          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+            dispatch(logout())
+            router.push(`/login`)
+          }
+        });
+      setLoading(false);
+    },
+  });
+
+  const editAccountFormik = useFormik({
+    initialValues: {
+      firstName: editableAccountData && editableAccountData.firstName,
+      lastName: editableAccountData && editableAccountData.lastName,
+      phone: editableAccountData && editableAccountData.phone,
+      email: editableAccountData && editableAccountData.email,
+      avatar: ""
+    },
+    validationSchema: yup.object({
+      firstName: yup
+        .string("Enter your first name")
+        .required("First Name is required"),
+      lastName: yup
+        .string("Enter your last name")
+        .required("Last Name is required"),
+      phone: yup.string("Enter your phone").required("Phone is required"),
+      email: yup
+        .string("Enter your email")
+        .email("Enter a valid email")
+        .required("Email is required"),
+      avatar: yup.array(yup.mixed())
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      const formData = new FormData();
+      if (values.avatar) {
+        values.avatar.map((img) => {
+          formData.append("image", img);
+        });
+      } else {
+        values.avatar = [editableUserData.avatar]
+      }
+      formData.append("data", JSON.stringify(values));
+      await axios
+        .patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/editAccount`, formData,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          })
+        .then((res) => {
+          try {
+            handleCloseEditAccountModal()
+            dispatch(getProfile())
             toast.success(res.data.message);
           } catch (error) {
             toast.error(error.message);
@@ -527,6 +606,132 @@ const Form = ({ type }) => {
           try {
             handleCloseAddNewAdminModal()
             dispatch(getUsers({ token }))
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          let msg;
+          try {
+            msg = err.response.data.error
+            toast.error(msg);
+          } catch (error) {
+            msg = error.message
+            toast.error(msg);
+          }
+          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+            dispatch(logout())
+            router.push(`/login`)
+          }
+        });
+      setLoading(false);
+    },
+  });
+
+  const addNewAddressFormik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      address: "",
+      city: "Cairo",
+      country: "Egypt",
+    },
+    validationSchema: yup.object({
+      firstName: yup.string("Enter your First Name").required("First Name is required"),
+      lastName: yup.string("Enter your Last Name").required("Last Name is required"),
+      phone: yup.string("Enter your Phone Number").required("Phone Number is required"),
+      address: yup.string("Enter your Address").required("Address is required"),
+      city: yup.string("Enter your City").required("City is required"),
+      country: yup.string("Enter your Country").required("Country is required"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      const url = id ? `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewAddress/${id}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/user/addNewAddress`
+      if (id) {
+        values.userId = id
+      }
+      await axios
+        .post(url, values,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          })
+        .then((res) => {
+          try {
+            handleCloseAddNewAddressModal()
+            resetForm()
+            if (id) {
+              dispatch(getUser({ token, userId: id }))
+            } else {
+              dispatch(getProfile())
+            }
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          let msg;
+          try {
+            msg = err.response.data.error
+            toast.error(msg);
+          } catch (error) {
+            msg = error.message
+            toast.error(msg);
+          }
+          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+            dispatch(logout())
+            router.push(`/login`)
+          }
+        });
+      setLoading(false);
+    },
+  });
+
+  const editAddressFormik = useFormik({
+    initialValues: {
+      firstName: editableAddressData && editableAddressData.firstName,
+      lastName: editableAddressData && editableAddressData.lastName,
+      phone: editableAddressData && editableAddressData.phone,
+      address: editableAddressData && editableAddressData.address,
+      city: editableAddressData && editableAddressData.city,
+      country: editableAddressData && editableAddressData.country,
+    },
+    validationSchema: yup.object({
+      firstName: yup.string("Enter your First Name").required("First Name is required"),
+      lastName: yup.string("Enter your Last Name").required("Last Name is required"),
+      phone: yup.string("Enter your Phone Number").required("Phone Number is required"),
+      address: yup.string("Enter your Address").required("Address is required"),
+      city: yup.string("Enter your City").required("City is required"),
+      country: yup.string("Enter your Country").required("Country is required"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      const url = id ? `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/editAddress/${id}/${addressId}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/user/editAddress/${addressId}`
+      if (id) {
+        values.userId = editableAddressData.userId
+      }
+      await axios
+        .patch(url, values,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          })
+        .then((res) => {
+          try {
+            handleCloseEditAddressModal()
+            resetForm()
+            if (id) {
+              dispatch(getUser({ token, userId: id }))
+            } else {
+              dispatch(getProfile())
+            }
             toast.success(res.data.message);
           } catch (error) {
             toast.error(error.message);
@@ -615,7 +820,6 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
-        handleCloseDeleteItemModal();
         let msg;
         try {
           msg = err.response.data.error
@@ -654,7 +858,6 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
-        handleCloseDeleteCategoryModal();
         let msg;
         try {
           msg = err.response.data.error
@@ -688,12 +891,14 @@ const Form = ({ type }) => {
           toast.success(res.data.message);
           handleCloseDeleteUserModal();
           dispatch(getUsers({ token }));
+          if (pathname !== process.env.NEXT_PUBLIC_DASHBOARD_PAGE) {
+            router.push(process.env.NEXT_PUBLIC_DASHBOARD_PAGE)
+          }
         } catch (error) {
           toast.error(error.message);
         }
       })
       .catch((err) => {
-        handleCloseDeleteUserModal();
         let msg;
         try {
           msg = err.response.data.error
@@ -733,7 +938,6 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
-        handleCloseDeleteAccountModal();
         let msg;
         try {
           msg = err.response.data.error
@@ -749,6 +953,50 @@ const Form = ({ type }) => {
       });
     setLoading(false);
   };
+
+  const handleDeleteAddress = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const url = id ? `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteAddress/${id}/${addressId}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/user/deleteAddress/${addressId}`
+    await axios
+      .delete(
+        url,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      )
+      .then((res) => {
+        try {
+          toast.success(res.data.message);
+          handleCloseDeleteAddressModal();
+          if (id) {
+            dispatch(getUser({ token, userId: id }))
+          } else {
+            dispatch(getProfile())
+          }
+        } catch (error) {
+          toast.error(error.message);
+        }
+      })
+      .catch((err) => {
+        let msg;
+        try {
+          msg = err.response.data.error
+          toast.error(msg);
+        } catch (error) {
+          msg = error.message
+          toast.error(msg);
+        }
+        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+          dispatch(logout())
+          router.push(`/login`)
+        }
+      });
+    setLoading(false);
+  };
+
 
   return (
     <form
@@ -766,12 +1014,12 @@ const Form = ({ type }) => {
                   : type === "add_new_item"
                     ? addNewItemFormik.handleSubmit
                     : type === "add_new_category"
-                      ? addNewCategoryFormik.handleSubmit : type === "edit_item" ? editItemFormik.handleSubmit : type === "edit_category" ? editCategoryFormik.handleSubmit
-                        : type === "edit_item" ? editItemFormik.handleSubmit : type === "edit_user" ? editUserFormik.handleSubmit : type === "delete_item"
+                      ? addNewCategoryFormik.handleSubmit : type === "edit_item" ? editItemFormik.handleSubmit : type === "edit_address" ? editAddressFormik.handleSubmit : type === "edit_category" ? editCategoryFormik.handleSubmit
+                        : type === "edit_item" ? editItemFormik.handleSubmit : type === "add_new_address" ? addNewAddressFormik.handleSubmit : type === "edit_user" ? editUserFormik.handleSubmit : type === "delete_item"
                           ? handleDeleteItem
-                          : type === "add_new_admin" ? addNewAdminFormik.handleSubmit : type === "delete_category" ? handleDeleteCategory : type === "delete_user" ? handleDeleteUser : type === "delete_account" && handleDeleteAccount
+                          : type === "edit_account" ? editAccountFormik.handleSubmit : type === "add_new_admin" ? addNewAdminFormik.handleSubmit : type === "delete_address" ? handleDeleteAddress : type === "delete_category" ? handleDeleteCategory : type === "delete_user" ? handleDeleteUser : type === "delete_account" && handleDeleteAccount
       }
-      className={`form grid jcs aic g30 ${type === "edit_user" && "edit_user_form"}`}
+      className={`form grid jcs aic g30 ${(type === "edit_user" || type === "edit_account") && "edit_user_form"}`}
     >
       {type === "login" ? (
         <Login loading={loading} formik={loginFormik} />
@@ -790,7 +1038,7 @@ const Form = ({ type }) => {
       ) : type === "delete_item" ? (
         <DeleteItemForm loading={loading} />
       ) : (
-        type === "delete_category" ? (<DeleteCategoryForm loading={loading} />) : type === "delete_user" ? (<DeleteUserForm loading={loading} />) : type === "delete_account" ? (<DeleteAccountForm loading={loading} />) : type === "edit_item" ? <EditItemForm loading={loading} formik={editItemFormik} /> : type === "edit_category" ? <EditCategoryForm loading={loading} formik={editCategoryFormik} /> : type === "edit_user" ? <EditUserForm loading={loading} formik={editUserFormik} /> : type === "edit_profile" ? <EditProfileForm loading={loading} /> : type === "add_new_admin" && <AddNewAdminForm loading={loading} formik={addNewAdminFormik} />
+        type === "edit_address" ? <EditAddressForm loading={loading} formik={editAddressFormik} /> : type === "add_new_address" ? <AddNewAddressForm formik={addNewAddressFormik} loading={loading} /> : type === "edit_account" ? <EditAccountForm loading={loading} formik={editAccountFormik} /> : type === "delete_category" ? (<DeleteCategoryForm loading={loading} />) : type === "delete_user" ? (<DeleteUserForm loading={loading} />) : type === "delete_account" ? (<DeleteAccountForm loading={loading} />) : type === "edit_item" ? <EditItemForm loading={loading} formik={editItemFormik} /> : type === "edit_category" ? <EditCategoryForm loading={loading} formik={editCategoryFormik} /> : type === "edit_user" ? <EditUserForm loading={loading} formik={editUserFormik} /> : type === "delete_address" ? <DeleteAddressForm loading={loading} /> : type === "edit_profile" ? <EditProfileForm loading={loading} /> : type === "add_new_admin" && <AddNewAdminForm loading={loading} formik={addNewAdminFormik} />
       )}
     </form>
   );

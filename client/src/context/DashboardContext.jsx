@@ -3,6 +3,7 @@ import React, { createContext, useState } from "react";
 export const DashboardContext = createContext();
 
 const DashboardProvider = ({ children }) => {
+  const [dashboardOption, setDashboardOption] = useState(0)
   const [itemId, setItemId] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
   const [user_id, setUserId] = useState(null);
@@ -117,7 +118,9 @@ const DashboardProvider = ({ children }) => {
         handleOpenEditUserModal,
         handleCloseAddNewAdminModal,
         handleOpenAddNewAdminModal,
-        openAddNewAdminModal
+        openAddNewAdminModal,
+        setDashboardOption,
+        dashboardOption
       }}
     >
       {children}

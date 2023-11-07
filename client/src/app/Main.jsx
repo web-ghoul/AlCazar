@@ -18,6 +18,12 @@ import EditUserModal from '@/models/EditUserModal';
 import DeleteUserModal from '@/models/DeleteUserModal';
 import { getProfile } from '@/store/profileSlice';
 import CartSideBar from '@/components/CartSideBar/CartSideBar';
+import ViewAvatarModal from '@/models/ViewAvatarModal';
+import ViewItemImagesModal from '@/models/ViewItemImagesModal';
+import EditAccountModal from '@/models/EditAccountModal';
+import AddNewAddressModal from '@/models/AddNewAddressModal';
+import DeleteAddressModel from '@/models/DeleteAddressModal';
+import EditAddressModal from '@/models/EditAddressModal';
 
 const Main = ({ children }) => {
     const dispatch = useDispatch()
@@ -44,6 +50,12 @@ const Main = ({ children }) => {
             <EditItemModal />
             <EditProfileModal />
             <EditUserModal />
+            <EditAccountModal />
+            <EditAddressModal />
+            <DeleteAddressModel />
+            <AddNewAddressModal />
+            <ViewAvatarModal />
+            <ViewItemImagesModal />
             <Toaster />
             <Footer />
         </main>

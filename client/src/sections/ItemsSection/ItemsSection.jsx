@@ -20,7 +20,7 @@ const ItemsSection = ({ editable }) => {
   }, [dispatch]);
   return (
     <Box className={`grid jcs aic g20 ${styles.items_contain}`}>
-      {isLoading ? "<LoadingItemsSection editable={editable} />" : items && items.length > 0
+      {isLoading ? <LoadingItemsSection editable={editable} /> : items && items.length > 0
         ? items.map((data, i) => (
           <ItemBox editable={editable} key={i} data={data} />
         ))

@@ -1,35 +1,35 @@
-import React, { useContext, useState } from 'react'
+"use client"
+import React, { useContext, useEffect, useState } from 'react'
 import { PrimaryIconButton } from '@/MUIComponents/PrimaryIconButton'
 import { PrimaryTextField } from '@/MUIComponents/PrimaryTextField'
 import { AddRounded, RemoveRounded } from '@mui/icons-material'
 import { Box } from '@mui/material'
-import styles from "./CartItem.module.scss"
 import { CartContext } from '@/context/CartContext'
 
 const NumberController = ({ data }) => {
     const [value, setValue] = useState(1)
-    const { removeItemFromCart } = useContext(CartContext)
+    const { incrementItemNumber, decrementItemNumber } = useContext(CartContext)
     const increment = () => {
-        if (value < data.count) {
+        if (value < data.data.count) {
             setValue(value + 1)
         } else {
             setValue(value)
         }
+        incrementItemNumber(data.data._id)
     }
     const decrement = () => {
-        console.log(value)
-        if (value > 1) {
-            setValue(value - 1)
-        } else {
-            removeItemFromCart(data._id)
-        }
+        setValue(value - 1)
+        decrementItemNumber(data.data._id)
     }
+    useEffect(() => {
+        setValue(data.number)
+    }, [data])
     return (
         <Box className={`flex jcc aic g10`}>
             <PrimaryIconButton onClick={increment}>
                 <AddRounded />
             </PrimaryIconButton>
-            <PrimaryTextField value={value} onChange={(e) => setValue(e.target.value)} type={"number"} defaultValue={1} />
+            <PrimaryTextField disabled value={value} onChange={(e) => setValue(e.target.value)} type={"number"} defaultValue={1} />
             <PrimaryIconButton onClick={decrement}>
                 <RemoveRounded />
             </PrimaryIconButton>
