@@ -18,6 +18,7 @@ export const getProfile = createAsyncThunk("profile/getProfile", async () => {
 const initialState = {
     profile: null,
     profileAddresses: [],
+    profileOrders: [],
     isLoading: true,
 };
 
@@ -28,12 +29,14 @@ export const profileSlice = createSlice({
         resetProfile: (state) => {
             state.profile = null
             state.profileAddresses = []
+            state.profileOrders = []
         }
     },
     extraReducers: (builder) => {
         builder.addCase(getProfile.fulfilled, (state, action) => {
             state.profile = action.payload.user;
             state.profileAddresses = action.payload.addresses;
+            state.profileOrders = action.payload.orders;
             state.isLoading = false;
         });
         builder.addCase(getProfile.rejected, (state, action) => {

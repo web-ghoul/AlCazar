@@ -1,0 +1,10 @@
+@import "../../styles/variable.scss";
+.address {
+    border: 2px solid $main;
+    .title {
+        width: 120px;
+    }
+    .value {
+        width: 75px;
+    }
+}

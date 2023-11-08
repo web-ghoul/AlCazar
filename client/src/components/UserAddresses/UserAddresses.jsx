@@ -7,10 +7,12 @@ import { ProfileContext } from '@/context/ProfileContext'
 import { useSelector } from 'react-redux'
 import Address from './Address'
 import LoadingAddress from './LoadingAddress'
+import { useParams } from 'next/navigation'
 
 const UserAddresses = ({ addresses, editable }) => {
+    const { id } = useParams()
     const { handleOpenAddNewAddressModal } = useContext(ProfileContext)
-    const { isLoading } = useSelector((state) => editable ? state.user : state.profile)
+    const { isLoading } = useSelector((state) => id ? state.user : state.profile)
     return (
         <Box className={`${styles.user_address} grid jcs aic g30 pad20`}>
             <Box className={`grid jcfs aic g5`}>
@@ -25,7 +27,7 @@ const UserAddresses = ({ addresses, editable }) => {
                             <LoadingAddress key={i} />
                         ))
                     ) : (addresses && addresses.length > 0) ? (addresses.map((address, i) => (
-                        <Address key={i} number={i + 1} address={address} />
+                        <Address editable={editable} key={i} number={i + 1} address={address} />
                     ))) : (
                         <Title title={"You haven't saved any addresses yet."} fw={500} h={"h5"} color={"#333"} />
                     )

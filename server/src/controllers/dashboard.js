@@ -1,5 +1,6 @@
 const uploadImage = require("../utils/uploadImage");
 const Item = require("../models/item");
+const Order = require("../models/order");
 const Category = require("../models/category");
 const User = require("../models/user");
 const Address = require("../models/address");
@@ -170,11 +171,12 @@ const getUser = async (req, res, next) => {
         const { id } = req.params
         const user = await User.findOne({ _id: id })
         if (user) {
-            const addresses = await Address.find({ userId: id })
             if (user.isAdmin) {
                 res.status(401).json({ error: "it's not Allowed" });
             } else {
-                res.status(200).json({ user, addresses });
+                const addresses = await Address.find({ userId: id })
+                const orders = await Order.find({ userId: id })
+                res.status(200).json({ user, addresses, orders });
             }
         } else {
             res.status(404).json({ error: "User isn't Exist" });

@@ -8,24 +8,24 @@ const OrderSchema = new Schema(
             type: mongoose.ObjectId,
             required: [true, "UserId is Required"],
         },
+        address:
+            { type: mongoose.Schema.Types.ObjectId, ref: 'Address' },
         items: {
             type: Array,
-            of: { type: mongoose.Schema.Types.ObjectId, ref: 'Item' },
+            of: Map,
             required: [true, "Items is Required"],
         },
-        itemsQuantities: {
-            type: Array,
-            of: Number,
-            required: [true, "Items Quantities is Required"],
+        itemsTotal: {
+            type: Number,
+            required: [true, "Items Total is Required"],
+        },
+        deliveryFees: {
+            type: Number,
+            required: [true, "Delivery Fees is Required"],
         },
         totalPrice: {
             type: Number,
             required: [true, "Total Price is Required"],
-        },
-        status: {
-            type: String,
-            enum: ["pending", "delivered"],
-            required: [true, "Status is Required"],
         }
     },
     { timestamps: true }

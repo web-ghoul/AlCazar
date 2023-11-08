@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const Item = require("../models/item");
-const Cart = require("../models/cart");
+const Order = require("../models/order");
 const Address = require("../models/address");
 const uploadImage = require("../utils/uploadImage");
 require("dotenv").config();
@@ -10,7 +10,8 @@ const getProfile = async (req, res, next) => {
     const user = await User.findOne({ _id: req.userId });
     if (user) {
       const addresses = await Address.find({ userId: req.userId })
-      res.status(200).json({ user, addresses });
+      const orders = await Order.find({ userId: req.userId })
+      res.status(200).json({ user, addresses, orders });
     } else {
       res.status(404).json({ error: "User is not Exist" });
     }
@@ -115,23 +116,13 @@ const editAddress = async (req, res, next) => {
   }
 }
 
-const addItemToCart = async (req, res, next) => {
+const confirmOrder = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.userId })
     if (user) {
-      const { id } = req.params
-      const item = await Item.findOne({ _id: id })
-      if (item) {
-        const cart = await Cart.findOne({ userId: req.userId })
-        if (cart) {
-          
-        } else {
-          const newCart = new Cart({ userId: req.userId, items: [id], itemsQuantities: [1], totalPrice: item.price })
-          await newCart.save()
-        }
-      } else {
-        res.status(404).json({ error: "item is not Exist" });
-      }
+      const newOrder = new Order({ userId: req.userId, ...req.body })
+      await newOrder.save()
+      res.status(200).json({ message: "Order is Confirmed Successfully!!" });
     } else {
       res.status(404).json({ error: "User is not Exist" });
     }
@@ -140,28 +131,5 @@ const addItemToCart = async (req, res, next) => {
   }
 }
 
-const removeItemToCart = async (req, res, next) => {
-  try {
 
-  } catch (err) {
-    res.status(405).json({ error: err.message });
-  }
-}
-
-const incrementItemAtCart = async (req, res, next) => {
-  try {
-
-  } catch (err) {
-    res.status(405).json({ error: err.message });
-  }
-}
-
-const decrementItemAtCart = async (req, res, next) => {
-  try {
-
-  } catch (err) {
-    res.status(405).json({ error: err.message });
-  }
-}
-
-module.exports = { getProfile, editAddress, deleteAccount, editAccount, addNewAddress, deleteAddress, addItemToCart, removeItemToCart, incrementItemAtCart, decrementItemAtCart };
+module.exports = { getProfile, editAddress, deleteAccount, editAccount, addNewAddress, deleteAddress, confirmOrder };

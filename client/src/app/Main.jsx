@@ -1,5 +1,5 @@
 "use client";
-import React from 'react'
+import React, { useContext } from 'react'
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
@@ -24,9 +24,13 @@ import EditAccountModal from '@/models/EditAccountModal';
 import AddNewAddressModal from '@/models/AddNewAddressModal';
 import DeleteAddressModel from '@/models/DeleteAddressModal';
 import EditAddressModal from '@/models/EditAddressModal';
+import { CartContext } from '@/context/CartContext';
+import ChooseAddressModal from '@/models/ChooseAddressModal';
+import ConfirmOrderModal from '@/models/ConfirmOrderModal';
 
 const Main = ({ children }) => {
     const dispatch = useDispatch()
+    const { getDataFromLocalStorage } = useContext(CartContext)
     useEffect(() => {
         try {
             const token = Cookies.get("AlCazar_token")
@@ -36,6 +40,7 @@ const Main = ({ children }) => {
         } catch (error) {
             toast.error(error.message)
         }
+        getDataFromLocalStorage()
     }, [dispatch])
     return (
         <main>
@@ -56,6 +61,8 @@ const Main = ({ children }) => {
             <AddNewAddressModal />
             <ViewAvatarModal />
             <ViewItemImagesModal />
+            <ChooseAddressModal />
+            <ConfirmOrderModal />
             <Toaster />
             <Footer />
         </main>

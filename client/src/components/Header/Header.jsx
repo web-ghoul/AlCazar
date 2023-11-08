@@ -32,7 +32,7 @@ const Header = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const [activeList, setActiveList] = useState(false)
-  if (window) {
+  if (typeof window !== "undefined") {
     window.addEventListener('click', (e) => {
       if (!e.target.classList.contains("activate")) {
         setActiveList(false)

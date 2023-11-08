@@ -24,6 +24,7 @@ import UserInfo from "../UserInfo/UserInfo";
 import { useParams } from "next/navigation";
 import { getProfile } from "@/store/profileSlice";
 import UserAddresses from "../UserAddresses/UserAddresses";
+import UserOrders from "../UserOrders/UserOrders";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -58,8 +59,8 @@ const UserProfileOptions = () => {
     const { id } = useParams()
     const { option, setOption } = useContext(ProfileContext)
     const dispatch = useDispatch()
-    const { profile, profileAddresses } = useSelector((state) => state.profile)
-    const { user, userAddresses } = useSelector((state) => state.user)
+    const { profile, profileAddresses, profileOrders } = useSelector((state) => state.profile)
+    const { user, userAddresses, userOrders } = useSelector((state) => state.user)
     const handleChange = (_, newValue) => {
         setOption(newValue);
     };
@@ -138,10 +139,10 @@ const UserProfileOptions = () => {
                 <UserInfo data={id ? user : profile} />
             </TabPanel>
             <TabPanel value={option} index={1}>
-                Addresses
+                <UserOrders orders={id ? userOrders : profileOrders} />
             </TabPanel>
             <TabPanel value={option} index={2}>
-                <UserAddresses editable={id ? true : false} addresses={id ? userAddresses : profileAddresses} />
+                <UserAddresses editable={true} addresses={id ? userAddresses : profileAddresses} />
             </TabPanel>
             <TabPanel value={option} index={3}>
                 Subscriptions

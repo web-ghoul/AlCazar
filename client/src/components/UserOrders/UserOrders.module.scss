@@ -1,0 +1,26 @@
+@import "../../styles/variable.scss";
+.user_orders {
+    width: 100%;
+    background-color: $white;
+    box-shadow: $box_shadow;
+    .loading_order {
+        height: 75px;
+        width: 100%;
+        border-radius: 4px;
+        background-color: $main;
+    }
+    .order {
+        box-shadow: $box_shadow;
+        .item_image {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        .order_divider {
+            border-color: $white !important;
+        }
+    }
+}

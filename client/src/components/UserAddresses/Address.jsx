@@ -2,16 +2,23 @@ import { Box, Paper, Typography } from '@mui/material'
 import React, { useContext } from 'react'
 import Title from '../Title/Title'
 import { PrimaryIconButton } from '@/MUIComponents/PrimaryIconButton'
-import { DeleteRounded, EditRounded } from '@mui/icons-material'
+import { DeleteRounded, EditRounded, TaskAltRounded } from '@mui/icons-material'
 import { DeleteIconButton } from '@/MUIComponents/DeleteIconButton'
-import styles from "./UserAddresses.module.scss"
+import styles from "./Address.module.scss"
 import { ProfileContext } from '@/context/ProfileContext'
+import { CartContext } from '@/context/CartContext'
 
-const Address = ({ address, number }) => {
+const Address = ({ address, number, select, editable }) => {
     const { handleOpenDeleteAddressModal, handleOpenEditAddressModal } = useContext(ProfileContext)
+    const { handleCloseChooseAddressModal, handleOpenConfirmOrderModal, chooseAddress } = useContext(CartContext)
+    const handleSelectAddress = () => {
+        handleCloseChooseAddressModal()
+        handleOpenConfirmOrderModal()
+        chooseAddress(address)
+    }
     return (
         <Paper className={`grid jcs aic g30 pad20 ${styles.address}`}>
-            <Title title={`Address #${number}`} h={"h5"} />
+            {number && <Title title={`Address #${number}`} h={"h5"} />}
             <Box className={`grid jcs aic g10`}>
                 <Box className={`flex jcsb flex_wrap aic g30`}>
                     <Box className={`flex jcfs aic g10`}>
@@ -40,17 +47,29 @@ const Address = ({ address, number }) => {
                     <Typography variant='h6' >{address.city}</Typography>
                 </Box>
             </Box>
-            <Box className={`flex jcfe aic g20`}>
-                <PrimaryIconButton onClick={() => handleOpenEditAddressModal(address)} className={`flex jcc aic g5`}>
-                    <EditRounded />
-                    <Typography variant='h6'>Edit</Typography>
-                </PrimaryIconButton>
-                <DeleteIconButton onClick={() => handleOpenDeleteAddressModal(address._id)} className={`flex jcc aic g5`}>
-                    <DeleteRounded />
-                    <Typography variant='h6'>Remove</Typography>
-                </DeleteIconButton>
-            </Box>
-        </Paper>
+            {
+                select ? (
+                    <Box className={`flex jcs aic`}>
+                        <PrimaryIconButton onClick={handleSelectAddress} className={`flex jcc aic g5`}>
+                            <TaskAltRounded />
+                            <Typography variant='h6'>Select</Typography>
+                        </PrimaryIconButton>
+                    </Box>
+                ) : (
+                    editable &&
+                    <Box className={`flex jcfe aic g20`}>
+                        <PrimaryIconButton onClick={() => handleOpenEditAddressModal(address)} className={`flex jcc aic g5`}>
+                            <EditRounded />
+                            <Typography variant='h6'>Edit</Typography>
+                        </PrimaryIconButton>
+                        <DeleteIconButton onClick={() => handleOpenDeleteAddressModal(address._id)} className={`flex jcc aic g5`}>
+                            <DeleteRounded />
+                            <Typography variant='h6'>Remove</Typography>
+                        </DeleteIconButton>
+                    </Box>
+                )
+            }
+        </Paper >
     )
 }
 

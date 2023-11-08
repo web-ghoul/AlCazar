@@ -10,7 +10,7 @@ const NumberController = ({ data }) => {
     const [value, setValue] = useState(1)
     const { incrementItemNumber, decrementItemNumber } = useContext(CartContext)
     const increment = () => {
-        if (value < data.data.count) {
+        if (value < data.data.quantity) {
             setValue(value + 1)
         } else {
             setValue(value)
@@ -29,7 +29,7 @@ const NumberController = ({ data }) => {
             <PrimaryIconButton onClick={increment}>
                 <AddRounded />
             </PrimaryIconButton>
-            <PrimaryTextField disabled value={value} onChange={(e) => setValue(e.target.value)} type={"number"} defaultValue={1} />
+            <PrimaryTextField disabled value={value} onChange={(e) => setValue(e.target.value)} type={"number"} />
             <PrimaryIconButton onClick={decrement}>
                 <RemoveRounded />
             </PrimaryIconButton>

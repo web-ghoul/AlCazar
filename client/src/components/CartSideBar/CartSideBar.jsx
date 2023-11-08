@@ -37,10 +37,12 @@ const CartSideBar = () => {
                         )) : (<Title title={'No Items Yet...'} color={"#ddd"} align={"center"} h={"h4"} />)
                     }
                 </Box>
-                <Box className={`flex jcfs aic g10 pad10`}>
-                    <Title title={"Total : "} align={"left"} fw={600} h={"h5"} />
-                    <Typography variant='h6'>EGP {cartPrice}</Typography>
-                </Box>
+                {
+                    cartPrice > 0 && (<Box className={`flex jcfs aic g10 pad10`}>
+                        <Title title={"Total : "} align={"left"} fw={600} h={"h5"} />
+                        <Typography variant='h6'>EGP {cartPrice}</Typography>
+                    </Box>)
+                }
             </Box>
         </Drawer>
     )

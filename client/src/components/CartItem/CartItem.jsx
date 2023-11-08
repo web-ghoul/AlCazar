@@ -7,7 +7,7 @@ import { DeleteButton } from '@/MUIComponents/DeleteButton'
 import { CartContext } from '@/context/CartContext'
 
 const CartItem = ({ data }) => {
-    const { cartPrice, setCartPrice, removeItemFromCart } = useContext(CartContext)
+    const { removeItemFromCart } = useContext(CartContext)
     return (
         <Paper className={`grid jcs aic g10 ${styles.cart_item}`}>
             <Box className={`${styles.cart_item_image}`} sx={{ backgroundImage: `url(${data.data.images[0]})` }} />
@@ -15,7 +15,7 @@ const CartItem = ({ data }) => {
                 <Typography variant='h6'>{data.data.title}</Typography>
                 <Typography variant='h6'>EGP {data.data.price}</Typography>
                 <NumberController data={data} />
-                <DeleteButton onClick={() => { setCartPrice(cartPrice - (data.data.price * data.number)); removeItemFromCart(data.data._id) }}>
+                <DeleteButton onClick={() => { removeItemFromCart({ price: data.data.price, number: data.number, id: data.data._id }) }}>
                     Remove
                 </DeleteButton>
             </Box>
