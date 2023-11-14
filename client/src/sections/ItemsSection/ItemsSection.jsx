@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import styles from "./ItemsSection.module.scss";
 import ItemBox from "@/components/ItemBox/ItemBox";
 import { Box } from "@mui/material";
@@ -9,12 +9,14 @@ import { getCategories } from "@/store/categoriesSlice";
 import { getDimensions } from "@/store/dimensionsSlice";
 import Title from "@/components/Title/Title";
 import LoadingItemsSection from "./LoadingItemsSection";
+import { FilterAndSearchAndSortContext } from "@/context/FilterAndSearchAndSortContext";
 
 const ItemsSection = ({ editable }) => {
   const { isLoading, items } = useSelector((state) => state.items);
+  const { search, sort, dimension, category } = useContext(FilterAndSearchAndSortContext)
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getItems());
+    dispatch(getItems({ search, dimension, category, sort }))
     dispatch(getCategories());
     dispatch(getDimensions());
   }, [dispatch]);

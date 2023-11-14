@@ -2,9 +2,11 @@
 .address {
     border: 2px solid $main;
     .title {
-        width: 120px;
+        width: 100px;
+        height: 20px;
     }
     .value {
-        width: 75px;
+        width: 120px;
+        height: 20px;
     }
 }

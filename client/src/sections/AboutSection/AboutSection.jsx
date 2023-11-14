@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import styles from "./AboutSection.module.scss";
 import { PrimaryContainer } from "@/MUIComponents/PrimaryContainer";
 import Title from "@/components/Title/Title";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 
 const AboutSection = () => {
   const router = useRouter();
+  const smSize = useMediaQuery("(max-width:768px)")
   return (
     <PrimaryBox className={`${styles.about}`}>
       <PrimaryContainer className={` grid jcs aic g30 ${styles.about_contain}`}>
@@ -17,7 +18,7 @@ const AboutSection = () => {
           <Title
             color={"#fff"}
             title={"About Us"}
-            align={"left"}
+            align={`${smSize ? "center" : "left"}`}
             h={"h3"}
             line={true}
             fw={700}
@@ -34,6 +35,7 @@ const AboutSection = () => {
             is lived and not exhibited.
           </Typography>
           <PrimaryButton
+            className={`${styles.about_button}`}
             onClick={() => router.push(`${process.env.NEXT_PUBLIC_ABOUT_PAGE}`)}
             sx={{
               borderColor: (theme) => theme.palette.white,
@@ -43,6 +45,7 @@ const AboutSection = () => {
             Read More
           </PrimaryButton>
         </Box>
+        <Box className={`overlay ${styles.overlay}`} />
         <Box className={`${styles.about_image}`} />
       </PrimaryContainer>
     </PrimaryBox>

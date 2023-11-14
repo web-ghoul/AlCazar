@@ -1,11 +1,13 @@
 import { PrimaryContainer } from "@/MUIComponents/PrimaryContainer";
 import {
   Box,
+  Divider,
   InputAdornment,
   List,
   ListItem,
   ListItemButton,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import React from "react";
 import Logo from "../Logo/Logo";
@@ -17,9 +19,13 @@ import { EmailRounded } from "@mui/icons-material";
 import { SecondaryTextField } from "@/MUIComponents/SecondaryTextField";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Form from "../Form/Form";
+import Title from "../Title/Title";
 
 const Footer = () => {
   const router = useRouter();
+  const md_size = useMediaQuery("(max-width:992px)")
+  const sm_size = useMediaQuery("(max-width:768px)")
   return (
     <PrimaryBox component={"footer"} className={`${styles.footer}`}>
       <PrimaryContainer
@@ -35,11 +41,12 @@ const Footer = () => {
             Read More
           </SecondaryButton>
         </Box>
-        <Box className={`grid jcc aic g30`}>
-          <Typography className={`tac`} variant="h5">
-            Quick Links
-          </Typography>
-          <List className={`grid jcc aic g10`}>
+        {
+          sm_size && <Divider className={`${styles.footer_divider}`} />
+        }
+        <Box className={`grid ${md_size ? "jcfs" : "jcc"} aic g10`}>
+          <Title line={true} color={"#fff"} title={"Quick Links"} align={`${md_size ? "left" : "center"}`} h={"h5"} />
+          <List className={`grid ${md_size ? "jcfs" : "jcc"} aic g10`}>
             <ListItem>
               <ListItemButton>Home</ListItemButton>
             </ListItem>
@@ -54,11 +61,12 @@ const Footer = () => {
             </ListItem>
           </List>
         </Box>
-        <Box className={`grid jcc aic g30`}>
-          <Typography className={`tac`} variant="h5">
-            Follow Us
-          </Typography>
-          <List className={`grid jcc aic g10`}>
+        {
+          sm_size && <Divider className={`${styles.footer_divider}`} />
+        }
+        <Box className={`grid ${md_size ? "jcfs" : "jcc"} aic g10`}>
+          <Title line={true} color={"#fff"} title={"Follow Us"} align={`${md_size ? "left" : "center"}`} h={"h5"} />
+          <List className={`grid ${md_size ? "jcfs" : "jcc"} aic g10`}>
             <ListItem>
               <ListItemButton sx={{ textDecoration: "underline" }}>
                 <a
@@ -91,25 +99,12 @@ const Footer = () => {
             </ListItem>
           </List>
         </Box>
+        {
+          sm_size && <Divider className={`${styles.footer_divider}`} />
+        }
         <Box className={`grid jcs aic g30`}>
-          <Typography variant="h5">Join Our Newsletter</Typography>
-          <Box className={`grid jcs aic g10`}>
-            <SecondaryTextField
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <EmailRounded />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{ color: (theme) => theme.palette.white }}
-              variant="standard"
-              placeholder="Email"
-            />
-            <PrimaryButton sx={{ width: "fit-content" }}>
-              Subscribe Now
-            </PrimaryButton>
-          </Box>
+          <Title line={true} color={"#fff"} title={"Join Our Newsletter"} align={`${md_size ? "left" : "center"}`} h={"h5"} />
+          <Form type="subscription_email" />
         </Box>
       </PrimaryContainer>
     </PrimaryBox>

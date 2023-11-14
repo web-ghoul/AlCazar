@@ -1,5 +1,6 @@
 import AboutSection from "@/sections/AboutSection/AboutSection";
-import BestCategoriesSection from "@/sections/CategoriesSection/BestCategoriesSection/BestCategoriesSection";
+import BestCategoriesSection from "@/sections/CategoriesSection/BestCategoriesSection";
+import ContactMessageSection from "@/sections/ContactSection/ContactMessageSection";
 import MainSection from "@/sections/MainSection/MainSection";
 
 export const metadata = {
@@ -13,6 +14,7 @@ export default function HomePage() {
       <MainSection />
       <BestCategoriesSection />
       <AboutSection />
+      <ContactMessageSection />
     </>
   )
 }

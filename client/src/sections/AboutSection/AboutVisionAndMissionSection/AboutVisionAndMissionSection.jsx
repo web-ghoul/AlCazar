@@ -7,7 +7,7 @@ import styles from "../AboutSection.module.scss"
 const AboutVisionAndMissionSection = () => {
     return (
         <Box className={`grid jcs aic g30 ${styles.about_box}`}>
-            <Box className={`grid jcfs aic g20`}>
+            <Box className={`grid jcfs aic g20 ${styles.about_text}`}>
                 <Box className={`grid jcfs aic g10`}>
                     <Title title={"Our Vision"} h={"h5"} align={"left"} fw={600} />
                     <Typography variant='h6' >

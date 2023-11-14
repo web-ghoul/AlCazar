@@ -2,9 +2,9 @@ import React from "react";
 import Title from "@/components/Title/Title";
 import { PrimaryContainer } from "@/MUIComponents/PrimaryContainer";
 import { PrimaryBox } from "@/MUIComponents/PrimaryBox";
-import CategoriesSection from "../CategoriesSection";
+import CategoriesSection from "./CategoriesSection";
 
-const BestCategoriesSection = ({ editable }) => {
+const BestCategoriesSection = () => {
   return (
     <PrimaryBox>
       <PrimaryContainer className={`grid jcs aic g30`}>
@@ -15,7 +15,7 @@ const BestCategoriesSection = ({ editable }) => {
           align={"left"}
           fw={700}
         />
-        <CategoriesSection editable={editable} />
+        <CategoriesSection editable={false} />
       </PrimaryContainer>
     </PrimaryBox>
   );

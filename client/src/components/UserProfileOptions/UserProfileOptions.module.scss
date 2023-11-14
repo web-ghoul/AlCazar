@@ -8,7 +8,7 @@
         box-shadow: $box_shadow;
         & button {
             color: $main;
-            display: grid !important;
+            flex-direction: row;
             align-items: center;
             justify-content: flex-start;
             grid-template-columns: auto 1fr;
@@ -16,6 +16,21 @@
             gap: 10px;
             & h5 {
                 text-align: left;
+            }
+        }
+    }
+    @media (max-width:$md_size) {
+        grid-template-columns: repeat(1,1fr);
+        .tabs {
+            width:100%;
+            & button {
+                color: $main;
+                display: flex !important;
+                align-items: center;
+                justify-content: flex-start;
+                grid-template-columns: auto 1fr;
+                border-radius: 4px;
+                gap: 10px;
             }
         }
     }

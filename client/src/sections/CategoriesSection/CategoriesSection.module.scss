@@ -1,0 +1,23 @@
+@import "../../styles/variable.scss";
+.categories_section{
+    grid-template-columns: repeat(6,1fr);
+    @media (max-width:$md_size) {
+        grid-template-columns: repeat(3,1fr);
+    }
+    @media (max-width:$sm_size) {
+        grid-template-columns: repeat(2,1fr);
+    }
+    @media (max-width:$xs_size) {
+        grid-template-columns: repeat(1,1fr);
+    }
+}
+
+.editable_categories_section{
+    grid-template-columns: repeat(3,1fr);
+    @media (max-width:$md_size) {
+        grid-template-columns: repeat(2,1fr);
+    }
+    @media (max-width:$xs_size) {
+        grid-template-columns: repeat(1,1fr);
+    }
+}

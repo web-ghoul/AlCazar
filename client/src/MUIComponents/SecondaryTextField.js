@@ -10,7 +10,7 @@ export const SecondaryTextField = styled(PrimaryTextField)(({ theme }) => ({
   "& div:after": {
     borderBottomColor: `${theme.palette.white}    !important`,
   },
-  "& input , & input::placeholder":{
+  "& input , & input::placeholder": {
     color: theme.palette.white,
   }
 }));

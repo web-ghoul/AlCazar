@@ -1,7 +1,6 @@
 @import "../../styles/variable.scss";
 .user_box {
     box-shadow: $box_shadow;
-    max-width: 300px;
     .avatar {
         width: 150px;
         height: 150px;
@@ -20,6 +19,26 @@
             .overlay {
                 opacity: 1;
             }
+        }
+    }
+    @media (max-width:$md_size) {
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border: 3px solid $main;
+        }
+    }
+    @media (max-width:$sm_size) {
+        .avatar {
+            width: 100px;
+            height: 100px;
+        }
+    }
+    @media (max-width:$xs_size) {
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border: 2px solid $main;
         }
     }
 }

@@ -38,6 +38,9 @@ import DeleteAddressForm from "./DeleteAddressForm";
 import EditAddressForm from "./EditAddressForm";
 import ConfirmOrderForm from "./ConfirmOrderForm";
 import { CartContext } from "@/context/CartContext";
+import SubscriptionEmailForm from "./SubscriptionEmailForm";
+import { SubscriptionContext } from "@/context/SubscriptionContext";
+import DeleteSubscriptionEmailForm from "./DeleteSubscriptionEmailForm";
 
 const Form = ({ type }) => {
   const router = useRouter();
@@ -109,6 +112,26 @@ const Form = ({ type }) => {
       setLoading(false);
     },
   });
+  const {
+    handleCloseDeleteSubscriptionModal, subscriptionEmailId
+  } = useContext(SubscriptionContext);
+
+  const handleError = (err) => {
+    let msg;
+    try {
+      msg = err.response.data.error
+      toast.error(msg);
+    } catch (error) {
+      msg = error.message
+      toast.error(msg);
+    }
+    if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+      dispatch(logout())
+      resetCartFromLocalStorage()
+      resetCart()
+      router.push(`/login`)
+    }
+  }
 
   const registerFormik = useFormik({
     initialValues: {
@@ -249,18 +272,7 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
-          let msg;
-          try {
-            msg = err.response.data.error
-            toast.error(msg);
-          } catch (error) {
-            msg = error.message
-            toast.error(msg);
-          }
-          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-            dispatch(logout())
-            router.push(`/login`)
-          }
+          handleError(err)
         });
       setLoading(false);
     },
@@ -321,18 +333,7 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
-          let msg;
-          try {
-            msg = err.response.data.error
-            toast.error(msg);
-          } catch (error) {
-            msg = error.message
-            toast.error(msg);
-          }
-          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-            dispatch(logout())
-            router.push(`/login`)
-          }
+          handleError(err)
         });
       setLoading(false);
     },
@@ -374,18 +375,7 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
-          let msg;
-          try {
-            msg = err.response.data.error
-            toast.error(msg);
-          } catch (error) {
-            msg = error.message
-            toast.error(msg);
-          }
-          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-            dispatch(logout())
-            router.push(`/login`)
-          }
+          handleError(err)
         });
       setLoading(false);
     },
@@ -431,18 +421,7 @@ const Form = ({ type }) => {
           }
         })
         .catch((err) => {
-          let msg;
-          try {
-            msg = err.response.data.error
-            toast.error(msg);
-          } catch (error) {
-            msg = error.message
-            toast.error(msg);
-          }
-          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-            dispatch(logout())
-            router.push(`/login`)
-          }
+          handleError(err)
         });
       setLoading(false);
     },
@@ -500,18 +479,7 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
-          let msg;
-          try {
-            msg = err.response.data.error
-            toast.error(msg);
-          } catch (error) {
-            msg = error.message
-            toast.error(msg);
-          }
-          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-            dispatch(logout())
-            router.push(`/login`)
-          }
+          handleError(err)
         });
       setLoading(false);
     },
@@ -568,18 +536,7 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
-          let msg;
-          try {
-            msg = err.response.data.error
-            toast.error(msg);
-          } catch (error) {
-            msg = error.message
-            toast.error(msg);
-          }
-          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-            dispatch(logout())
-            router.push(`/login`)
-          }
+          handleError(err)
         });
       setLoading(false);
     },
@@ -615,18 +572,7 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
-          let msg;
-          try {
-            msg = err.response.data.error
-            toast.error(msg);
-          } catch (error) {
-            msg = error.message
-            toast.error(msg);
-          }
-          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-            dispatch(logout())
-            router.push(`/login`)
-          }
+          handleError(err)
         });
       setLoading(false);
     },
@@ -678,18 +624,7 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
-          let msg;
-          try {
-            msg = err.response.data.error
-            toast.error(msg);
-          } catch (error) {
-            msg = error.message
-            toast.error(msg);
-          }
-          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-            dispatch(logout())
-            router.push(`/login`)
-          }
+          handleError(err)
         });
       setLoading(false);
     },
@@ -741,18 +676,7 @@ const Form = ({ type }) => {
           resetForm();
         })
         .catch((err) => {
-          let msg;
-          try {
-            msg = err.response.data.error
-            toast.error(msg);
-          } catch (error) {
-            msg = error.message
-            toast.error(msg);
-          }
-          if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-            dispatch(logout())
-            router.push(`/login`)
-          }
+          handleError(err)
         });
       setLoading(false);
     },
@@ -800,6 +724,47 @@ const Form = ({ type }) => {
     },
   });
 
+  const subscriptionEmailFormik = useFormik({
+    initialValues: {
+      subscriptedEmail: "",
+    },
+    validationSchema: yup.object({
+      subscriptedEmail: yup
+        .string("Enter a email")
+        .email("Email isn't Valid")
+        .required("Email is required"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/user/subscriptedEmail`,
+          values,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          }
+        )
+        .then((res) => {
+          try {
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          try {
+            toast.error(err.response.data.error);
+          } catch (error) {
+            toast.error(err.message);
+          }
+        });
+      setLoading(false);
+    },
+  });
+
   const handleDeleteItem = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -822,18 +787,7 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
-        let msg;
-        try {
-          msg = err.response.data.error
-          toast.error(msg);
-        } catch (error) {
-          msg = error.message
-          toast.error(msg);
-        }
-        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-          dispatch(logout())
-          router.push(`/login`)
-        }
+        handleError(err)
       });
     setLoading(false);
   };
@@ -860,18 +814,7 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
-        let msg;
-        try {
-          msg = err.response.data.error
-          toast.error(msg);
-        } catch (error) {
-          msg = error.message
-          toast.error(msg);
-        }
-        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-          dispatch(logout())
-          router.push(`/login`)
-        }
+        handleError(err)
       });
     setLoading(false);
   };
@@ -901,18 +844,7 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
-        let msg;
-        try {
-          msg = err.response.data.error
-          toast.error(msg);
-        } catch (error) {
-          msg = error.message
-          toast.error(msg);
-        }
-        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-          dispatch(logout())
-          router.push(`/login`)
-        }
+        handleError(err)
       });
     setLoading(false);
   };
@@ -940,18 +872,7 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
-        let msg;
-        try {
-          msg = err.response.data.error
-          toast.error(msg);
-        } catch (error) {
-          msg = error.message
-          toast.error(msg);
-        }
-        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-          dispatch(logout())
-          router.push(`/login`)
-        }
+        handleError(err)
       });
     setLoading(false);
   };
@@ -983,18 +904,7 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
-        let msg;
-        try {
-          msg = err.response.data.error
-          toast.error(msg);
-        } catch (error) {
-          msg = error.message
-          toast.error(msg);
-        }
-        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-          dispatch(logout())
-          router.push(`/login`)
-        }
+        handleError(err)
       });
     setLoading(false);
   };
@@ -1031,26 +941,47 @@ const Form = ({ type }) => {
         }
       })
       .catch((err) => {
-        let msg;
-        try {
-          msg = err.response.data.error
-          toast.error(msg);
-        } catch (error) {
-          msg = error.message
-          toast.error(msg);
-        }
-        if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-          dispatch(logout())
-          router.push(`/login`)
-        }
+        handleError(err)
       });
     setLoading(false);
   }
 
+  const handleDeleteSubscriptionEmail = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const url = id ? `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteSubscriptionEmail/${id}/${subscriptionEmailId}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/user/deleteSubscriptionEmail/${subscriptionEmailId}`
+    await axios
+      .delete(
+        url,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      )
+      .then((res) => {
+        try {
+          toast.success(res.data.message);
+          handleCloseDeleteSubscriptionModal();
+          if (id) {
+            dispatch(getUser({ token, userId: id }))
+          } else {
+            dispatch(getProfile())
+          }
+        } catch (error) {
+          toast.error(error.message);
+        }
+      })
+      .catch((err) => {
+        handleError(err)
+      });
+    setLoading(false);
+  };
+
   return (
     <form
       onSubmit={
-        type === "login"
+        type === "subscription_email" ? subscriptionEmailFormik.handleSubmit : type === "login"
           ? loginFormik.handleSubmit
           : type === "register"
             ? registerFormik.handleSubmit
@@ -1066,7 +997,7 @@ const Form = ({ type }) => {
                       ? addNewCategoryFormik.handleSubmit : type === "edit_item" ? editItemFormik.handleSubmit : type === "edit_address" ? editAddressFormik.handleSubmit : type === "edit_category" ? editCategoryFormik.handleSubmit
                         : type === "edit_item" ? editItemFormik.handleSubmit : type === "add_new_address" ? addNewAddressFormik.handleSubmit : type === "edit_user" ? editUserFormik.handleSubmit : type === "delete_item"
                           ? handleDeleteItem
-                          : type === "edit_account" ? editAccountFormik.handleSubmit : type === "add_new_admin" ? addNewAdminFormik.handleSubmit : type === "delete_address" ? handleDeleteAddress : type === "delete_category" ? handleDeleteCategory : type === "delete_user" ? handleDeleteUser : type === "delete_account" ? handleDeleteAccount : "confirm_order" && handleConfirmOrder
+                          : type === "delete_subscription" ? handleDeleteSubscriptionEmail : type === "edit_account" ? editAccountFormik.handleSubmit : type === "add_new_admin" ? addNewAdminFormik.handleSubmit : type === "delete_address" ? handleDeleteAddress : type === "delete_category" ? handleDeleteCategory : type === "delete_user" ? handleDeleteUser : type === "delete_account" ? handleDeleteAccount : "confirm_order" && handleConfirmOrder
       }
       className={`form grid jcs aic g30 ${(type === "edit_user" || type === "edit_account") && "edit_user_form"}`}
     >
@@ -1086,7 +1017,7 @@ const Form = ({ type }) => {
         <ContactForm loading={loading} formik={contactFormik} />
       ) : type === "delete_item" ? (
         <DeleteItemForm loading={loading} />
-      ) : type === "confirm_order" ? (<ConfirmOrderForm loading={loading} />) :
+      ) : type === "delete_subscription" ? <DeleteSubscriptionEmailForm loading={loading} /> : type === "subscription_email" ? <SubscriptionEmailForm formik={subscriptionEmailFormik} loading={loading} /> : type === "confirm_order" ? (<ConfirmOrderForm loading={loading} />) :
         type === "edit_address" ? <EditAddressForm loading={loading} formik={editAddressFormik} /> : type === "add_new_address" ? <AddNewAddressForm formik={addNewAddressFormik} loading={loading} /> : type === "edit_account" ? <EditAccountForm loading={loading} formik={editAccountFormik} /> : type === "delete_category" ? (<DeleteCategoryForm loading={loading} />) : type === "delete_user" ? (<DeleteUserForm loading={loading} />) : type === "delete_account" ? (<DeleteAccountForm loading={loading} />) : type === "edit_item" ? <EditItemForm loading={loading} formik={editItemFormik} /> : type === "edit_category" ? <EditCategoryForm loading={loading} formik={editCategoryFormik} /> : type === "edit_user" ? <EditUserForm loading={loading} formik={editUserFormik} /> : type === "delete_address" ? <DeleteAddressForm loading={loading} /> : type === "edit_profile" ? <EditProfileForm loading={loading} /> : type === "add_new_admin" && <AddNewAdminForm loading={loading} formik={addNewAdminFormik} />
       }
     </form>

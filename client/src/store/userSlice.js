@@ -17,6 +17,7 @@ const initialState = {
     user: null,
     userAddresses: [],
     userOrders: [],
+    userSubscriptions: [],
     isLoading: true,
 };
 
@@ -28,6 +29,7 @@ export const userSlice = createSlice({
             state.user = action.payload.user;
             state.userAddresses = action.payload.addresses;
             state.userOrders = action.payload.orders;
+            state.userSubscriptions = action.payload.subscriptions;
             state.isLoading = false;
         });
         builder.addCase(getUser.rejected, (state, action) => {

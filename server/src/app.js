@@ -16,8 +16,8 @@ const DBConnect = require("./DB/connection");
 
 //Routers
 const googleAuthRouter = require("./routes/googleAuth");
-const facebookAuthRouter = require("./routes/facebookAuth");
-const pinterestAuthRouter = require("./routes/pinterestAuth");
+// const facebookAuthRouter = require("./routes/facebookAuth");
+// const pinterestAuthRouter = require("./routes/pinterestAuth");
 const publicRouter = require("./routes/public");
 const adminRouter = require("./routes/admin");
 const userRouter = require("./routes/user");
@@ -26,8 +26,7 @@ const userRouter = require("./routes/user");
 app.use(helmet());
 app.use(
   cors({
-    origin: ["http://localhost:4500"],
-    methods: "GET,POST,PUT,PATCH,DELETE",
+    origin: "*",
     credentials: true
   })
 );
@@ -40,8 +39,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }));
-app.use(passport.initialize())
-app.use(passport.session())
+// app.use(passport.initialize())
+// app.use(passport.session())
 
 
 //Routers
@@ -49,8 +48,8 @@ app.get("/", (req, res) => {
   res.send("Hello Server");
 });
 app.use("/auth", googleAuthRouter)
-app.use("/api/facebook", facebookAuthRouter)
-app.use("/api", pinterestAuthRouter)
+// app.use("/api/facebook", facebookAuthRouter)
+// app.use("/api", pinterestAuthRouter)
 app.use("/api", publicRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);

@@ -5,4 +5,17 @@
     .footer_contain{
         grid-template-columns: 30% 20% 20% 1fr;
     }
+    .footer_divider{
+        border-color: $white !important;
+    }
+    @media (max-width:$md_size) {
+        .footer_contain{
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+    @media (max-width:$sm_size) {
+        .footer_contain{
+            grid-template-columns: repeat(1,1fr);
+        }
+    }
 }

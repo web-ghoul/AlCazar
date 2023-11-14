@@ -7,7 +7,7 @@
         position: relative;
         .options_list {
             position: absolute;
-            right: 100px;
+            right: 80px;
             top: 100%;
             box-shadow: $box_shadow;
             width: max-content;
@@ -17,10 +17,73 @@
             transform: translateY(-100%);
             z-index: -1;
             opacity: 0;
+            & svg{
+                font-size: 28px;
+            }
             &.active {
-                transform: translateY(0%);
+                transform: translateY(1%);
                 z-index: 10;
                 opacity: 1;
+            }
+        }
+    }
+    @media (max-width:$lg_size) {
+        height: 70px;
+        .header_contain {
+            .options_list {
+                right: 60px;
+                border-radius: 5px;
+                & svg{
+                    font-size: 25px;
+                }
+                &.active {
+                    transform: translateY(-1%);
+                }
+            }
+        }
+    }
+    @media (max-width:$md_size) {
+        height: 60px;
+        .header_contain {
+            .options_list {
+                right: 40px;
+                border-radius: 4px;
+                & svg{
+                    font-size: 22px;
+                }
+                &.active {
+                    transform: translateY(4%);
+                }
+            }
+        }
+    }
+    @media (max-width:$sm_size) {
+        height: 50px;
+        .header_contain {
+            .options_list {
+                right: 40px;
+                border-radius: 3px;
+                & svg{
+                    font-size: 20px;
+                }
+                &.active {
+                    transform: translateY(3%);
+                }
+            }
+        }
+    }
+    @media (max-width:$xs_size) {
+        height: 50px;
+        .header_contain {
+            .options_list {
+                right: 20px;
+                border-radius: 2px;
+                & svg{
+                    font-size: 18px;
+                }
+                &.active {
+                    transform: translateY(3%);
+                }
             }
         }
     }

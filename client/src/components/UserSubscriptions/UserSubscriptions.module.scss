@@ -1,0 +1,14 @@
+@import "../../styles/variable.scss";
+.user_subscriptions {
+    width: 100%;
+    background-color: $white;
+    box-shadow: $box_shadow;
+    .subscription {
+        border: 2px solid $main;
+    }
+    .loading_subscription {
+        height: 50px;
+        width: 100%;
+        border-radius: 4px;
+    }
+}

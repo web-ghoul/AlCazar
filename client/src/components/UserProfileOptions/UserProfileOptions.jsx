@@ -25,6 +25,8 @@ import { useParams } from "next/navigation";
 import { getProfile } from "@/store/profileSlice";
 import UserAddresses from "../UserAddresses/UserAddresses";
 import UserOrders from "../UserOrders/UserOrders";
+import UserSubscriptions from "../UserSubscriptions/UserSubscriptions";
+import { useMediaQuery } from "@mui/material";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -59,11 +61,12 @@ const UserProfileOptions = () => {
     const { id } = useParams()
     const { option, setOption } = useContext(ProfileContext)
     const dispatch = useDispatch()
-    const { profile, profileAddresses, profileOrders } = useSelector((state) => state.profile)
-    const { user, userAddresses, userOrders } = useSelector((state) => state.user)
+    const { profile, profileAddresses, profileSubscriptions, profileOrders } = useSelector((state) => state.profile)
+    const { user, userAddresses, userSubscriptions, userOrders } = useSelector((state) => state.user)
     const handleChange = (_, newValue) => {
         setOption(newValue);
     };
+    const mdSize = useMediaQuery("(max-width:992px)")
     useEffect(() => {
         try {
             const token = Cookies.get("AlCazar_token")
@@ -81,7 +84,7 @@ const UserProfileOptions = () => {
             <Box className={`grid jcfs aifs g50`}>
                 <UserBox data={id ? user : profile} editable={false} />
                 <Tabs
-                    orientation="vertical"
+                    orientation={mdSize ? "horizontal" : "vertical"}
                     variant="scrollable"
                     value={option}
                     onChange={handleChange}
@@ -145,10 +148,10 @@ const UserProfileOptions = () => {
                 <UserAddresses editable={true} addresses={id ? userAddresses : profileAddresses} />
             </TabPanel>
             <TabPanel value={option} index={3}>
-                Subscriptions
+                Wallets
             </TabPanel>
             <TabPanel value={option} index={4}>
-                Accounts
+                <UserSubscriptions subscriptions={id ? userSubscriptions : profileSubscriptions} />
             </TabPanel>
         </Box>
     );

@@ -7,10 +7,12 @@ import { PrimaryButton } from '@/MUIComponents/PrimaryButton'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
+import { ProfileContext } from '@/context/ProfileContext'
 
 const CartSummary = () => {
     const { cartPrice, handleOpenChooseAddressModal, chooseAddress, handleOpenConfirmOrderModal } = useContext(CartContext)
     const { profileAddresses } = useSelector((state) => state.profile)
+    const { setOption } = useContext(ProfileContext)
     const router = useRouter()
     const handleCheckOut = () => {
         const len = profileAddresses.length
@@ -22,6 +24,7 @@ const CartSummary = () => {
                     duration: 6000,
                 }
             );
+            setOption(2)
         } else if (len === 1) {
             chooseAddress(profileAddresses[0])
             handleOpenConfirmOrderModal()

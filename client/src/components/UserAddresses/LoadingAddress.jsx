@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Paper } from '@mui/material'
 import { PrimaryIconButton } from '@/MUIComponents/PrimaryIconButton'
 import { DeleteIconButton } from '@/MUIComponents/DeleteIconButton'
-import styles from "./UserAddresses.module.scss"
+import styles from "./Address.module.scss"
 import { Skeleton } from '@mui/material'
 import { DeleteRounded, EditRounded } from '@mui/icons-material'
 
@@ -12,11 +12,11 @@ const LoadingAddress = () => {
             <Skeleton variant='text' />
             <Box className={`grid jcs aic g10`}>
                 <Box className={`flex jcsb flex_wrap aic g30`}>
-                    <Box className={`flex jcfs aic g10`}>
+                    <Box className={`flex jcs aic g10`}>
                         <Skeleton variant='text' className={`${styles.title}`} />
                         <Skeleton variant='text' className={`${styles.value}`} />
                     </Box>
-                    <Box className={`flex jcfs aic g10`}>
+                    <Box className={`flex jcs aic g10`}>
                         <Skeleton variant='text' className={`${styles.title}`} />
                         <Skeleton variant='text' className={`${styles.value}`} />
                     </Box>

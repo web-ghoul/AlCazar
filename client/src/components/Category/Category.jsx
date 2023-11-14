@@ -4,14 +4,21 @@ import styles from "./Category.module.scss";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import { DeleteIconButton } from "@/MUIComponents/DeleteIconButton";
 import { DashboardContext } from "@/context/DashboardContext";
-import { SecondaryButton } from "@/MUIComponents/SecondaryButton";
 import { SecondaryIconButton } from "@/MUIComponents/SecondaryIconButton";
+import { useRouter } from "next/navigation";
+import { FilterAndSearchAndSortContext } from "@/context/FilterAndSearchAndSortContext";
 
 const Category = ({ data, editable }) => {
+  const router = useRouter()
   const {
     handleOpenDeleteCategoryModal,
     handleOpenEditCategoryModal,
   } = useContext(DashboardContext);
+  const { setCategory } = useContext(FilterAndSearchAndSortContext)
+  const handleChooseCategory = () => {
+    router.push(`${process.env.NEXT_PUBLIC_SHOP_PAGE}`)
+    setCategory(data.title)
+  }
   return editable ? (
     <Paper className={`${styles.editable_category} grid jcs aic`}>
       <Box
@@ -44,6 +51,7 @@ const Category = ({ data, editable }) => {
     <Paper
       sx={{ backgroundImage: `url(${data.image})` }}
       className={`${styles.category} flex jcc aic`}
+      onClick={handleChooseCategory}
     >
       <Box className={`overlay`} />
       <Typography variant="h6" className={`tac ${styles.category_title}`}>

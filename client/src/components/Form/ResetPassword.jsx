@@ -1,7 +1,7 @@
 import React from "react";
 import { PrimaryTextField } from "@/MUIComponents/PrimaryTextField";
 import { PrimaryButton } from "@/MUIComponents/PrimaryButton";
-import { LockRounded } from "@mui/icons-material";
+import { LockRounded, Visibility, VisibilityOff } from "@mui/icons-material";
 import { IconButton, InputAdornment } from "@mui/material";
 import LoadButton from "../LoadButton/LoadButton";
 const ResetPassword = ({ loading, formik }) => {

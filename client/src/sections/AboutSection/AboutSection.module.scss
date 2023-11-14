@@ -12,7 +12,12 @@
     }
     .about_contain {
         grid-template-columns: repeat(2, 1fr);
+        //Responsive
+        .overlay{
+            display:none;
+        }
         .about_content {
+            z-index: 10;
             .about_text {
                 color: $white;
                 position: relative;
@@ -31,7 +36,33 @@
             box-shadow: $box_shadow;
         }
     }
-
+    @media (max-width:$sm_size) {
+        &:before {
+            height: 100%;
+            width: 100%;
+            background-image: url("../../images/aboutOverviewImg.webp");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+        .about_contain {
+            grid-template-columns: repeat(1, 1fr);
+            justify-content: center;
+            text-align: center;
+            .about_button{
+                border-color: $main;
+                left:50%;
+                transform: translateX(-50%);
+                position: relative;
+            }
+            .about_image {
+                display: none;
+            }
+            .overlay{
+                display:flex;
+            }
+        }
+    }
 }
 
 .about_box {
@@ -42,5 +73,14 @@
         background-size: cover;
         height: 100%;
         width: 100%;
+    }
+    @media (max-width:$sm_size) {
+        grid-template-columns: repeat(1, 1fr);
+        .about_box_image {
+            display: none;
+        }
+        .about_text{
+            justify-content: center;
+        }
     }
 }

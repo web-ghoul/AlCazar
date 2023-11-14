@@ -69,7 +69,7 @@ const Address = ({ address, number, select, editable }) => {
                     </Box>
                 )
             }
-        </Paper >
+        </Paper>
     )
 }
 

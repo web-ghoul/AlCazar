@@ -30,6 +30,7 @@ export const profileSlice = createSlice({
             state.profile = null
             state.profileAddresses = []
             state.profileOrders = []
+            state.profileSubscriptions = []
         }
     },
     extraReducers: (builder) => {
@@ -37,6 +38,7 @@ export const profileSlice = createSlice({
             state.profile = action.payload.user;
             state.profileAddresses = action.payload.addresses;
             state.profileOrders = action.payload.orders;
+            state.profileSubscriptions = action.payload.subscriptions;
             state.isLoading = false;
         });
         builder.addCase(getProfile.rejected, (state, action) => {

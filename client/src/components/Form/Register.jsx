@@ -14,6 +14,7 @@ import {
   VisibilityOff,
 } from "@mui/icons-material";
 import LoadButton from "../LoadButton/LoadButton";
+import { SecondaryButton } from "@/MUIComponents/SecondaryButton";
 
 const Register = ({ loading, formik }) => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -197,16 +198,13 @@ const Register = ({ loading, formik }) => {
           </PrimaryButton>
         </LoadButton>
         <Link href={`${process.env.NEXT_PUBLIC_LOGIN_PAGE}`}>
-          <Typography
-            variant="h6"
-            className={`tas`}
-            sx={{
-              color: (theme) => theme.palette.primary.main,
-              textDecoration: "underline",
-            }}
+          <SecondaryButton
+            color="primary"
+            variant="contained"
+            fullWidth
           >
             Have an Account ?
-          </Typography>
+          </SecondaryButton>
         </Link>
       </Box>
       <Box>

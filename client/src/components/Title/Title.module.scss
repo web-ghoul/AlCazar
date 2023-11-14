@@ -10,4 +10,22 @@
         height: 4px;
         background-color: $main;
     }
+    & svg{
+        font-size: 28px;
+    }
+    @media (max-width:$md_size) {
+        & svg{
+            font-size: 25px;
+        }
+    }
+    @media (max-width:$sm_size) {
+        & svg{
+            font-size: 22px;
+        }
+    }
+    @media (max-width:$xs_size) {
+        & svg{
+            font-size: 20px;
+        }
+    }
 }

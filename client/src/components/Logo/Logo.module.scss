@@ -1,6 +1,18 @@
+@import "../../styles/variable.scss";
 .logo{
+    padding: 0 !important;
     img{
         width: auto;
         height: 30px;
+    }
+    @media (max-width:$sm_size) {
+        img{
+            height: 28px;
+        }
+    }
+    @media (max-width:$xs_size) {
+        img{
+            height: 25px;
+        }
     }
 }

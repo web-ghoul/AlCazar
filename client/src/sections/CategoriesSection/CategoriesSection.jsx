@@ -5,6 +5,7 @@ import { getCategories } from "@/store/categoriesSlice";
 import { Box } from "@mui/material";
 import Category from "@/components/Category/Category";
 import Title from "@/components/Title/Title";
+import styles from "./CategoriesSection.module.scss"
 import LoadingCategoriesSection from "./LoadingCategoriesSection";
 
 const CategoriesSection = ({ editable }) => {
@@ -14,7 +15,7 @@ const CategoriesSection = ({ editable }) => {
     dispatch(getCategories())
   }, [dispatch])
   return (
-    <Box className={`flex flex_wrap jcsb aic g20 `}>
+    <Box className={`${!editable ? styles.categories_section : styles.editable_categories_section} ${isLoading || (categories && categories.length > 0) ? "grid jcs aic g20" : "flex jcc aic"}`}>
       {isLoading ? <LoadingCategoriesSection editable={editable} /> : categories && categories.length > 0 ? (
         categories.map((category, i) => {
           return (

@@ -1,0 +1,11 @@
+@import "../../styles/variable.scss";
+.filter_and_search_and_sort{
+    .search_and_sort{
+        grid-template-columns: 1fr auto
+    }
+    @media (max-width:$md_size) {
+        .search_and_sort{
+            grid-template-columns: repeat(1,1fr);
+        }
+    }
+}

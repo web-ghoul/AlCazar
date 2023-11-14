@@ -2,16 +2,15 @@
 import { PrimaryTextField } from '@/MUIComponents/PrimaryTextField'
 import { SearchRounded } from '@mui/icons-material'
 import { Box, InputAdornment } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
+import styles from "./FilterAndSearchAndSort.module.scss"
 import Title from '../Title/Title'
 import { useDispatch, useSelector } from 'react-redux'
 import { getItems } from '@/store/itemsSlice'
+import { FilterAndSearchAndSortContext } from '@/context/FilterAndSearchAndSortContext'
 
 const FilterAndSearchAndSort = () => {
-    const [search, setSearch] = useState()
-    const [sort, setSort] = useState()
-    const [dimension, setDimension] = useState()
-    const [category, setCategory] = useState()
+    const { search, sort, dimension, category, setSearch, setSort, setDimension, setCategory } = useContext(FilterAndSearchAndSortContext)
     const { categories } = useSelector((state) => state.categories)
     const { dimensions } = useSelector((state) => state.dimensions)
     const dispatch = useDispatch()
@@ -32,8 +31,8 @@ const FilterAndSearchAndSort = () => {
         dispatch(getItems({ search, dimension: e.target.value, category, sort }))
     }
     return (
-        <Box className={`grid jcs aic g20`}>
-            <Box className={`grid jcsb aife flex_wrap g30`} sx={{ gridTemplateColumns: "1fr auto" }}>
+        <Box className={`grid jcs aic g20 ${styles.filter_and_search_and_sort}`}>
+            <Box className={`grid jcsb aic g30 ${styles.search_and_sort}`}>
                 <PrimaryTextField
                     InputProps={{
                         startAdornment: (
@@ -80,7 +79,7 @@ const FilterAndSearchAndSort = () => {
                 </PrimaryTextField>
             </Box>
             <Box className={`flex jcs aic g30`}>
-                <Title title={"Filter By"} fw={600} h="h6" line={false} />
+                <Title title={"Filter By"} fw={600} h="h5" line={false} />
                 <Box className={`flex jcs aic g20`}>
                     <PrimaryTextField
                         id="category"
@@ -91,6 +90,7 @@ const FilterAndSearchAndSort = () => {
                             native: true,
                         }}
                         variant="standard"
+                        value={category}
                         onChange={handleCategory}
                     >
                         <option key={-1} value={""}>

@@ -1,0 +1,40 @@
+@import "../../styles/variable.scss";
+.contact{
+    position: relative;
+    .contact_text_contain{
+        grid-template-columns: repeat(2,1fr);
+        .overlay{
+            display: none;
+        }
+        .contact_image{
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url("../../images/contact.webp");
+            height: 100%;
+            width: 100%;
+            box-shadow: $box_shadow;
+        }
+    }
+    @media (max-width:$md_size) {
+        grid-template-columns: repeat(1,1fr);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;            
+        background-image: url("../../images/contact.webp");
+        .contact_text_contain{
+            grid-template-columns: repeat(1,1fr);
+            .contact_text{
+                z-index: 10;
+                color: $white;
+                justify-content: center;
+            }
+            .overlay{
+                display: flex;
+            }
+            .contact_image{
+                display:none;
+            }
+        }
+    }
+}

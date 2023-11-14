@@ -17,7 +17,7 @@ const CartSideBar = () => {
             open={openCart}
             onClose={handleToggleCart}
         >
-            <Box className={`grid jcs aic g10  ${styles.drawer}`}>
+            <Box className={`grid jcs aic g30  ${styles.drawer}`}>
                 <Box className={`pad20`} sx={{ backgroundColor: (theme) => theme.palette.primary.main }}>
                     <IconButton onClick={handleToggleCart} className={`${styles.close_icon}`}>
                         <CloseRounded sx={{ color: (theme) => theme.palette.white }} />
@@ -30,13 +30,15 @@ const CartSideBar = () => {
                         <Typography>Got to Cart Page</Typography>
                     </SecondaryButton>
                 </Box>
-                <Box className={`grid jcs aic g10 pad10`}>
-                    {
-                        cartData.length > 0 ? cartData.map((data, i) => (
-                            <CartItem data={data} key={i} />
-                        )) : (<Title title={'No Items Yet...'} color={"#ddd"} align={"center"} h={"h4"} />)
-                    }
-                </Box>
+                {
+                    cartData.length > 0 ? (
+                        <Box className={`grid jcs aic g10 pad10 ${styles.cart_items_box}`}>
+                            {cartData.map((data, i) => (
+                                <CartItem data={data} key={i} />
+                            ))}
+                        </Box>
+                    ) : (<Title title={'No Items Yet...'} color={"#ddd"} align={"center"} h={"h4"} />)
+                }
                 {
                     cartPrice > 0 && (<Box className={`flex jcfs aic g10 pad10`}>
                         <Title title={"Total : "} align={"left"} fw={600} h={"h5"} />

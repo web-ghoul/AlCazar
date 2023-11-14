@@ -14,4 +14,18 @@ export const PrimaryLoadingButton = styled(LoadingButton)(({ theme }) => ({
     backgroundColor: theme.palette.white,
     color: theme.palette.primary.main,
   },
+  [theme.breakpoints.down("lg")]: {
+    padding: "17px !important",
+    borderRadius: "3px",
+  },
+  [theme.breakpoints.down("md")]: {
+    padding: "16px !important",
+  },
+  [theme.breakpoints.down("sm")]: {
+    padding: "15px !important",
+  },
+  [theme.breakpoints.down("sx")]: {
+    padding: "14px !important",
+    borderRadius: "2px",
+  },
 }));

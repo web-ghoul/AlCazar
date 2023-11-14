@@ -2,7 +2,7 @@
 .editable_category {
     border-radius: 4px;
     box-shadow: $box_shadow;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    width: 100%;
     .category_image {
         background-position: center;
         background-repeat: no-repeat;
@@ -13,6 +13,28 @@
     .category_title {
         color: $main;
     }
+    @media(max-width: $lg_size) {
+        border-radius: 3px;
+        .category_image {
+            height: 140px;
+        }
+    }
+    @media(max-width: $md_size) {
+        .category_image {
+            height: 120px;
+        }
+    }
+    @media(max-width: $sm_size) {
+        border-radius: 2px;
+        .category_image {
+            height: 100px;
+        }
+    }
+    @media(max-width: $xs_size) {
+        .category_image {
+            height: 80px;
+        }
+    }
 }
 
 .category {
@@ -22,8 +44,8 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 195px;
-    width: 195px;
+    height: 200px;
+    width: 100%;
     position: relative;
     &:hover {
         transform: translateY(-5px);
@@ -34,13 +56,49 @@
         position: relative;
         z-index: 10;
     }
+    @media(max-width: $lg_size) {
+        height: 180px;
+    }
+    @media(max-width: $md_size) {
+        height: 160px;
+    }
+    @media(max-width: $sm_size) {
+        height: 140px;
+    }
+    @media(max-width: $xs_size) {
+        height: 120px;
+    }
 }
 
 .loading_category {
-    height: 195px;
-    width: 195px;
+    height: 200px;
+    width: 100%;
     span {
-        height: 195px;
-        width: 195px;
+        height: 200px;
+        width: 100%;
+    }
+    @media(max-width: $lg_size) {
+        height: 180px;
+        span {
+            height: 180px;
+        }
+    }
+    @media(max-width: $md_size) {
+        height: 160px;
+        span {
+            height: 160px;
+        }
+    }
+    @media(max-width: $sm_size) {
+        height: 140px;
+        span {
+            height: 140px;
+        }
+    }
+    @media(max-width: $xs_size) {
+        height: 120px;
+        span {
+            height: 120px;
+        }
     }
 }

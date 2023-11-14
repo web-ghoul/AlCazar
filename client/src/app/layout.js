@@ -10,6 +10,8 @@ import { Provider } from "react-redux";
 import { store } from "@/store/store";
 import CartProvider from "@/context/CartContext";
 import ItemProvider from "@/context/ItemContext";
+import FilterAndSearchAndSortProvider from "@/context/FilterAndSearchAndSortContext";
+import SubscriptionProvider from "@/context/SubscriptionContext";
 
 export default function RootLayout({ children }) {
   return (
@@ -32,11 +34,15 @@ export default function RootLayout({ children }) {
             <ProfileProvider>
               <CartProvider>
                 <ItemProvider>
-                  <Provider store={store}>
-                    <Main>
-                      {children}
-                    </Main>
-                  </Provider>
+                  <FilterAndSearchAndSortProvider>
+                    <SubscriptionProvider>
+                      <Provider store={store}>
+                        <Main>
+                          {children}
+                        </Main>
+                      </Provider>
+                    </SubscriptionProvider>
+                  </FilterAndSearchAndSortProvider>
                 </ItemProvider>
               </CartProvider>
             </ProfileProvider>

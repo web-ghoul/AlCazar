@@ -1,6 +1,17 @@
+@import "../../styles/variable.scss";
 .users_section {
     width: 100%;
     .users_box {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+    @media (max-width:$md_size) {
+        .users_box {
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+    @media (max-width:$xs_size) {
+        .users_box {
+            grid-template-columns: repeat(1,1fr);
+        }
     }
 }

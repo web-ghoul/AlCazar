@@ -27,6 +27,7 @@ import EditAddressModal from '@/models/EditAddressModal';
 import { CartContext } from '@/context/CartContext';
 import ChooseAddressModal from '@/models/ChooseAddressModal';
 import ConfirmOrderModal from '@/models/ConfirmOrderModal';
+import DeleteSubscriptionModal from '@/models/DeleteSubscriptionModal';
 
 const Main = ({ children }) => {
     const dispatch = useDispatch()
@@ -58,6 +59,7 @@ const Main = ({ children }) => {
             <EditAccountModal />
             <EditAddressModal />
             <DeleteAddressModel />
+            <DeleteSubscriptionModal />
             <AddNewAddressModal />
             <ViewAvatarModal />
             <ViewItemImagesModal />

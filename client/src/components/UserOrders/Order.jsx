@@ -5,7 +5,6 @@ import Title from '../Title/Title'
 import { ExpandMore } from '@mui/icons-material'
 
 const Order = ({ order, number }) => {
-    console.log(new Date(order.createdAt).toLocaleDateString())
     return (
         <Accordion sx={{ backgroundColor: (theme) => theme.palette.primary.main }}>
             <AccordionSummary

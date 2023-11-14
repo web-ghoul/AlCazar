@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -24,6 +24,7 @@ import UsersSection from "@/sections/UsersSection/UsersSection";
 import AddNewAdmin from "./AddNewAdmin/AddNewAdmin";
 import FilterAndSearchAndSort from "../FilterAndSearchAndSort/FilterAndSearchAndSort";
 import { DashboardContext } from "@/context/DashboardContext";
+import { useMediaQuery } from "@mui/material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,15 +61,16 @@ const DashboardOptions = () => {
   const handleChange = (_, newValue) => {
     setDashboardOption(newValue);
   };
+  const smSize = useMediaQuery("(max-width:768px)")
 
   return (
     <Box className={`grid jcs aifs g50 ${styles.dashboard_options}`}>
       <Tabs
-        orientation="vertical"
+        orientation={smSize ? "horizontal" : "vertical"}
         variant="scrollable"
         value={dashboardOption}
         onChange={handleChange}
-        aria-label="Vertical tabs example"
+        aria-label={smSize ? "Horizontal tabs example" : "Vertical tabs example"}
         className={`${styles.tabs} pad20`}
       >
         <Tab
@@ -131,8 +133,9 @@ const DashboardOptions = () => {
           <Title
             title={"Items"}
             align={"center"}
-            fw={600}
+            fw={700}
             h={"h4"}
+            icon={<CategoryRounded />}
           />
           <FilterAndSearchAndSort />
           <ItemsSection editable={true} />
@@ -142,12 +145,13 @@ const DashboardOptions = () => {
         <AddNewItem />
       </TabPanel>
       <TabPanel value={dashboardOption} index={2}>
-        <Box className={`grid jcs aic g30`}>
+        <Box className={`grid jcs aic g30`} sx={{ width: "100%" }}>
           <Title
             title={"Categories"}
             h={"h4"}
             align={"center"}
-            fw={600}
+            fw={700}
+            icon={<EditRounded />}
           />
           <CategoriesSection editable={true} />
         </Box>
