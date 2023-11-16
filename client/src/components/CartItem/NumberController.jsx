@@ -6,20 +6,20 @@ import { AddRounded, RemoveRounded } from '@mui/icons-material'
 import { Box } from '@mui/material'
 import { CartContext } from '@/context/CartContext'
 
-const NumberController = ({ data }) => {
+const NumberController = ({ data, index }) => {
     const [value, setValue] = useState(1)
-    const { incrementItemNumber, decrementItemNumber } = useContext(CartContext)
+    const { incrementItemNumber, cartData, decrementItemNumber } = useContext(CartContext)
     const increment = () => {
-        if (value < data.data.quantity) {
-            setValue(value + 1)
-        } else {
-            setValue(value)
+        incrementItemNumber(index)
+        if (cartData.length > index) {
+            setValue(cartData[index].number)
         }
-        incrementItemNumber(data.data._id)
     }
     const decrement = () => {
-        setValue(value - 1)
-        decrementItemNumber(data.data._id)
+        decrementItemNumber(index)
+        if (cartData.length > index) {
+            setValue(cartData[index].number)
+        }
     }
     useEffect(() => {
         setValue(data.number)

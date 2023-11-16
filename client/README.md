@@ -1,6 +1,5 @@
 steps:
 1- Complete UI Design
-2- Complete Subscription Email
 3- Build Facebook Authentication
 4- Build Pinterest Authentication
 5- Complete Google Authentication
@@ -12,6 +11,6 @@ steps:
 11- Responsive
 12- Build Four Mail Template (Welcome , reset_password , Verify , Subscription)
 13- List Official Email And their other authentication (Cloudinary , MongoDB , vercel , cyclic , google developer , facebook developer , pinterest developer)
-14- Build Error Page
 15- Make an Item has multiple dimension 
 16- Finish Contact Route
+17- Build Change Avatar Route

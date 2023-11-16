@@ -26,7 +26,7 @@ const UserSubscriptions = ({ subscriptions }) => {
                     ) : (
                         (subscriptions && subscriptions.length > 0) ? subscriptions.map((subscription, i) => (
                             <Subscription key={i} subscription={subscription} />
-                        )) : (<Title title={"You haven't purchased any subscriptions yet."} fw={500} h={"h4"} align={"center"} />))
+                        )) : (<Title title={"You haven't purchased any subscriptions yet."} fw={500} h={"h5"} align={"center"} />))
                 }
             </Box>
         </Box>

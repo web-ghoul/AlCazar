@@ -1,0 +1,41 @@
+@import "../../styles/variable.scss";
+.subscription{
+    .subscription_image{
+        width: 500px;
+    }
+    .subscription_image_loading{
+        height: 500px;
+    }
+    @media (max-width:$lg_size) {
+        .subscription_image{
+            width: 400px;
+        }
+        .subscription_image_loading{
+            height: 400px;
+        }
+    }
+    @media (max-width:$md_size) {
+        .subscription_image{
+            width: 300px;
+        }
+        .subscription_image_loading{
+            height: 300px;
+        }
+    }
+    @media (max-width:$sm_size) {
+        .subscription_image{
+            width: 200px;
+        }
+        .subscription_image_loading{
+            height: 200px;
+        }
+    }
+    @media (max-width:$xs_size) {
+        .subscription_image{
+            width: 100%;
+        }
+        .subscription_image_loading{
+            height: 100px;
+        }
+    }
+}

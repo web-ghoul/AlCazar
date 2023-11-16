@@ -20,7 +20,7 @@ const CartItems = () => {
                 cartData.length > 0 ? (
                     <Box className={`grid jcs aic g20 ${styles.items}`}>
                         {cartData.map((item, i) => (
-                            <CartItem key={i} data={item} />
+                            <CartItem index={i} key={i} data={item} />
                         ))}
                     </Box>
                 ) : (

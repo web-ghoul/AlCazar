@@ -6,7 +6,7 @@
         content: "";
         position: absolute;
         width: 60%;
-        bottom: 0;
+        bottom: -4px;
         height: 4px;
         background-color: $main;
     }
@@ -19,11 +19,20 @@
         }
     }
     @media (max-width:$sm_size) {
+        &.line:after {
+            width: 80%;
+            bottom: -3px;
+            height: 3px;
+        }
         & svg{
             font-size: 22px;
         }
     }
     @media (max-width:$xs_size) {
+        &.line:after {
+            bottom: -2px;
+            height: 2px;
+        }
         & svg{
             font-size: 20px;
         }

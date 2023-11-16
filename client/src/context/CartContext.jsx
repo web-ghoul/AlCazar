@@ -8,6 +8,7 @@ const CartProvider = ({ children }) => {
     const [cartPrice, setCartPrice] = useState(0)
     const [cartCount, setCartCount] = useState(0)
     const [chosenAddress, setChosenAddress] = useState(null)
+    const [chosenData, setChosenData] = useState(null)
     const [openChooseAddressModal, setOpenChooseAddressModal] = useState(false)
     const [openConfirmOrderModal, setOpenConfirmOrderModal] = useState(false)
 
@@ -49,7 +50,7 @@ const CartProvider = ({ children }) => {
         const newPrice = cartPrice + data.data.price
         var isExist = false
         cartData.map((d) => {
-            if (d.data._id === data.data._id) {
+            if (d.data._id === data.data._id && d.dimension === data.dimension) {
                 isExist = true
                 if (d.number < d.data.quantity) {
                     d.number += data.number
@@ -71,7 +72,7 @@ const CartProvider = ({ children }) => {
     }
 
     const removeItemFromCart = (data) => {
-        const newCartData = cartData.filter((d) => d.data._id != data.id)
+        const newCartData = cartData.filter((_, i) => i != data.index)
         const newPrice = cartPrice - (+data.price * +data.number)
         const newCount = cartCount - data.number
         setCartCount(newCount)
@@ -82,37 +83,39 @@ const CartProvider = ({ children }) => {
         localStorage.setItem("cart_count", JSON.stringify(newCount))
     }
 
-    const incrementItemNumber = (id) => {
-        cartData.map((d) => {
-            if (d.data._id === id) {
-                if (d.data.quantity > d.number) {
-                    const newPrice = cartPrice + d.data.price
-                    setCartPrice(newPrice)
-                    localStorage.setItem("cart_price", JSON.stringify(newPrice))
-                    setCartCount(cartCount + 1)
-                    localStorage.setItem("cart_count", JSON.stringify(cartCount + 1))
-                    d.number += 1
+    const incrementItemNumber = (index) => {
+        let quantity = 0;
+        if (cartData.length > index) {
+            const d = cartData[index]
+            cartData.map((data) => {
+                if (data.data._id === d.data._id) {
+                    quantity += data.number
                 }
+            })
+            if (d.data.quantity > quantity) {
+                const newPrice = cartPrice + d.data.price
+                setCartPrice(newPrice)
+                localStorage.setItem("cart_price", JSON.stringify(newPrice))
+                setCartCount(cartCount + 1)
+                localStorage.setItem("cart_count", JSON.stringify(cartCount + 1))
+                d.number += 1
             }
-        })
-        localStorage.setItem("cart_data", JSON.stringify(cartData))
+            localStorage.setItem("cart_data", JSON.stringify(cartData))
+        }
     }
 
-    const decrementItemNumber = (id) => {
-        cartData.map((d) => {
-            if (d.data._id === id) {
-                if (d.number > 1) {
-                    d.number -= 1
-                    setCartCount(cartCount - 1)
-                    localStorage.setItem("cart_count", JSON.stringify(cartCount - 1))
-                    const newPrice = cartPrice - d.data.price
-                    setCartPrice(newPrice)
-                    localStorage.setItem("cart_price", JSON.stringify(newPrice))
-                } else {
-                    removeItemFromCart({ price: d.data.price, number: d.number, id })
-                }
-            }
-        })
+    const decrementItemNumber = (index) => {
+        const d = cartData[index]
+        if (d.number > 1) {
+            d.number -= 1
+            setCartCount(cartCount - 1)
+            localStorage.setItem("cart_count", JSON.stringify(cartCount - 1))
+            const newPrice = cartPrice - d.data.price
+            setCartPrice(newPrice)
+            localStorage.setItem("cart_price", JSON.stringify(newPrice))
+        } else {
+            removeItemFromCart({ price: d.data.price, number: d.number, index })
+        }
         localStorage.setItem("cart_data", JSON.stringify(cartData))
     }
 
@@ -138,7 +141,7 @@ const CartProvider = ({ children }) => {
     }
 
     return (
-        <CartContext.Provider value={{ resetCartFromLocalStorage, chosenAddress, chooseAddress, resetCart, openConfirmOrderModal, handleOpenConfirmOrderModal, handleCloseConfirmOrderModal, handleCloseChooseAddressModal, handleOpenChooseAddressModal, openChooseAddressModal, openCart, cartCount, cartPrice, setCartPrice, cartData, removeItemFromCart, handleToggleCart, addItemToCart, incrementItemNumber, decrementItemNumber, getDataFromLocalStorage }}>
+        <CartContext.Provider value={{ chosenData, setChosenData, resetCartFromLocalStorage, chosenAddress, chooseAddress, resetCart, openConfirmOrderModal, handleOpenConfirmOrderModal, handleCloseConfirmOrderModal, handleCloseChooseAddressModal, handleOpenChooseAddressModal, openChooseAddressModal, openCart, cartCount, cartPrice, setCartPrice, cartData, removeItemFromCart, handleToggleCart, addItemToCart, incrementItemNumber, decrementItemNumber, getDataFromLocalStorage }}>
             {children}
         </CartContext.Provider>
     )

@@ -28,6 +28,7 @@ const Order = ({ order, number }) => {
                                         <Box className={`grid jcfs aic g5`}>
                                             <Title color={"#fff"} title={data.data.title} fw={700} h={"h6"} align={"left"} />
                                             <Title color={"#fff"} title={`EGP ${data.data.price}`} fw={500} h={"h6"} align={"left"} />
+                                            <Typography variant='h6' sx={{ color: (theme) => theme.palette.white }}>L{data.data.dimensions[data.dimension].length} x W{data.data.dimensions[data.dimension].width} x H{data.data.dimensions[data.dimension].height}</Typography>
                                         </Box>
                                     </Box>
                                     <Typography sx={{ color: (theme) => theme.palette.white }} variant='h6' >{data.number} QTY</Typography>

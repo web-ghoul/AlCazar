@@ -18,7 +18,7 @@ const ItemSection = () => {
     }, [dispatch])
     return !isLoading && item && (
         <PrimaryBox>
-            <PrimaryContainer className={`grid jcs aifs g30 ${styles.item_section_box}`}>
+            <PrimaryContainer className={`grid jcs aifs g50 ${styles.item_section_box}`}>
                 <ItemImages images={item.images} />
                 <ItemInfo data={item} />
             </PrimaryContainer>

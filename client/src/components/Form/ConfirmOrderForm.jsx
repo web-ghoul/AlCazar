@@ -39,7 +39,10 @@ const ConfirmOrderForm = ({ loading }) => {
                             <Box key={i} className={`flex jcsb aic g20`} >
                                 <Box className={`flex jcfs aic g10`}>
                                     <Box className={`item_image`} sx={{ backgroundImage: `url(${data.data.images[0]})` }} />
-                                    <Title title={data.data.title} fw={500} h={"h6"} align={"left"} />
+                                    <Box className={`grid jcfs aic g10`}>
+                                        <Title title={data.data.title} fw={500} h={"h6"} align={"left"} />
+                                        <Typography variant='h6'>L{data.data.dimensions[data.dimension].length} x W{data.data.dimensions[data.dimension].width} x H{data.data.dimensions[data.dimension].height}</Typography>
+                                    </Box>
                                 </Box>
                                 <Typography variant='h6' >{data.number} QTY</Typography>
                             </Box>

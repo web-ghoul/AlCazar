@@ -102,7 +102,9 @@ const Header = () => {
           {
             (token && userId) ? (<>
               {
-                !mdSize && (<SecondaryIconButton className={`activate`} onClick={() => setActiveList(!activeList)}>
+                mdSize ? (<SecondaryIconButton className={`activate`} onClick={() => setActiveList(!activeList)}>
+                  <ListRounded className={`activate`} />
+                </SecondaryIconButton>) : (<SecondaryIconButton className={`activate`} onClick={() => setActiveList(!activeList)}>
                   <PersonRounded className={`activate`} />
                 </SecondaryIconButton>)
               }

@@ -18,7 +18,7 @@ import EditUserModal from '@/models/EditUserModal';
 import DeleteUserModal from '@/models/DeleteUserModal';
 import { getProfile } from '@/store/profileSlice';
 import CartSideBar from '@/components/CartSideBar/CartSideBar';
-import ViewAvatarModal from '@/models/ViewAvatarModal';
+import ViewAndChangeAvatarModal from '@/models/ViewAndChangeAvatarModal';
 import ViewItemImagesModal from '@/models/ViewItemImagesModal';
 import EditAccountModal from '@/models/EditAccountModal';
 import AddNewAddressModal from '@/models/AddNewAddressModal';
@@ -28,6 +28,7 @@ import { CartContext } from '@/context/CartContext';
 import ChooseAddressModal from '@/models/ChooseAddressModal';
 import ConfirmOrderModal from '@/models/ConfirmOrderModal';
 import DeleteSubscriptionModal from '@/models/DeleteSubscriptionModal';
+import ChooseDimensionModal from '@/models/ChooseDimensionModal';
 
 const Main = ({ children }) => {
     const dispatch = useDispatch()
@@ -61,7 +62,8 @@ const Main = ({ children }) => {
             <DeleteAddressModel />
             <DeleteSubscriptionModal />
             <AddNewAddressModal />
-            <ViewAvatarModal />
+            <ChooseDimensionModal />
+            <ViewAndChangeAvatarModal />
             <ViewItemImagesModal />
             <ChooseAddressModal />
             <ConfirmOrderModal />

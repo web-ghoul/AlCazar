@@ -16,7 +16,7 @@ const Subscription = ({ subscription }) => {
     }
     return (
         <Paper className={`pad10 flex jcsb aic g30 ${styles.subscription}`}>
-            <Title title={subscription.email} h={"h5"} fw={600} />
+            <Title title={subscription.subscriptedEmail} h={"h5"} fw={600} align={"center"} />
             <DeleteIconButton onClick={handleDeleteSubscription}>
                 <DeleteRounded />
             </DeleteIconButton>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Box, Drawer, IconButton, Typography } from '@mui/material'
+import { Box, Divider, Drawer, IconButton, Typography } from '@mui/material'
 import styles from "./CartSideBar.module.scss"
 import { CartContext } from '@/context/CartContext';
 import Title from '../Title/Title';
@@ -11,6 +11,10 @@ import { useRouter } from 'next/navigation';
 const CartSideBar = () => {
     const { openCart, cartPrice, handleToggleCart, cartData } = useContext(CartContext)
     const router = useRouter()
+    const handleGoToCartPage = () => {
+        router.push(`${process.env.NEXT_PUBLIC_CART_PAGE}`)
+        handleToggleCart()
+    }
     return (
         <Drawer
             anchor={"right"}
@@ -25,26 +29,31 @@ const CartSideBar = () => {
                     <Title color={"#fff"} align={"center"} h={"h4"} title={"My Cart"} />
                 </Box>
                 <Box className={` flex jcc aic pad10`}>
-                    <SecondaryButton onClick={() => router.push(`${process.env.NEXT_PUBLIC_CART_PAGE}`)} className={`flex jcc aic g10`}>
+                    <SecondaryButton onClick={handleGoToCartPage} className={`flex jcc aic g10`}>
                         <ShoppingCart />
                         <Typography>Got to Cart Page</Typography>
                     </SecondaryButton>
                 </Box>
-                {
-                    cartData.length > 0 ? (
-                        <Box className={`grid jcs aic g10 pad10 ${styles.cart_items_box}`}>
-                            {cartData.map((data, i) => (
-                                <CartItem data={data} key={i} />
-                            ))}
-                        </Box>
-                    ) : (<Title title={'No Items Yet...'} color={"#ddd"} align={"center"} h={"h4"} />)
-                }
-                {
-                    cartPrice > 0 && (<Box className={`flex jcfs aic g10 pad10`}>
-                        <Title title={"Total : "} align={"left"} fw={600} h={"h5"} />
-                        <Typography variant='h6'>EGP {cartPrice}</Typography>
-                    </Box>)
-                }
+                <Box className={`grid jcs aic g30 pad20`}>
+                    {
+                        cartData.length > 0 ? (
+                            <Box className={`grid jcs aic g10 ${styles.cart_items_box}`}>
+                                {cartData.map((data, i) => (
+                                    <CartItem index={i} data={data} key={i} />
+                                ))}
+                            </Box>
+                        ) : (<Title title={'No Items Yet...'} color={"#ddd"} align={"center"} h={"h4"} />)
+                    }
+                    {
+                        cartPrice > 0 && <Divider />
+                    }
+                    {
+                        cartPrice > 0 && (<Box className={`flex jcfs aic g10 pad10`}>
+                            <Title title={"Total : "} align={"left"} fw={600} h={"h4"} />
+                            <Typography variant='h5'>EGP {cartPrice}</Typography>
+                        </Box>)
+                    }
+                </Box>
             </Box>
         </Drawer>
     )

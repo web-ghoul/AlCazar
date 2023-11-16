@@ -5,6 +5,9 @@ export const ItemContext = createContext()
 const ItemProvider = ({ children }) => {
     const [itemImages, setItemImages] = useState([])
     const [openViewItemImagesModal, setOpenViewItemImagesModal] = useState(false)
+    const [openViewChooseDimensionsModal, setOpenViewChooseDimensionsModal] = useState(false)
+    const [dimensions, setDimensions] = useState([])
+    const [chosenDimension, setChosenDimension] = useState()
 
     const handleOpenViewItemImagesModal = () => {
         setOpenViewItemImagesModal(true)
@@ -14,8 +17,17 @@ const ItemProvider = ({ children }) => {
         setOpenViewItemImagesModal(false)
     }
 
+    const handleOpenViewChooseDimensionModal = () => {
+        setOpenViewChooseDimensionsModal(true)
+    }
+
+    const handleCloseViewChooseDimensionModal = () => {
+        setOpenViewChooseDimensionsModal(false)
+        setDimensions([])
+    }
+
     return (
-        <ItemContext.Provider value={{ openViewItemImagesModal, handleOpenViewItemImagesModal, handleCloseViewItemImagesModal, setItemImages, itemImages }}>
+        <ItemContext.Provider value={{ chosenDimension, setChosenDimension, openViewItemImagesModal, handleOpenViewItemImagesModal, handleCloseViewItemImagesModal, setItemImages, itemImages, setDimensions, dimensions, handleOpenViewChooseDimensionModal, handleCloseViewChooseDimensionModal, openViewChooseDimensionsModal }}>
             {children}
         </ItemContext.Provider>
     )

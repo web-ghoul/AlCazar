@@ -6,7 +6,7 @@ import NumberController from './NumberController'
 import { DeleteButton } from '@/MUIComponents/DeleteButton'
 import { CartContext } from '@/context/CartContext'
 
-const CartItem = ({ data }) => {
+const CartItem = ({ data, index }) => {
     const { removeItemFromCart } = useContext(CartContext)
     return (
         <Paper className={`grid jcs aic g10 ${styles.cart_item}`}>
@@ -14,8 +14,9 @@ const CartItem = ({ data }) => {
             <Box className={`grid jcs aic g10 pad10 `}>
                 <Typography variant='h6'>{data.data.title}</Typography>
                 <Typography variant='h6'>EGP {data.data.price}</Typography>
-                <NumberController data={data} />
-                <DeleteButton onClick={() => { removeItemFromCart({ price: data.data.price, number: data.number, id: data.data._id }) }}>
+                <Typography variant='h6'>L{data.data.dimensions[data.dimension].length} x W{data.data.dimensions[data.dimension].width} x H{data.data.dimensions[data.dimension].height}</Typography>
+                <NumberController index={index} data={data} />
+                <DeleteButton onClick={() => { removeItemFromCart({ price: data.data.price, number: data.number, index }) }}>
                     Remove
                 </DeleteButton>
             </Box>

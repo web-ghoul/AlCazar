@@ -10,20 +10,31 @@ import { PrimaryIconButton } from "@/MUIComponents/PrimaryIconButton";
 import { DashboardContext } from "@/context/DashboardContext";
 import { PrimaryButton } from "@/MUIComponents/PrimaryButton";
 import { CartContext } from "@/context/CartContext";
+import { ItemContext } from "@/context/ItemContext";
 
 const ItemBox = ({ data, num, editable }) => {
   const router = useRouter();
   const { handleOpenDeleteItemModal, handleOpenEditItemModal } = useContext(
     DashboardContext
   );
-  const { addItemToCart, handleToggleCart } = useContext(CartContext)
+  const { handleOpenViewChooseDimensionModal, setDimensions } = useContext(ItemContext)
+  const { addItemToCart, handleToggleCart, setChosenData } = useContext(CartContext)
   const handleViewMore = () => {
     router.push(`shop/${data._id}`);
   };
-
   const handleEditItem = () => {
     handleOpenEditItemModal(data)
   };
+  const handleShopping = () => {
+    if (data.dimensions.length > 1) {
+      setChosenData({ data, number: 1 })
+      setDimensions(data.dimensions)
+      handleOpenViewChooseDimensionModal()
+    } else {
+      addItemToCart({ data, number: 1, dimension: 0 })
+      handleToggleCart()
+    }
+  }
   return (
     <Paper className={`grid jcs aic g20 ${styles.item}`}>
       <Box
@@ -47,7 +58,7 @@ const ItemBox = ({ data, num, editable }) => {
               <DeleteRounded />
             </DeleteIconButton>
           ) : (
-            <PrimaryIconButton onClick={() => { addItemToCart({ data, number: 1 }); handleToggleCart() }}>
+            <PrimaryIconButton onClick={handleShopping}>
               <ShoppingCartRounded />
             </PrimaryIconButton>
           )}

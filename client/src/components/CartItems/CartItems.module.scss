@@ -1,5 +1,19 @@
+@import "../../styles/variable.scss";
 .cart_items {
     .items {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    @media (max-width:$lg_size) {
+        .items {
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+    @media (max-width:$md_size) {
+        .items {
+            grid-template-columns: repeat(1,1fr);
+        }
+    }
+    @media (max-width:$sm_size) {
+        order: 1;
     }
 }

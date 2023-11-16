@@ -1,11 +1,8 @@
 import React from 'react'
+import ErrorSection from '@/sections/ErrorSection/ErrorSection'
 
 const NotFound = () => {
-  return (
-    <div>
-      Eror
-    </div>
-  )
+  return (<ErrorSection />)
 }
 
 export default NotFound

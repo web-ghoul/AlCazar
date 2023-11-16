@@ -41,6 +41,8 @@ import { CartContext } from "@/context/CartContext";
 import SubscriptionEmailForm from "./SubscriptionEmailForm";
 import { SubscriptionContext } from "@/context/SubscriptionContext";
 import DeleteSubscriptionEmailForm from "./DeleteSubscriptionEmailForm";
+import { ItemContext } from "@/context/ItemContext";
+import ChangeAvatarForm from "./ChangeAvatarForm";
 
 const Form = ({ type }) => {
   const router = useRouter();
@@ -65,7 +67,7 @@ const Form = ({ type }) => {
     handleCloseAddNewAdminModal,
     setDashboardOption,
   } = useContext(DashboardContext);
-  const { handleCloseDeleteAccountModal, handleCloseEditAccountModal, editableAccountData, handleCloseDeleteAddressModal, handleCloseAddNewAddressModal, handleCloseEditAddressModal, addressId, editableAddressData } = useContext(ProfileContext)
+  const { handleCloseDeleteAccountModal, handleCloseEditAccountModal, editableAccountData, handleCloseDeleteAddressModal, handleCloseAddNewAddressModal, handleCloseEditAddressModal, addressId, editableAddressData, handleCloseViewAvatarModal } = useContext(ProfileContext)
   const { handleCloseConfirmOrderModal, chosenAddress, cartPrice, resetCartFromLocalStorage, cartData, resetCart } = useContext(CartContext)
   const loginFormik = useFormik({
     initialValues: {
@@ -112,6 +114,8 @@ const Form = ({ type }) => {
       setLoading(false);
     },
   });
+  const [image, setImage] = useState()
+  const { dimensions, setDimensions } = useContext(ItemContext)
   const {
     handleCloseDeleteSubscriptionModal, subscriptionEmailId
   } = useContext(SubscriptionContext);
@@ -228,10 +232,8 @@ const Form = ({ type }) => {
       price: "",
       images: [],
       category: "",
-      count: "",
-      width: "",
-      length: "",
-      height: "",
+      quantity: "",
+      dimensions: [],
     },
     validationSchema: yup.object({
       title: yup.string("Enter your title").required("Title is required"),
@@ -240,13 +242,17 @@ const Form = ({ type }) => {
       category: yup
         .string("Enter your category")
         .required("Category is required"),
-      count: yup.number("Enter your count").required("Count is required"),
-      width: yup.number("Enter your width").required("Width is required"),
-      length: yup.number("Enter your length").required("Length is required"),
-      height: yup.number("Enter your height").required("Height is required"),
+      quantity: yup.number("Enter your count").required("Quantity is required"),
     }),
     onSubmit: async (values, { resetForm }) => {
       setLoading(true);
+      if (dimensions.length === 0) {
+        toast.error("Please Enter Item Dimensions")
+        setLoading(false);
+        return
+      } else {
+        values.dimensions = dimensions
+      }
       const formData = new FormData();
       values.images.map((image) => {
         formData.append("images", image);
@@ -266,6 +272,7 @@ const Form = ({ type }) => {
           try {
             toast.success(res.data.message);
             setDashboardOption(0)
+            setDimensions([])
           } catch (error) {
             toast.error(error.message);
           }
@@ -542,6 +549,52 @@ const Form = ({ type }) => {
     },
   });
 
+  const changeAvatarFormik = useFormik({
+    initialValues: {
+      avatar: ""
+    },
+    validationSchema: yup.object({
+      avatar: yup.array(yup.mixed())
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      const formData = new FormData();
+      if (values.avatar) {
+        values.avatar.map((img) => {
+          formData.append("image", img);
+        });
+      } else {
+        values.avatar = [avatar]
+      }
+      const url = id ? `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/changeAvatar/${id}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/user/changeAvatar`
+      await axios
+        .patch(url, formData,
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          })
+        .then((res) => {
+          try {
+            toast.success(res.data.message);
+            handleCloseViewAvatarModal()
+            if (id) {
+              dispatch(getUser({ token, userId: id }))
+            } else {
+              dispatch(getProfile())
+            }
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          handleError(err)
+        });
+      setLoading(false);
+    },
+  });
+
   const addNewAdminFormik = useFormik({
     initialValues: {
       email: ""
@@ -752,6 +805,11 @@ const Form = ({ type }) => {
           } catch (error) {
             toast.error(error.message);
           }
+          if (id) {
+            dispatch(getUser({ token, userId: id }))
+          } else {
+            dispatch(getProfile())
+          }
           resetForm();
         })
         .catch((err) => {
@@ -949,7 +1007,7 @@ const Form = ({ type }) => {
   const handleDeleteSubscriptionEmail = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const url = id ? `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteSubscriptionEmail/${id}/${subscriptionEmailId}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/user/deleteSubscriptionEmail/${subscriptionEmailId}`
+    const url = id ? `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteSubscriptedEmail/${id}/${subscriptionEmailId}` : `${process.env.NEXT_PUBLIC_SERVER_URL}/user/deleteSubscriptedEmail/${subscriptionEmailId}`
     await axios
       .delete(
         url,
@@ -995,11 +1053,11 @@ const Form = ({ type }) => {
                     ? addNewItemFormik.handleSubmit
                     : type === "add_new_category"
                       ? addNewCategoryFormik.handleSubmit : type === "edit_item" ? editItemFormik.handleSubmit : type === "edit_address" ? editAddressFormik.handleSubmit : type === "edit_category" ? editCategoryFormik.handleSubmit
-                        : type === "edit_item" ? editItemFormik.handleSubmit : type === "add_new_address" ? addNewAddressFormik.handleSubmit : type === "edit_user" ? editUserFormik.handleSubmit : type === "delete_item"
+                        : type === "edit_item" ? editItemFormik.handleSubmit : type === "add_new_address" ? addNewAddressFormik.handleSubmit : type === "change_avatar" ? changeAvatarFormik.handleSubmit : type === "edit_user" ? editUserFormik.handleSubmit : type === "delete_item"
                           ? handleDeleteItem
                           : type === "delete_subscription" ? handleDeleteSubscriptionEmail : type === "edit_account" ? editAccountFormik.handleSubmit : type === "add_new_admin" ? addNewAdminFormik.handleSubmit : type === "delete_address" ? handleDeleteAddress : type === "delete_category" ? handleDeleteCategory : type === "delete_user" ? handleDeleteUser : type === "delete_account" ? handleDeleteAccount : "confirm_order" && handleConfirmOrder
       }
-      className={`form grid jcs aic g30 ${(type === "edit_user" || type === "edit_account") && "edit_user_form"}`}
+      className={`form grid jcs aic g50 ${(type === "edit_user" || type === "edit_account") && "edit_user_form"} ${(type === "login" || type === "register" || type === "forgot_password" || type === "reset_password") && "login acc"}`}
     >
       {type === "login" ? (
         <Login loading={loading} formik={loginFormik} />
@@ -1017,7 +1075,7 @@ const Form = ({ type }) => {
         <ContactForm loading={loading} formik={contactFormik} />
       ) : type === "delete_item" ? (
         <DeleteItemForm loading={loading} />
-      ) : type === "delete_subscription" ? <DeleteSubscriptionEmailForm loading={loading} /> : type === "subscription_email" ? <SubscriptionEmailForm formik={subscriptionEmailFormik} loading={loading} /> : type === "confirm_order" ? (<ConfirmOrderForm loading={loading} />) :
+      ) : type === "change_avatar" ? <ChangeAvatarForm formik={changeAvatarFormik} loading={loading} /> : type === "delete_subscription" ? <DeleteSubscriptionEmailForm loading={loading} /> : type === "subscription_email" ? <SubscriptionEmailForm formik={subscriptionEmailFormik} loading={loading} /> : type === "confirm_order" ? (<ConfirmOrderForm loading={loading} />) :
         type === "edit_address" ? <EditAddressForm loading={loading} formik={editAddressFormik} /> : type === "add_new_address" ? <AddNewAddressForm formik={addNewAddressFormik} loading={loading} /> : type === "edit_account" ? <EditAccountForm loading={loading} formik={editAccountFormik} /> : type === "delete_category" ? (<DeleteCategoryForm loading={loading} />) : type === "delete_user" ? (<DeleteUserForm loading={loading} />) : type === "delete_account" ? (<DeleteAccountForm loading={loading} />) : type === "edit_item" ? <EditItemForm loading={loading} formik={editItemFormik} /> : type === "edit_category" ? <EditCategoryForm loading={loading} formik={editCategoryFormik} /> : type === "edit_user" ? <EditUserForm loading={loading} formik={editUserFormik} /> : type === "delete_address" ? <DeleteAddressForm loading={loading} /> : type === "edit_profile" ? <EditProfileForm loading={loading} /> : type === "add_new_admin" && <AddNewAdminForm loading={loading} formik={addNewAdminFormik} />
       }
     </form>

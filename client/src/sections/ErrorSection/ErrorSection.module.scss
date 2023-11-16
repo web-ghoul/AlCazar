@@ -1,0 +1,21 @@
+@import "../../styles/variable.scss";
+.error_section{
+    .error_image{
+        width: 850px;
+    }
+    @media (max-width:$lg_size) {
+        .error_image{
+            width: 750px;
+        }
+    }
+    @media (max-width:$md_size) {
+        .error_image{
+            width: 650px;
+        }
+    }
+    @media (max-width:$sm_size) {
+        .error_image{
+            width: 100%;
+        }
+    }
+}

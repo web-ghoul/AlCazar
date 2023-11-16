@@ -1,7 +1,7 @@
 "use client"
 import { PrimaryTextField } from '@/MUIComponents/PrimaryTextField'
 import { SearchRounded } from '@mui/icons-material'
-import { Box, InputAdornment } from '@mui/material'
+import { Box, InputAdornment, Typography } from '@mui/material'
 import React, { useContext } from 'react'
 import styles from "./FilterAndSearchAndSort.module.scss"
 import Title from '../Title/Title'
@@ -114,15 +114,16 @@ const FilterAndSearchAndSort = () => {
                         variant="standard"
                         onChange={handleDimension}
                     >
-                        <option value={""}>
+                        <option key={-1} value={""}>
                             Dimensions
                         </option>
-                        {dimensions &&
-                            dimensions.map((dimension, i) => (
-                                <option key={i} value={dimension}>
-                                    {dimension}
-                                </option>
-                            ))}
+                        {dimensions.map((dimension, i) =>
+                        (
+                            <option key={i} value={dimension}>
+                                <Typography variant='h5'>L{dimension.length} x W{dimension.width} x H{dimension.height}</Typography>
+                            </option>
+                        )
+                        )}
                     </PrimaryTextField>
                 </Box>
             </Box>

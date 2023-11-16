@@ -1,7 +1,8 @@
+@import "../../styles/variable.scss";
 .image_change {
     position: relative;
     width: auto;
-    height: 200px;
+    height: 100%;
     .overlay {
         opacity: 0;
     }
@@ -10,7 +11,27 @@
         cursor: pointer;
     }
     img {
-        width: auto;
-        height: 100%;
+        width: 500px;
+        height: auto;
+    }
+    @media (max-width:$lg_size) {
+        img {
+            width: 400px;
+        }
+    }
+    @media (max-width:$md_size) {
+        img {
+            width: 350px;
+        }
+    }
+    @media (max-width:$sm_size) {
+        img {
+            width: 250px;
+        }
+    }
+    @media (max-width:$xs_size) {
+        img {
+            width: 100%;
+        }
     }
 }
