@@ -14,7 +14,6 @@ import {
 } from "@mui/icons-material";
 import styles from "./DashboardOptions.module.scss";
 import "./global.scss";
-import { FaUserEdit } from "react-icons/fa";
 import { MdAdminPanelSettings } from "react-icons/md";
 import AddNewCategory from "./AddNewCategory/AddNewCategory";
 import ItemsSection from "@/sections/ItemsSection/ItemsSection";
@@ -22,9 +21,11 @@ import Title from "../Title/Title";
 import CategoriesSection from "@/sections/CategoriesSection/CategoriesSection";
 import UsersSection from "@/sections/UsersSection/UsersSection";
 import AddNewAdmin from "./AddNewAdmin/AddNewAdmin";
-import FilterAndSearchAndSort from "../FilterAndSearchAndSort/FilterAndSearchAndSort";
 import { DashboardContext } from "@/context/DashboardContext";
 import { useMediaQuery } from "@mui/material";
+import SearchAndSortForUsers from "../SearchAndSortForUsers/SearchAndSortForUsers";
+import { FaUserEdit } from 'react-icons/fa'
+import SearchAndSortForCategories from "../SearchAndSortForCategories/SearchAndSortForCategories";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -129,7 +130,7 @@ const DashboardOptions = () => {
         />
       </Tabs>
       <TabPanel value={dashboardOption} index={0}>
-        <Box className={`grid jcs aic g30`} sx={{ width: "100%" }}>
+        <ItemsSection editable={true}>
           <Title
             title={"Items"}
             align={"center"}
@@ -137,9 +138,7 @@ const DashboardOptions = () => {
             h={"h4"}
             icon={<CategoryRounded />}
           />
-          <FilterAndSearchAndSort />
-          <ItemsSection editable={true} />
-        </Box>
+        </ItemsSection>
       </TabPanel>
       <TabPanel value={dashboardOption} index={1}>
         <AddNewItem />
@@ -153,6 +152,7 @@ const DashboardOptions = () => {
             fw={700}
             icon={<EditRounded />}
           />
+          <SearchAndSortForCategories />
           <CategoriesSection editable={true} />
         </Box>
       </TabPanel>
@@ -160,7 +160,17 @@ const DashboardOptions = () => {
         <AddNewCategory />
       </TabPanel>
       <TabPanel value={dashboardOption} index={4}>
-        <UsersSection />
+        <Box sx={{ width: "100%" }} className={`grid jcs aic g50`}>
+          <Title
+            icon={<FaUserEdit />}
+            title={"Users"}
+            fw={700}
+            align={"center"}
+            h={"h4"}
+          />
+          <SearchAndSortForUsers />
+          <UsersSection />
+        </Box>
       </TabPanel>
       <TabPanel value={dashboardOption} index={5}>
         <AddNewAdmin />

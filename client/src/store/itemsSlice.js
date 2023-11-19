@@ -33,7 +33,7 @@ export const getItems = createAsyncThunk("items/getItems", async (args) => {
     } else {
       queries += "?"
     }
-    queries += "dimension=" + args.dimension
+    queries += "dimension=" + JSON.stringify(args.dimension)
   }
   const res = await axios.get(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/shop/items${queries}`

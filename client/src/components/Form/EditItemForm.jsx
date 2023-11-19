@@ -6,16 +6,13 @@ import { Box, InputAdornment } from "@mui/material";
 import {
   CategoryRounded,
   CountertopsRounded,
-  DescriptionRounded,
-  HeightRounded,
   LocalOfferRounded,
-  StraightenRounded,
   TitleRounded,
-  WidthFullRounded,
 } from "@mui/icons-material";
 import FileUpload from "../FileUpload/FileUpload";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategories } from "@/store/categoriesSlice";
+import HandleDimensions from "./HandleDimensions/HandleDimensions"
 
 const EditItemForm = ({ loading, formik }) => {
   const [images, setImages] = useState();
@@ -85,14 +82,14 @@ const EditItemForm = ({ loading, formik }) => {
         type={"number"}
         variant="standard"
         fullWidth
-        id="count"
-        name="count"
-        placeholder="Count"
-        value={formik.values.count}
+        id="quantity"
+        name="quantity"
+        placeholder="Quantity"
+        value={formik.values.quantity}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.count && Boolean(formik.errors.count)}
-        helperText={formik.touched.count && formik.errors.count}
+        error={formik.touched.quantity && Boolean(formik.errors.quantity)}
+        helperText={formik.touched.quantity && formik.errors.quantity}
       />
       <PrimaryTextField
         InputProps={{
@@ -128,74 +125,7 @@ const EditItemForm = ({ loading, formik }) => {
       </PrimaryTextField>
 
       <FileUpload maxImages={10} setImages={setImages} />
-      <Box className={`flex jcsb aifs g20`}>
-        <PrimaryTextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <WidthFullRounded
-                  sx={{ color: (theme) => theme.palette.primary.main }}
-                />
-              </InputAdornment>
-            ),
-          }}
-          type={"number"}
-          variant="standard"
-          fullWidth
-          id="width"
-          name="width"
-          placeholder="Width"
-          value={formik.values.width}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.width && Boolean(formik.errors.width)}
-          helperText={formik.touched.width && formik.errors.width}
-        />
-        <PrimaryTextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <StraightenRounded
-                  sx={{ color: (theme) => theme.palette.primary.main }}
-                />
-              </InputAdornment>
-            ),
-          }}
-          type={"number"}
-          variant="standard"
-          fullWidth
-          id="length"
-          name="length"
-          placeholder="Length"
-          value={formik.values.length}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.length && Boolean(formik.errors.length)}
-          helperText={formik.touched.length && formik.errors.length}
-        />
-        <PrimaryTextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <HeightRounded
-                  sx={{ color: (theme) => theme.palette.primary.main }}
-                />
-              </InputAdornment>
-            ),
-          }}
-          type={"number"}
-          variant="standard"
-          fullWidth
-          id="height"
-          name="height"
-          placeholder="Height"
-          value={formik.values.height}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.height && Boolean(formik.errors.height)}
-          helperText={formik.touched.height && formik.errors.height}
-        />
-      </Box>
+      <HandleDimensions />
       <Box className={`grid jcs aic g10`}>
         <LoadButton loading={loading}>
           <PrimaryButton fullWidth type="submit">

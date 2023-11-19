@@ -23,7 +23,7 @@ const ItemInfo = ({ data }) => {
                     <Title line={true} align={"left"} fw={700} h={"h5"} title={"Dimensions (L x W x H)"} />
                     {
                         data.dimensions.map((data, i) => (
-                            <Box className={`flex jcfs aic g10`}>
+                            <Box key={i} className={`flex jcfs aic g10`}>
                                 <Typography variant='h5' sx={{ color: (theme) => theme.palette.primary.main }}>#{i + 1}</Typography>
                                 <Typography variant='h5'>L{data.length} x W{data.width} x H{data.height}</Typography>
                             </Box>

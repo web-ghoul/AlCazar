@@ -24,11 +24,6 @@
             width: 350px;
         }
     }
-    @media (max-width:$sm_size) {
-        img {
-            width: 250px;
-        }
-    }
     @media (max-width:$xs_size) {
         img {
             width: 100%;

@@ -49,7 +49,7 @@ const Header = () => {
     resetCartFromLocalStorage()
     resetCart()
     dispatch(resetProfile())
-    router.push("/login")
+    router.push(`${process.env.NEXT_PUBLIC_HOME_PAGE}`)
   }
 
   const handleGoToProfile = (i) => {

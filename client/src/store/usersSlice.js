@@ -2,8 +2,25 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getUsers = createAsyncThunk("users/getUsers", async (args) => {
+    let queries = ""
+    if (args && args.search) {
+        if (queries.length > 0) {
+            queries += "&"
+        } else {
+            queries += "?"
+        }
+        queries += "search=" + args.search
+    }
+    if (args && args.sort) {
+        if (queries.length > 0) {
+            queries += "&"
+        } else {
+            queries += "?"
+        }
+        queries += "sort=" + args.sort
+    }
     const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/users`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/users${queries}`,
         {
             headers: {
                 "Authorization": `Bearer ${args.token}`

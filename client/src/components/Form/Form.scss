@@ -35,7 +35,7 @@
    }
    @media (max-width:$sm_size) {
         &.edit_user_form {
-            min-width: 80vw;
+            min-width: 75vw;
         }
         .item_image {
             width: 50px;
@@ -44,7 +44,7 @@
     }
     @media (max-width:$xs_size) {
         &.edit_user_form {
-            min-width: 90vw;
+            min-width: 80vw;
         }
         .item_image {
             width: 40px;

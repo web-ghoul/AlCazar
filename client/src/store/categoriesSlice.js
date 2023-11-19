@@ -3,9 +3,26 @@ import axios from "axios";
 
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
-  async () => {
+  async (args) => {
+    let queries = ""
+    if (args && args.search) {
+      if (queries.length > 0) {
+        queries += "&"
+      } else {
+        queries += "?"
+      }
+      queries += "search=" + args.search
+    }
+    if (args && args.sort) {
+      if (queries.length > 0) {
+        queries += "&"
+      } else {
+        queries += "?"
+      }
+      queries += "sort=" + args.sort
+    }
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/shop/categories`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/shop/categories${queries}`
     );
     return res.data.categories;
   }

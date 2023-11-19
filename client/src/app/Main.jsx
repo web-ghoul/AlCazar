@@ -7,7 +7,7 @@ import DeleteItemModel from "@/models/DeleteItemModel";
 import DeleteCategoryModel from "@/models/DeleteCategoryModal";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { logging } from "@/store/authSlice";
 import DeleteAccountModal from '@/models/DeleteAccountModal';
@@ -29,21 +29,37 @@ import ChooseAddressModal from '@/models/ChooseAddressModal';
 import ConfirmOrderModal from '@/models/ConfirmOrderModal';
 import DeleteSubscriptionModal from '@/models/DeleteSubscriptionModal';
 import ChooseDimensionModal from '@/models/ChooseDimensionModal';
+import { usePathname, useRouter } from 'next/navigation';
 
 const Main = ({ children }) => {
+    const router = useRouter()
+    const pathname = usePathname()
     const dispatch = useDispatch()
     const { getDataFromLocalStorage } = useContext(CartContext)
     useEffect(() => {
         try {
             const token = Cookies.get("AlCazar_token")
             const userId = Cookies.get("AlCazar_userId")
-            dispatch(logging({ token, userId }))
-            dispatch(getProfile())
+            if (!token || !userId) {
+                if (pathname === `${process.env.NEXT_PUBLIC_DASHBOARD_PAGE}` || pathname === `${process.env.NEXT_PUBLIC_CART_PAGE}`) {
+                    router.push(`${process.env.NEXT_PUBLIC_LOGIN_PAGE}`)
+                    toast(
+                        "Please Log In First",
+                        {
+                            duration: 6000,
+                        }
+                    );
+                }
+            }
+            else {
+                dispatch(logging({ token, userId }))
+                dispatch(getProfile())
+            }
         } catch (error) {
             toast.error(error.message)
         }
         getDataFromLocalStorage()
-    }, [dispatch])
+    }, [dispatch, pathname])
     return (
         <main>
             <Header />

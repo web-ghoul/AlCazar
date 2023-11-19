@@ -37,7 +37,7 @@ const Footer = () => {
             First accessories collection now displayed at our newest store at
             Downtown Katameya Mall. Visit our store for more offers.
           </Typography>
-          <SecondaryButton sx={{ width: "fit-content" }}>
+          <SecondaryButton onClick={() => router.push(`${process.env.NEXT_PUBLIC_ABOUT_PAGE}`)} sx={{ width: "fit-content" }}>
             Read More
           </SecondaryButton>
         </Box>
@@ -107,7 +107,7 @@ const Footer = () => {
           <Form type="subscription_email" />
         </Box>
       </PrimaryContainer>
-    </PrimaryBox>
+    </PrimaryBox >
   );
 };
 

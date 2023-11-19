@@ -5,6 +5,7 @@ import { Box, Paper, Typography } from '@mui/material'
 import NumberController from './NumberController'
 import { DeleteButton } from '@/MUIComponents/DeleteButton'
 import { CartContext } from '@/context/CartContext'
+import { useSelector } from 'react-redux'
 
 const CartItem = ({ data, index }) => {
     const { removeItemFromCart } = useContext(CartContext)

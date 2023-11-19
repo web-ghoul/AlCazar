@@ -18,7 +18,7 @@ const SubscriptionThanksSection = () => {
     const dispatch = useDispatch()
     const [confirmed, setConfirmed] = useState(false)
     const handleConfirmedSubscriptedEmail = async () => {
-        await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/confirmSubscriptedEmail/${subscriptedEmailId}`
+        await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/confirmSubscriptedEmail/${subscriptedEmailId}`
         ).then((res) => {
             try {
                 setConfirmed(true)

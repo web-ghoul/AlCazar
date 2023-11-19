@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./Form.scss";
 import Login from "./Login";
 import Register from "./Register";
@@ -48,7 +48,7 @@ const Form = ({ type }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { token } = useSelector((state) => state.auth)
-  const { id } = useParams()
+  const { id, userId } = useParams()
   const pathname = usePathname()
   const dispatch = useDispatch();
   const {
@@ -69,6 +69,34 @@ const Form = ({ type }) => {
   } = useContext(DashboardContext);
   const { handleCloseDeleteAccountModal, handleCloseEditAccountModal, editableAccountData, handleCloseDeleteAddressModal, handleCloseAddNewAddressModal, handleCloseEditAddressModal, addressId, editableAddressData, handleCloseViewAvatarModal } = useContext(ProfileContext)
   const { handleCloseConfirmOrderModal, chosenAddress, cartPrice, resetCartFromLocalStorage, cartData, resetCart } = useContext(CartContext)
+  const { dimensions, setDimensions } = useContext(ItemContext)
+  const {
+    handleCloseDeleteSubscriptionModal, subscriptionEmailId
+  } = useContext(SubscriptionContext);
+
+  useEffect(() => {
+    if (editableItemData) {
+      setDimensions(editableItemData.dimensions)
+    }
+  }, [editableItemData])
+
+  const handleError = (err) => {
+    let msg;
+    try {
+      msg = err.response.data.error
+      toast.error(msg);
+    } catch (error) {
+      msg = error.message
+      toast.error(msg);
+    }
+    if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
+      dispatch(logout())
+      resetCartFromLocalStorage()
+      resetCart()
+      router.push(`/login`)
+    }
+  }
+
   const loginFormik = useFormik({
     initialValues: {
       email: "",
@@ -87,7 +115,7 @@ const Form = ({ type }) => {
     onSubmit: async (values, { resetForm }) => {
       setLoading(true);
       await axios
-        .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/login`, { ...values })
+        .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/login`, { ...values })
         .then((res) => {
           try {
             const token = res.data.token
@@ -104,7 +132,6 @@ const Form = ({ type }) => {
           router.push(`${process.env.NEXT_PUBLIC_HOME_PAGE}`);
         })
         .catch((err) => {
-          console.log(err)
           try {
             toast.error(err.response.data.error);
           } catch (error) {
@@ -114,28 +141,6 @@ const Form = ({ type }) => {
       setLoading(false);
     },
   });
-  const [image, setImage] = useState()
-  const { dimensions, setDimensions } = useContext(ItemContext)
-  const {
-    handleCloseDeleteSubscriptionModal, subscriptionEmailId
-  } = useContext(SubscriptionContext);
-
-  const handleError = (err) => {
-    let msg;
-    try {
-      msg = err.response.data.error
-      toast.error(msg);
-    } catch (error) {
-      msg = error.message
-      toast.error(msg);
-    }
-    if (msg === `${process.env.NEXT_PUBLIC_SESSION_EXPIRED_MESSAGE}`) {
-      dispatch(logout())
-      resetCartFromLocalStorage()
-      resetCart()
-      router.push(`/login`)
-    }
-  }
 
   const registerFormik = useFormik({
     initialValues: {
@@ -170,7 +175,7 @@ const Form = ({ type }) => {
     onSubmit: async (values, { resetForm }) => {
       setLoading(true);
       await axios
-        .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/register`, { ...values })
+        .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/register`, { ...values })
         .then((res) => {
           try {
             toast.success(res.data.message);
@@ -206,8 +211,26 @@ const Form = ({ type }) => {
         .min(8, "Password should be of minimum 8 characters length")
         .required("Password is required"),
     }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      await axios
+        .patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/resetPassword/${userId}`, values)
+        .then((res) => {
+          try {
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          try {
+            toast.error(err.response.data.error);
+          } catch (error) {
+            toast.error(error.message);
+          }
+        });
+      setLoading(false);
     },
   });
 
@@ -221,8 +244,26 @@ const Form = ({ type }) => {
         .email("Enter a valid email")
         .required("Email is required"),
     }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      await axios
+        .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/forgotPassword`, values)
+        .then((res) => {
+          try {
+            toast.success(res.data.message);
+          } catch (error) {
+            toast.error(error.message);
+          }
+          resetForm();
+        })
+        .catch((err) => {
+          try {
+            toast.error(err.response.data.error);
+          } catch (error) {
+            toast.error(error.message);
+          }
+        });
+      setLoading(false);
     },
   });
 
@@ -247,7 +288,7 @@ const Form = ({ type }) => {
     onSubmit: async (values, { resetForm }) => {
       setLoading(true);
       if (dimensions.length === 0) {
-        toast.error("Please Enter Item Dimensions")
+        toast.error("Please Set Item Dimensions")
         setLoading(false);
         return
       } else {
@@ -291,10 +332,8 @@ const Form = ({ type }) => {
       price: editableItemData && editableItemData.price,
       images: [],
       category: editableItemData && editableItemData.category,
-      count: editableItemData && editableItemData.count,
-      width: editableItemData && editableItemData.width,
-      length: editableItemData && editableItemData.length,
-      height: editableItemData && editableItemData.height,
+      quantity: editableItemData && editableItemData.quantity,
+      dimensions: []
     },
     validationSchema: yup.object({
       title: yup.string("Enter your title").required("Title is required"),
@@ -303,14 +342,14 @@ const Form = ({ type }) => {
       category: yup
         .string("Enter your category")
         .required("Category is required"),
-      count: yup.number("Enter your count").required("Count is required"),
-      width: yup.number("Enter your width").required("Width is required"),
-      length: yup.number("Enter your length").required("Length is required"),
-      height: yup.number("Enter your height").required("Height is required"),
+      quantity: yup.number("Enter your quantity").required("Quantity is required"),
     }),
     onSubmit: async (values, { resetForm }) => {
       setLoading(true);
       const formData = new FormData();
+      if (dimensions.length > 0) {
+        values.dimensions = dimensions
+      }
       if (values.images.length > 0) {
         values.images.map((image) => {
           formData.append("images", image);
@@ -333,6 +372,7 @@ const Form = ({ type }) => {
           try {
             handleCloseEditItemModal()
             dispatch(getItems())
+            setDimensions([])
             toast.success(res.data.message);
           } catch (error) {
             toast.error(error.message);
@@ -753,26 +793,22 @@ const Form = ({ type }) => {
     }),
     onSubmit: async (values, { resetForm }) => {
       setLoading(true);
-      // await axios
-      //   .post(
-      //     `${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addNewCategory`,
-      //     formData
-      //   )
-      //   .then((res) => {
-      //     try {
-      //       toast.success(res.data.message);
-      //     } catch (error) {
-      //       toast.error(error.message);
-      //     }
-      //     resetForm();
-      //   })
-      //   .catch((err) => {
-      //     try {
-      //       toast.error(err.response.data.error);
-      //     } catch (error) {
-      //       toast.error(err.message);
-      //     }
-      //   });
+      await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/contactWithMe`,
+          values
+        )
+        .then((res) => {
+          try {
+            toast.success(res.data.message);
+            resetForm();
+          } catch (error) {
+            toast.error(error.message);
+          }
+        })
+        .catch((err) => {
+          handleError(err)
+        });
       setLoading(false);
     },
   });

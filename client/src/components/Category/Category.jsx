@@ -6,7 +6,7 @@ import { DeleteIconButton } from "@/MUIComponents/DeleteIconButton";
 import { DashboardContext } from "@/context/DashboardContext";
 import { SecondaryIconButton } from "@/MUIComponents/SecondaryIconButton";
 import { useRouter } from "next/navigation";
-import { FilterAndSearchAndSortContext } from "@/context/FilterAndSearchAndSortContext";
+import { FilterAndSearchAndSortForItemsContext } from "@/context/FilterAndSearchAndSortForItemsContext";
 
 const Category = ({ data, editable }) => {
   const router = useRouter()
@@ -14,7 +14,7 @@ const Category = ({ data, editable }) => {
     handleOpenDeleteCategoryModal,
     handleOpenEditCategoryModal,
   } = useContext(DashboardContext);
-  const { setCategory } = useContext(FilterAndSearchAndSortContext)
+  const { setCategory } = useContext(FilterAndSearchAndSortForItemsContext)
   const handleChooseCategory = () => {
     router.push(`${process.env.NEXT_PUBLIC_SHOP_PAGE}`)
     setCategory(data.title)
