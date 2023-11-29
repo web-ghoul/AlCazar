@@ -1,0 +1,10 @@
+@import "../../styles/variable.scss";
+.auth_image{
+    width: 600px;
+    @media (max-width:$md_size) {
+        width: 400px;
+    }
+    @media (max-width:$sm_size) {
+        width: 100%;
+    }
+}

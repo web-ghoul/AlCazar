@@ -87,4 +87,31 @@ const resetPassword = async (req, res, next) => {
   }
 }
 
-module.exports = { login, register, verify, forgotPassword, resetPassword };
+const googleAuth = async (req, res, next) => {
+  try {
+    const email = req.user.emails[0].value
+    const user = await User.findOne({ email })
+    if (user) {
+      const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
+        expiresIn: "30d",
+      });
+      res.redirect(`${process.env.CLIENT_GOOGLE_AUTH_URL}/${token}/${user._id}`)
+    } else {
+      const password = await bcrypt.hash(process.env.SECRET_KEY, 10);
+      const avatar = req.user.photos[0].value
+      const firstName = req.user.name.givenName
+      const lastName = req.user.name.familyName
+      const newUser = new User({ avatar, email, firstName, lastName, password, phone: "00" });
+      await newUser.save();
+      const token = jwt.sign({ userId: newUser._id }, process.env.SECRET_KEY, {
+        expiresIn: "30d",
+      });
+      sendMail(email, "Welcome To Our House🏡", welcomeMail())
+      res.redirect(`${process.env.CLIENT_GOOGLE_AUTH_URL}/${token}/${newUser._id}`)
+    }
+  } catch (err) {
+    res.status(403).json({ error: err.message });
+  }
+}
+
+module.exports = { login, register, verify, forgotPassword, resetPassword, googleAuth };
