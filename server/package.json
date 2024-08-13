@@ -2,12 +2,15 @@
   "name": "alcazar",
   "version": "1.0.0",
   "description": "Rebuild Al-Cazar website",
-  "main": "./src/app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./src/app.js"
+    "start": "node index.js"
   },
   "author": "webGhoul",
+  "engines": {
+    "node": "18"
+  },
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -35,6 +38,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "validator": "^13.11.0",
+    "vercel": "^35.2.4",
     "xss-clean": "^0.1.4"
   }
 }
