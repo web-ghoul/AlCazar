@@ -7,7 +7,7 @@ import DeleteItemModel from "@/models/DeleteItemModel";
 import DeleteCategoryModel from "@/models/DeleteCategoryModal";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { logging } from "@/store/authSlice";
 import DeleteAccountModal from '@/models/DeleteAccountModal';

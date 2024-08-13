@@ -1,18 +1,10 @@
 @import "../../styles/variable.scss";
-.auth_image{
-    width: 600px;
-    @media (max-width:$md_size) {
-        width: 400px;
-    }
-    @media (max-width:$sm_size) {
-        width: 100%;
-    }
-}
-.auth_box {
+
+.contact_form_box {
     grid-template-columns: repeat(2, 1fr);
 
-    .auth_box_image {
-        background-image: url("../../images/register.webp");
+    .contact_form_image {
+        background-image: url("../../images/contact_form.webp");
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
