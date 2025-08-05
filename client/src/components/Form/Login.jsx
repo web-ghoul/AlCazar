@@ -109,7 +109,7 @@ const Login = ({ loading, formik }) => {
           </SecondaryButton>
         </Link>
       </Box>
-      <Box className={`grid jcs aic g10`}>
+{/*       <Box className={`grid jcs aic g10`}>
         <Or />
         <Typography
           variant="h6"
@@ -119,7 +119,7 @@ const Login = ({ loading, formik }) => {
           Log in with
         </Typography>
       </Box>
-      <SocialMediaAuth />
+      <SocialMediaAuth /> */}
     </>
   );
 };
