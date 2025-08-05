@@ -207,7 +207,7 @@ const Register = ({ loading, formik }) => {
           </SecondaryButton>
         </Link>
       </Box>
-      <Box>
+{/*       <Box>
         <Or />
         <Typography
           variant="h6"
@@ -217,7 +217,7 @@ const Register = ({ loading, formik }) => {
           Register with
         </Typography>
       </Box>
-      <SocialMediaAuth />
+      <SocialMediaAuth /> */}
     </>
   );
 };
